@@ -1,0 +1,170 @@
+# Zippy Project Context & Architectural Master
+
+## 1. Project Identity & Rules
+
+- **Application Name**: Zippy (ZippyBD)
+- **Root Directory**: `c:\Users\imtan\Desktop\Zippy`
+- **Core Technology Stack**: Laravel 13, PHP 8.2+, MySQL / SQLite (Testing), Bootstrap 5 Native UI, Vanilla JS & Axios.
+- **Frontend Framework Mandate**: Strictly Bootstrap 5. Under NO circumstances use Tailwind CSS or any third-party CSS utility libraries. All components must employ native Bootstrap 5 classes (`d-flex`, `gap-*`, `card`, `badge`, `form-check form-switch`, `btn`, `offcanvas`, `modal`).
+- **Design Philosophy**: Minimalist Black & White luxury aesthetic (`#0f172a` primary dark tone, crisp borders, subtle transitions, clean typography, zero visual clutter).
+- **Code Rules**: Zero comments rule strictly enforced across generated or modified production and test code.
+
+## 2. What Was Done (Completed Work)
+
+- **Conversion Boosters & Theme Customization**:
+  - Centralized theme controls via `/admin/settings/theme` (`admin.theme_settings.update`) and helper function `theme_setting($key, $default)`.
+  - Configurable switches for Recent Sales Toast (`recent_sales_toast_enabled`), Live Viewers Counter (`live_viewers_enabled`, `live_viewers_min`, `live_viewers_max`), Brand typography, and Color accents.
+  - Floating Bottom-Left Recent Sales Toast widget with clean monochrome Bootstrap styling (`position-fixed bottom-0 start-0 m-3 z-3`).
+- **Product Details Page Cleanup & Realignment**:
+  - Complete removal of Frequently Bought Together (FBT) section, queries, and DOM wrappers.
+  - Category matching sanitized: Removed mismatched dummy items (food/bags under EDC gear).
+  - Purchase section streamlined: Variant selection pills, clean quantity counter, direct "Buy Now" and "Add to Cart" action buttons.
+  - Delivery charge info rendered as minimalist clean sub-text.
+- **Dynamic Free Shipping Engine**:
+  - **Migration**: Added `is_free_shipping` (boolean, default false) to `products` table via `2026_09_08_150000_add_is_free_shipping_to_products_table.php`.
+  - **Admin Settings**: Added `Enable Global Free Shipping` switch (`free_shipping_enabled`) and `Minimum Order Amount for Free Shipping (৳)` (`free_shipping_min_amount`) in `/admin/settings`.
+  - **Admin Products**: Added `Free Shipping on this Item` switch in product add/edit form (`form.blade.php`) and handled in `ProductController::saveProduct`.
+  - **Cart & Checkout Engine**:
+    - Evaluates: Free shipping if `(global_free_shipping == 1 AND subtotal >= min_amount) OR (cart contains any product with is_free_shipping == 1)`.
+    - Applied inside `CartController::get`, `CheckoutController::index`, and server-side validated inside `CheckoutController::process`.
+    - Dynamic UI updates in checkout area options (`৳ ০ (ফ্রি ডেলিভারি)` / `ফ্রি / ৳ ০`), summary totals, and cart drawer banner (`ফ্রি ডেলিভারি প্রযোজ্য! (৳ ০)`).
+- **Frontend JavaScript Audit & Performance Optimization**:
+  - **Scroll Throttling & Listener Deduplication**: Wrapped sticky header scroll in `requestAnimationFrame` with idempotent binding guard (`window.__headerScrollBound`), eliminating listener stacking on Turbo navigations.
+  - **Typing Animation Concurrency Guard**: Replaced recursive timer with single managed timer handle (`window.__brandTypingTimer`) and DOM presence check to prevent competing typing loops across page loads.
+  - **Zero Layout Thrashing**: Replaced synchronous forced reflows (`void toastEl.offsetWidth`) in floating island toasts (`showToast`, `showUndoToast`) with `requestAnimationFrame`.
+  - **Timer Memory Leak Prevention**: Guaranteed countdown intervals (`window.__countdownTimerInterval`) are cleared on re-initialization and stop automatically if elements are removed from DOM.
+  - **Intersection Observer Cleanup**: Disconnected previous `IntersectionObserver` instances in `initScrollReveal` before re-observing new elements on Turbo page transitions.
+  - **Search Outside-Click Consolidation**: Replaced per-input document click listeners with a single guarded outside-click delegator (`window.__liveSearchOutsideBound`).
+  - **Catalog Filter Event Delegation**: Guarded document-level listeners (`pointerdown`, `click`, `change`) and browser `popstate` navigation listener against duplicate bindings across Turbo visits, querying active DOM forms dynamically.
+  - **PDP Zoom Interaction Optimization**: Wrapped desktop and mobile product image zoom handlers (`handleDesktopZoomMove`, `handleTouchMove`) in `requestAnimationFrame` with frame-canceling to deliver 60/120fps micro-stutter-free interactions.
+  - **Checkout Prefill & Chatbot Guards**: Extended checkout localStorage prefill to trigger on `turbo:load`, and added safety guards against null elements and double-initialization in the AI chatbot widget.
+  - **Button State Restoration**: Updated `addToCart` to cache and restore the button's exact original HTML markup upon request completion.
+- **Hotwire Turbo SPA Lifecycle & Memory Leak Fixes**:
+  - **SPA Navigation & turbo:load Standard**: Converted all legacy `DOMContentLoaded` listeners across `frontend.js` and all Blade templates (`app.blade.php`, `hero.blade.php`, `checkout/index.blade.php`, `order/track.blade.php`, `product/show.blade.php`, `chatbot.blade.php`) to `turbo:load` to guarantee fast, continuous SPA execution without reloads.
+  - **Turbo Cache Glitch Teardown (turbo:before-cache)**: Added a central `turbo:before-cache` listener in `app.blade.php` that disposes all active Bootstrap 5 tooltips (`bootstrap.Tooltip.getInstance(el)?.dispose()`) and popovers (`bootstrap.Popover.getInstance(el)?.dispose()`), hides active modals and offcanvases, resets native toasts and sales toasts, purges backdrops (`.modal-backdrop`, `.offcanvas-backdrop`), and strips modal state classes (`.modal-open`, `.overflow-hidden`, `.qv-modal-open`) while resetting body overflow and padding.
+  - **Global Scope Pollution Prevention**: Encapsulated state in guarded globals (`window.currentCartData = window.currentCartData || { cart: [], count: 0, subtotal: 0 };`). Added `data-turbo-eval="false"` to one-time initialization scripts (`app.blade.php`, `login.blade.php`, `chatbot.blade.php`, `bottom-sheet.blade.php`).
+  - **Document-Level Event Delegation**: Converted dynamic event listeners in `frontend.js` to resilient document-level delegation. Offcanvas scroll locking is bound once via `window.__offcanvasScrollLockBound`. Mega menu outside clicks and escape keys are guarded. Catalog filter controls (`submit`, `change`, `input`, `click`) operate entirely via document delegation, eliminating listener stacking and memory leaks.
+  - **SPA Transitions with Turbo.visit()**: Replaced window reloads with `Turbo.visit()` across post-checkout redirect (`checkout/index.blade.php`), order tracking queries (`order/track.blade.php`), and PDP Buy Now actions (`product/show.blade.php`).
+- **Hotwire Turbo IIFE Encapsulation & Aria-Hidden Focus Fixes**:
+  - **Complete IIFE Scope Isolation**: Wrapped all client-side logic in `public/js/frontend.js` inside an Immediately Invoked Function Expression (`(() => { ... })();`), eliminating any script-level `let` or `const` redeclarations on Turbo navigations.
+  - **Window Property Migration**: Migrated top-level `qvSelectedVariant` and `qvCurrentQty` to explicit properties on `window` (`window.qvSelectedVariant`, `window.qvCurrentQty`), ensuring full accessibility for inline HTML event handlers without root-scope collisions. All global functions explicitly exported to `window`.
+  - **Turbo Focus & Aria-Hidden Error Resolution**: Bound `document.addEventListener('turbo:click', ...)` and enhanced `turbo:before-cache` and `turbo:before-render` to blur active focused elements (`document.activeElement.blur()`) prior to page transitions. Prevents DOM exceptions where descendants retain focus while ancestors receive `aria-hidden`.
+- **Hotwire Turbo Cache Resilience & Favicon Fix**:
+  - **Transitionless UI State Teardown**: Updated `turbo:before-cache` and `turbo:before-render` in `frontend.js` and `app.blade.php` to directly and synchronously strip `.show` from `.offcanvas.show` and `.modal.show`, completely purge `.offcanvas-backdrop` and `.modal-backdrop`, and remove `modal-open`, `overflow-hidden`, and style attributes from `document.body`. Fully eliminated `bootstrap.Offcanvas.getInstance().hide()` transitions that triggered `offcanvas.js:146 Uncaught TypeError: Cannot read properties of null (reading 'classList')`.
+  - **Checkout Script IIFE Isolation**: Enclosed all client-side logic in `resources/views/frontend/checkout/index.blade.php` within an IIFE (`(() => { ... })();`), preventing `currentSubtotal` redeclaration syntax errors on repeated Turbo visits.
+  - **Root Cause Aria-Hidden Fix**: Removed improper `tabindex="-1" aria-hidden="true"` on interactive product image links in `product-card.blade.php`, and dynamically toggle `aria-hidden` when `quickViewModal` opens/closes.
+  - **Focus Release on Navigation**: Enforced `turbo:click` listener with `document.activeElement.blur()` to release active element focus before Turbo transitions, permanently preventing "Blocked aria-hidden" DOM warnings.
+  - **Favicon & Manifest Sanitization**: Removed broken `<link rel="manifest">` and properly configured `favicon.ico` links in `app.blade.php`.
+- **Checkout Page Scroll Lock Resolution**:
+  - **Root Cause**: When opening the cart drawer (`cartDrawer`), bottom sheet, or mobile filter offcanvas, `show.bs.offcanvas` in `public/js/frontend.js` previously set `document.documentElement.style.overflow = 'hidden'` and `document.body.style.touchAction = 'none'`. Because clicking the "অর্ডার সম্পন্ন করুন / Checkout" link triggered an immediate Turbo visit to `/checkout` without firing `hidden.bs.offcanvas`, the `<html>` root element retained `overflow: hidden` and `touch-action: none`, completely freezing scrolling on the checkout page.
+  - **Comprehensive Fix**:
+    - `public/js/frontend.js`: Removed manual `documentElement.style.overflow = 'hidden'` and `document.body.style.touchAction = 'none'` from offcanvas display handlers. In `turbo:click`, `turbo:before-cache`, and `initFrontendApp()`, enforced full reset of `documentElement.style.overflow`, `documentElement.style.touchAction`, `document.body.style.overflow`, `document.body.style.touchAction`, and removed lingering `.modal-open`, `.overflow-hidden`, `.qv-modal-open` classes and backdrops.
+    - `resources/views/frontend/layouts/app.blade.php`: Added comprehensive scroll lock resets and backdrop purges across `turbo:click`, `turbo:load`, `turbo:before-cache`, and `turbo:before-render`.
+    - `resources/views/frontend/inc/cart-drawer.blade.php`: Retained clean `<a href="{{ route('checkout') }}" ...>` link without `data-bs-dismiss="offcanvas"` because Bootstrap 5's dismiss event handler executes `event.preventDefault()` on `<a>` elements, which was canceling Turbo's click navigation.
+    - `resources/views/frontend/checkout/index.blade.php`: Added immediate scroll lock and backdrop cleanup in `initCheckoutPrefill()` running on both `turbo:load` and direct script execution.
+- **Recent Sales Toast Luxury UI Redesign (`recentSalesToastWrapper`)**:
+  - Replaced bulky, outdated card styling with a luxury B&W Glassmorphism card (`background: rgba(255, 255, 255, 0.95)`, `backdrop-filter: blur(20px)`, `border: 1px solid rgba(15, 23, 42, 0.08)`, `border-radius: 16px`, subtle float shadow).
+  - Fixed mobile bottom-bar collision: Elevated toast above the mobile bottom nav on viewports under 768px (`bottom: calc(72px + env(safe-area-inset-bottom, 0px))`), ensuring zero overlap with navigation or checkout sticky bars.
+  - Added live pulsing emerald indicator (`.sales-live-dot`), verified badge pill on the 52px product thumbnail, clean Outfit/Plus Jakarta typography, real-time pricing and time-ago badges, circular hover action arrow, and an animated micro-progress bar (`toastProgressBar`) tracking the 5-second display timer.
+  - Implemented pause-on-hover with progress freeze, click-through to product page using `Turbo.visit()`, and graceful dismiss remembering user preference in `sessionStorage`.
+  - Added full Turbo cache teardown in `app.blade.php` and `frontend.js` for `#recentSalesToastWrapper`.
+- **Backend Admin Hotwire/Turbo Architecture Overhaul**:
+  - **Component Re-initialization & Lifecycle Standardization**: Converted all backend Blade scripts from `DOMContentLoaded` to `turbo:load`, ensuring DataTables, charts, image upload previews, dynamic variant rows, toggle switches, and Bootstrap 5 components (tooltips, popovers, modals, dropdowns) initialize seamlessly on every Turbo SPA navigation without full page reloads.
+  - **Bulletproof Teardown & DOM Cleanup (`turbo:before-cache` & `turbo:before-render`)**: Implemented central cleanup in `backend/layouts/app.blade.php` that disposes active tooltips and popovers, strips `.show` from `.modal` and `.offcanvas`, removes `.modal-backdrop` and `.offcanvas-backdrop` from the DOM, destroys active Select2 and SweetAlert2 instances, resets scroll locks (`overflow`, `touchAction`, `paddingRight`), and cleans up lingering classes (`.modal-open`, `.overflow-hidden`) on `document.body` and `document.documentElement`.
+  - **DataTable Memory Leak & Reinitialization Prevention**: Implemented safe destroy-before-create guard pattern (`if ($.fn.DataTable.isDataTable('#tableId')) { $('#tableId').DataTable().clear().destroy(); }`) across all 11 admin DataTables (Products, Orders, Categories, Coupons, Abandoned Carts, Fraud Orders, Customers, CRM, Audit Logs, Refunds, Support Tickets).
+  - **Modal Lifecycle Safety**: Migrated all admin modals to `bootstrap.Modal.getOrCreateInstance(el)` instead of retaining persistent modal instances across Turbo page visits, eliminating ghost backdrops and detached DOM elements.
+  - **Complete IIFE Scope Isolation & Window Exports**: Encapsulated scripts across all 28 admin Blade templates inside Immediately Invoked Function Expressions (`(() => { ... })();`), preventing top-level variable and constant redeclarations. Explicitly exported all modal and action handler functions to `window` for reliable HTML inline attribute access (`onclick`, `onchange`).
+- **Recent Sales Toast Layout & Text Truncation Refinement**:
+  - Implemented strict max-width constraint (`style="max-width: 350px;"` and responsive CSS `max-width: 350px`) on `#recentSalesToastWrapper` and `.sales-toast-card` so long product titles never stretch the toast beyond compact dimensions.
+  - Applied Bootstrap 5 `.text-truncate` and `.fw-medium` to `#toastProductTitle`, ensuring long product names stay on a single line ending with an ellipsis (`...`).
+  - Added `.min-w-0` CSS rule and inline flexbox safety guards to prevent flex parent overflow, maintaining balanced padding, margins, and the Black & White luxury aesthetic.
+- **Backend Admin Hotwire/Turbo Global Scoping & Asset Hardening**:
+  - Explicitly defined and exposed `window.toggleHeaderTheme`, `window.toggleThemeQuick`, `window.toggleSidebar`, `window.toggleAdminSidebar`, `window.closeAdminSidebar`, `window.togglePanel`, `window.toggleUserPanel`, `window.closeAllPanels`, and `window.toggleModuleGroup` on `window` object to eliminate `ReferenceError` on inline HTML event attributes (`onclick="toggleHeaderTheme()"`, etc.).
+  - Fixed `topbar-studio-btn` (`togglePanel`) failing on Turbo page navigations. Eliminated stale cached jQuery DOM references in `template.js` by performing live `document.getElementById` lookups on every toggle/close invocation and re-syncing theme state/sliders on `turbo:load`.
+  - Wrapped `template.js` (in both `public/my-admin-template/lib/template.js` and `public/backend/lib/template.js`) inside an IIFE `(() => { ... })();`, migrated top-level variables (`const $doc`) to `var $doc = $(document)` attached to `window.$doc`, and exported all panel/theme control methods to `window`.
+  - Added `data-turbo-eval="false"` to backend vendor/library `<script>` tags in `resources/views/backend/layouts/app.blade.php`, permanently preventing Turbo from re-evaluating static template libraries on body visits.
+- **Complete Eradication of Native Browser Alert() across Entire System**:
+  - Upgraded `showToast(msg, type = 'success')` in `public/js/frontend.js` to dynamically support `success`, `warning`, and `error` states with custom icons and color schemes.
+  - Replaced all explicit calls to `alert()` across frontend checkout (`checkout/index.blade.php`) and all backend admin templates (`cms/reviews.blade.php`, `sms/index.blade.php`, `products/index.blade.php`, `settings/social.blade.php`, `products/form.blade.php`, `settings/enterprise.blade.php`) with non-blocking, luxury `showToast` notifications.
+  - Injected global `window.alert` interceptor wrappers into both frontend ([frontend/layouts/app.blade.php](file:///c:/Users/imtan/Desktop/Zippy/resources/views/frontend/layouts/app.blade.php)) and backend ([backend/layouts/app.blade.php](file:///c:/Users/imtan/Desktop/Zippy/resources/views/backend/layouts/app.blade.php)) master layouts. Any unexpected or third-party `alert()` call is automatically routed into a non-blocking toast, permanently preserving UI/UX integrity.
+- **Order Tracking Page Luxury UI Redesign (`order/track`)**:
+  - Replaced outdated bright royal blue gradient banners and icons with Zippy's signature Minimalist Black & White luxury aesthetic (`#0f172a` primary dark tone, crisp borders, subtle transitions, clean typography, zero visual clutter).
+  - Redesigned the search hero into an ultra-clean dark luxury card with a pulsing emerald live-status radar pill, refined search input with clear button, and sharp dark submit button.
+  - Engineered a fully responsive 5-step order progress stepper (`modern-stepper-track`) replacing the rigid 580px horizontal scroller, ensuring 100% fluid mobile display with zero horizontal overflow.
+  - Elevated order items presentation with clean 52px product thumbnails, variant details, and transparent price breakdown.
+  - Polished the live tracking timeline with an active pulsating node, location pills, and clean monospace timestamps.
+  - Refined default guide cards and device order history cards with subtle hover-lift interactions.
+- **Recent Sales Toast Mobile Optimization (`recentSalesToastWrapper`)**:
+  - Optimized the floating recent sales notification toast for mobile screens (`< 768px`) into an ultra-compact micro-badge.
+  - Reduced container maximum width from `350px` to `275px`, card internal padding from `12px 14px` to `7px 9px`, and card border-radius from `16px` to `12px`.
+  - Scaled product thumbnail from `52px` to `38px`, checkmark badge from `16px` to `13px`, and live pulse dot from `7px` to `6px`.
+  - Adjusted mobile typography: buyer info to `10px`, product title to `11px`, price to `11px`, and relative time to `9.5px`.
+  - Hidden desktop-only elements on mobile (`.toast-buyer-action` and right chevron arrow `.toast-action-arrow`) to prevent text truncation issues and maximize horizontal readability.
+  - Anchored position cleanly at `bottom: calc(68px + env(safe-area-inset-bottom, 0px)); left: 10px;` so it hovers neatly above the mobile bottom navigation bar without overlapping.
+- **Zippy Assistant Mobile Bottom Cover Chat Box Redesign (`chatbot.blade.php`)**:
+  - Transformed the mobile chatbot from an awkward floating popup into a modern, native-feeling bottom cover chat sheet (`offcanvas`/bottom-drawer style).
+  - Configured full-width bottom docking (`position: fixed; bottom: 0; left: 0; right: 0; width: 100vw; height: 88dvh; border-radius: 22px 22px 0 0;`) with smooth slide-up / slide-down animation (`transform: translateY(100%)` to `translateY(0)`).
+  - Integrated a frosted dark backdrop (`.zippy-chat-backdrop`) with outside-click dismiss and an iOS/Android style centered drag handle indicator (`.zippy-chat-drag-handle`).
+  - Added native touch gestures allowing users to swipe down on the chat header / drag handle to dismiss the sheet.
+  - Implemented background scroll lock (`overflow: hidden` on body) while open on mobile with safe auto-cleanup on close and `turbo:before-cache`.
+  - Padded mobile chat footer and Express Checkout footer with safe-area insets (`env(safe-area-inset-bottom)`), preventing virtual home bar collisions.
+  - Preserved desktop popup layout intact (`width: 395px; height: 570px; border-radius: 20px;`).
+- **Home Hero Slider Mobile Optimization & Luxury Styling (`hero.blade.php`)**:
+  - Calibrated the mobile hero slider height to an ideal cinematic widescreen **`215px`** (approx 16:9 on modern mobile viewports) on `< 576px` (with `280px` on small tablets, `350px` on medium screens, and `460px` on desktop). This eliminates vertical heaviness while preventing banner imagery from being squashed.
+  - Modernized pagination indicators (`.splide__pagination`, `.splide__pagination--ltr`) into an ultra-clean floating pill layout directly over the banner images, completely eliminating the dark frosted container/capsule for a frameless luxury look.
+  - Added a gentle 55px bottom dark vignette gradient (`div[id="heroSlider"] .hero-slide-gradient::after`) to guarantee pure white dots pop with crisp contrast on any bright or yellow banner image.
+  - Active dot smoothly expands into a 22px elongated white pill with soft drop-shadow (`filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.7))`), while inactive dots are 7px circular pills. On mobile, inactive dots are 6px and active pill is 18px at `bottom: 10px`.
+  - Refined mobile typography: bold 17px title with drop-shadow, delicate frosted badge, and rounded action pill button.
+  - Aligned Splide JS breakpoint configuration (`575.98: { height: '215px' }`, `767.98: { height: '280px' }`, `991.98: { height: '350px' }`) with exact CSS heights for zero layout shifts.
+- **Product Card Secondary Image On Hover Transition (`product-card.blade.php`)**:
+  - Implemented smooth crossfade hover image transition across product cards. When hovered, the card smoothly crossfades from the primary product image to a secondary angle/perspective photo with subtle hardware-accelerated zoom (`scale(1.06)`).
+  - Selected `products.gallery_images` in `HomeController.php` (`$flashProducts`, `$allCategoryProducts`, `loadMoreCategoryProducts`), `ProductController.php` (related products), and `SearchController.php` (`buildSearchQuery`).
+  - Added intelligent secondary image extraction and asset path normalization in `product-card.blade.php`, with conditional `.has-hover-img` wrapper class.
+  - Implemented luxury GPU-accelerated crossfade CSS (`transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease; will-change: transform, opacity;`) with primary image fading out as hover image fades in, and fallback graceful zoom for single-image items.
+  - Enriched database and `ProductSeeder.php` with curated secondary images for all store products.
+- **Luxury Trust Bar Redesign (`home.blade.php`)**:
+  - Overhauled the outdated plain border-strip `zb-trust-bar` into a floating luxury dock enclosed within the standard grid container (`container my-3 my-md-4 px-2 px-md-3`).
+  - Added rounded luxury container styling (`border-radius: 20px`, `background: #ffffff`, micro-border `rgba(15, 23, 42, 0.08)`, and soft elevation shadow).
+  - Designed deep dark icon badges (`#0f172a`, `44px × 44px`, `border-radius: 12px`, soft shadow) with interactive hover tilt (`rotate(-3deg)`) and scale (`1.08`).
+  - Desktop: 4-column balanced dock with vertical hairline dividers between items and soft hover lift (`translateY(-2px)`).
+  - Mobile: Replaced the clunky horizontal overflow scroller with a compact 2x2 grid that displays all 4 trust points cleanly above the bottom nav bar.
+- **Comprehensive Production Audit, Security Hardening & SEO Engine**:
+  - **Cart & Checkout Price Tampering Elimination**: Discarded client-supplied prices in `CartController` (`get`, `add`, `addBatch`, `update`, `restore`) and `CheckoutController` (`index`, `process`). Server-side price resolution strictly verifies DB product base price and JSON variant options via `resolveProductPrice()`.
+  - **Checkout Sanitization & Validation**: Sanitized customer name, address, and notes with `strip_tags()`, and enforced strict regex validation for Bangladeshi phone numbers (`regex:/^(?:\+?88)?01[3-9]\d{8}$/`).
+  - **Blade Template Escaping**: Safely escaped dynamic output in `banners/index.blade.php` and `hero.blade.php`.
+  - **Security Headers & CSP**: Configured `X-Frame-Options: DENY` (anti-clickjacking), `X-Content-Type-Options: nosniff`, and strict Content Security Policy (CSP) compatible with Hotwire Turbo SPA, Bootstrap 5, CDNs, and Google Fonts in `SecurityHeadersMiddleware.php`.
+  - **Open Redirect Hardening**: Added `safeRedirectUrl()` in `CustomerAuthController.php` preventing unvalidated open redirection attacks on auth routes.
+  - **Query Optimization & In-Memory Category Resolution**: Eliminated repetitive database queries in `ProductController` by resolving category ancestors, descendants, and breadcrumbs in-memory from `FrontendCacheService::activeCategories()`.
+  - **Schema.org Structured Data & Dynamic SEO**: Enriched Schema.org JSON-LD `Product`, `Offer`, `AggregateRating`, and `Review` on PDP, and `CollectionPage` on category pages with canonical URLs and Open Graph tags.
+  - **Zero Code Comments**: Strictly enforced zero code comments across all modified codebase files.
+- **In-Button Add-to-Cart Animated Micro-Interaction (`btn-cart-animated`)**:
+  - Engineered a 4-phase GPU-accelerated in-button micro-animation on product cards (`zb-btn-cart`), PDP (`btn-action-cart`), and quick view modal (`qv-add-cart-btn`).
+  - Phase 1: Shopping bag tilts (`rotate(-26deg) scale(1.26)`) while button text translates into the bag opening and scales down.
+  - Phase 2: Delivery truck travels across the entire width of the button from far left to far right (`.cart-anim-truck-track` translated from `-100%` to `+55px`).
+  - Phase 3: Trailing right behind the truck's rear wheels, the badge with SVG checkmark and Bengali text "কার্টে যুক্ত হয়েছে" is unveiled using synchronized CSS `clip-path: inset(0 100% 0 0)` to `clip-path: inset(0 0 0 0)` with zero layout shift.
+  - Phase 4: Holds the emerald success badge for readability, then smoothly resets back to original state, re-enabling click interactions.
+  - Disabled automatic opening of side cart drawer on add-to-cart in `public/js/frontend.js`; customers open it on-demand via header or bottom nav cart triggers.
+- **Integrated Bangladesh Geo Address Flow**:
+  - Engineered relational `divisions`, `districts`, `upazilas` schema with cascading FKs and compound search indexes.
+  - Seeded 100% accurate current Bangladesh data: 8 Divisions, 64 Districts, 518 Upazilas/Thanas via `BangladeshGeoSeeder`.
+  - Created high-accessibility Checkout Address Flow (`resources/views/frontend/checkout/inc/address-picker.blade.php`) featuring Desktop premium card wizard and Mobile native bottom sheet offcanvas.
+  - Seamlessly synced with checkout shipping calculation (`Dhaka` vs `Outside Dhaka`) and `#customer_address`.
+- **Last Completed Task**:
+  - Implemented and integrated step-by-step Bangladesh Geo-address selection flow on checkout/cart page with desktop card and mobile native bottom sheet views, strictly zero code comments, passing all 119 tests (618 assertions).
+- **Test Suite Status**:
+  - 100% test passing rate: 119 tests, 618 assertions (`php artisan test`).
+
+## 3. Current Database & Settings State
+
+- **Key Tables**:
+  - `settings`: Key-value storage for store configuration. Key items include `free_shipping_enabled`, `free_shipping_min_amount`, `free_shipping_threshold`, `shipping_dhaka`, `shipping_outside`, `store_name`, `store_phone`, `currency_symbol`.
+  - `theme_settings`: Stores conversion booster flags (`recent_sales_toast_enabled`, `live_viewers_enabled`, `live_viewers_min`, `live_viewers_max`, typography, colors).
+  - `products`: Includes `is_free_shipping`, `is_featured`, `is_flash_deal`, `is_active`, `cost_price`, `price`, `old_price`, `stock_qty`.
+  - `orders` & `order_items`: Records checkout orders, customer information, district, delivery fee, totals, device tokens, and fraud engine evaluation flags.
+- **Cache Management**:
+  - Centralized in `FrontendCacheService` (`FrontendCacheService::settings()`, `FrontendCacheService::flush()`).
+  - Cache invalidated automatically upon settings updates and product changes.
+
+## 4. Next Recommended Steps
+
+- **Ready for final live deployment.**

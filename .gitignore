@@ -1,0 +1,78 @@
+# ========================
+# Laravel .gitignore
+# ========================
+
+# Dependencies
+/node_modules
+/vendor
+
+# Environment files
+.env
+.env.backup
+.env.production
+.env.staging
+.env.local
+
+# Laravel compiled/cached files
+/bootstrap/cache/*.php
+/storage/framework/cache/data/*
+/storage/framework/sessions/*
+/storage/framework/views/*.php
+/storage/logs/*.log
+
+# Storage keys
+/storage/*.key
+
+# Public generated files
+/public/hot
+/public/storage
+/public/build
+
+# Testing
+.phpunit.result.cache
+.phpunit.cache
+/coverage
+
+# IDE & Editors
+/.fleet
+/.idea
+/.vscode
+*.sublime-project
+*.sublime-workspace
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# Debug logs
+npm-debug.log
+yarn-error.log
+yarn-debug.log
+
+# Homestead
+Homestead.json
+Homestead.yaml
+
+# Archive files
+*.rar
+*.zip
+*.tar.gz
+*.7z
+
+# Temp & scratch folders/files
+scratch/
+test_*.php
+diag-*.php
+gen-*.php
+
+# Compiled assets (keep source, ignore compiled if using mix/vite)
+/public/mix-manifest.json

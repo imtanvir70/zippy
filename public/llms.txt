@@ -1,0 +1,28 @@
+# ZippyBD
+
+> ZippyBD is a premium e-commerce platform in Bangladesh specializing in mechanical keyboards, desk setup accessories, audio gadgets, fast chargers, and smart lifestyle electronics.
+
+## Store Information
+- Website: https://zippybd.com
+- Delivery: 24 to 72 hours express delivery across all 64 districts in Bangladesh
+- Payment: Cash on Delivery (COD), bKash, Nagad, Card
+- Guarantee: 100% authentic products with brand warranty and 7-day replacement policy
+
+## Primary Sections
+- [Home Page](https://zippybd.com/): Featured products, flash sales, new arrivals, and category highlights
+- [All Products](https://zippybd.com/products): Complete product catalog with filters for price, category, and sorting
+- [Flash Deals](https://zippybd.com/flash-deals): Time-limited discounts and promotional offers
+- [Order Tracking](https://zippybd.com/order-track): Real-time shipment tracking with courier integration
+
+## Key Product Categories
+- Mechanical Keyboards: Custom keyboards, hot-swappable switches, keycaps, and desk pads
+- Audio & Headphones: Hi-Fi earphones, wireless earbuds, gaming headsets, and DACs
+- Chargers & Power: GaN fast chargers, power banks, multi-port hubs, and braided cables
+- Desk Setup Accessories: Monitor arms, wrist rests, cable management, and LED desk lamps
+- Smart Wearables: Smartwatches, fitness trackers, and protective accessories
+
+## Customer Support & Policies
+- Replacement Policy: 7 days hassle-free replacement on defective items
+- Warranty: Official manufacturer and brand warranty on supported products
+- Support: 24/7 dedicated customer assistance
+
