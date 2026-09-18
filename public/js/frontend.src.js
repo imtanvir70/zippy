@@ -17,6 +17,27 @@
     var lastRemovedItem = null;
     var filterDebounceTimer = null;
 
+    function updateRealVh() {
+        const h = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+        document.documentElement.style.setProperty('--real-vh', `${h}px`);
+    }
+
+    function initVisualViewportSync() {
+        updateRealVh();
+        if (!window.__visualViewportBound) {
+            if (window.visualViewport) {
+                window.visualViewport.addEventListener('resize', updateRealVh);
+                window.visualViewport.addEventListener('scroll', updateRealVh);
+            }
+            window.addEventListener('resize', updateRealVh);
+            window.addEventListener('orientationchange', () => {
+                setTimeout(updateRealVh, 100);
+            });
+            window.__visualViewportBound = true;
+        }
+    }
+    initVisualViewportSync();
+
     function hasActiveOverlays() {
         return !!(
             document.querySelector('.offcanvas.show, .offcanvas.showing') ||
@@ -40,11 +61,10 @@
         document.documentElement.style.overflow = '';
         document.documentElement.style.touchAction = '';
         document.documentElement.style.overscrollBehavior = '';
-        document.documentElement.removeAttribute('style');
         document.body.style.overflow = '';
         document.body.style.touchAction = '';
         document.body.style.overscrollBehavior = '';
-        document.body.removeAttribute('style');
+        updateRealVh();
     }
 
     window.hasActiveOverlays = hasActiveOverlays;
@@ -162,6 +182,7 @@
     }
 
     function initFrontendApp() {
+        updateRealVh();
         unlockPageScroll(true);
         document.querySelectorAll('.offcanvas-backdrop, .modal-backdrop').forEach(el => el.remove());
         fetchCart();
@@ -689,11 +710,13 @@ if (!window.__qvEscapeBound) {
 }
 
 function openQuickView(productId) {
+    updateRealVh();
     loadPartial('quick-view-modal', 'quick-view-container', () => {
         const modalEl = document.getElementById('quickViewModal');
         const bodyEl = document.getElementById('quickViewBody');
         const mobileDockEl = document.getElementById('qvMobileBottomDock');
         if (!modalEl || !bodyEl) return;
+        updateRealVh();
 
         modalEl.classList.add('show');
         modalEl.removeAttribute('aria-hidden');

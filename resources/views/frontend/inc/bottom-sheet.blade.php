@@ -1,4 +1,4 @@
-<div class="offcanvas offcanvas-bottom native-bottom-sheet bg-white p-0" tabindex="-1" id="categoryBottomSheet" aria-labelledby="categoryBottomSheetLabel" data-bs-scroll="false" data-bs-backdrop="true" style="height: 88vh; border-top-left-radius: 20px !important; border-top-right-radius: 20px !important; border: none !important; box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.15) !important;z-index: 10585; overflow-x: hidden !important; max-width: 100vw !important; box-sizing: border-box !important;">
+<div class="offcanvas offcanvas-bottom native-bottom-sheet bg-white p-0" tabindex="-1" id="categoryBottomSheet" aria-labelledby="categoryBottomSheetLabel" data-bs-scroll="false" data-bs-backdrop="true" style="height: 88vh; height: 88dvh; height: calc(var(--real-vh, 100dvh) * 0.88); border-top-left-radius: 20px !important; border-top-right-radius: 20px !important; border: none !important; box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.15) !important;z-index: 10585; overflow-x: hidden !important; max-width: 100vw !important; box-sizing: border-box !important;">
     <div class="sheet-drag-handle mt-2 mb-1 mx-auto rounded-pill" style="width: 40px; height: 4px; background-color: #cbd5e1;"></div>
     
     <div class="offcanvas-header pt-2 pb-2 px-3 border-bottom d-flex align-items-center justify-content-between flex-shrink-0" style="border-color: #f1f5f9 !important;">
@@ -8,7 +8,7 @@
         <button type="button" class="btn-close shadow-none p-2" data-bs-dismiss="offcanvas" aria-label="Close" onclick="closeCategorySheet()" style="font-size: 12px;"></button>
     </div>
 
-    <div class="offcanvas-body p-0 d-flex overflow-hidden" style="height: calc(88vh - 65px);">
+    <div class="offcanvas-body p-0 d-flex overflow-hidden" style="height: calc(88vh - 65px); height: calc(88dvh - 65px); height: calc(var(--real-vh, 100dvh) * 0.88 - 65px);">
         <div class="sheet-sidebar d-flex flex-column overflow-y-auto border-end" style="width: 76px; flex-shrink: 0; background-color: #f8fafc; border-color: #f1f5f9 !important; scrollbar-width: none;">
             <ul class="list-unstyled p-0 m-0 d-flex flex-column">
                 @forelse($navCategories ?? [] as $index => $cat)

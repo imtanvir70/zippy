@@ -1,5 +1,5 @@
-<div class="offcanvas offcanvas-end responsive-cart-drawer border-0 shadow-lg" tabindex="-1" id="cartDrawer" aria-labelledby="cartDrawerLabel" data-bs-scroll="false" data-bs-backdrop="true" style="width: 100%; max-width: min(420px, 100vw); overflow-x: hidden !important; z-index: 10585; box-sizing: border-box !important; ">
-    <div class="sheet-drag-handle mt-2 mb-1 mx-auto rounded-pill d-md-none" style="width: 40px; height: 4px; background-color: #cbd5e1;"></div>
+<div class="offcanvas offcanvas-end responsive-cart-drawer border-0 shadow-lg" tabindex="-1" id="cartDrawer" aria-labelledby="cartDrawerLabel" data-bs-scroll="false" data-bs-backdrop="true" style="overflow-x: hidden !important; z-index: 10585; box-sizing: border-box !important;">
+    <div class="sheet-drag-handle mt-2 mb-1 mx-auto rounded-pill d-lg-none" style="width: 40px; height: 4px; background-color: #cbd5e1;"></div>
 
     <div class="offcanvas-header border-bottom py-3 px-4">
         <h5 class="offcanvas-title fw-bold text-dark d-flex align-items-center gap-2 mb-0" id="cartDrawerLabel" style="font-size: 16px;">
@@ -24,7 +24,7 @@
         </div>
     </div>
 
-    <div class="offcanvas-footer border-top p-4 bg-white mt-auto" id="cartFooterSection" style="display: none;">
+    <div class="offcanvas-footer border-top p-3 p-sm-4 bg-white mt-auto" id="cartFooterSection" style="display: none;">
         <div class="card p-3 rounded-3 mb-3 border shadow-xs" style="background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%); border-color: #e2e8f0 !important;">
             <div class="d-flex align-items-center justify-content-between mb-2">
                 <span class="text-dark fw-bold d-flex align-items-center gap-2" style="font-size: 12px;">
@@ -80,13 +80,6 @@
 </div>
 
 <style>
-#cartDrawer,
-.responsive-cart-drawer {
-    overflow-x: hidden !important;
-    max-width: min(420px, 100vw) !important;
-    box-sizing: border-box !important;
-}
-
 #cartDrawerBody {
     overflow-x: hidden !important;
     overflow-y: auto !important;
@@ -107,14 +100,13 @@
     box-sizing: border-box !important;
 }
 
-@media (min-width: 768px) {
-    .responsive-cart-drawer {
-        border-top-left-radius: 1.5rem !important;
-        border-bottom-left-radius: 1.5rem !important;
-    }
+#cartFooterSection {
+    padding-bottom: calc(14px + env(safe-area-inset-bottom, 0px)) !important;
 }
 
-@media (max-width: 767.98px) {
+/* Mobile & Tablet Full-Width Bottom Sheet (< 992px) */
+@media (max-width: 991.98px) {
+    #cartDrawer.responsive-cart-drawer,
     .responsive-cart-drawer {
         top: auto !important;
         bottom: 0 !important;
@@ -122,15 +114,48 @@
         right: 0 !important;
         width: 100% !important;
         max-width: 100% !important;
+        min-width: 100% !important;
         height: 88vh !important;
+        height: 88dvh !important;
+        max-height: 90vh !important;
+        max-height: 90dvh !important;
+        margin: 0 !important;
         transform: translateY(100%) !important;
-        border-radius: 20px 20px 0 0 !important;
+        border-radius: 28px 28px 0 0 !important;
+        box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.25) !important;
     }
+    #cartDrawer.showing,
+    #cartDrawer.show:not(.hiding),
     .responsive-cart-drawer.showing, 
     .responsive-cart-drawer.show:not(.hiding) {
-        transform: none !important;
+        transform: translateY(0) !important;
     }
 }
+
+/* Desktop Right-Side Drawer (>= 992px) */
+@media (min-width: 992px) {
+    #cartDrawer.responsive-cart-drawer,
+    .responsive-cart-drawer {
+        top: 0 !important;
+        bottom: 0 !important;
+        right: 0 !important;
+        left: auto !important;
+        width: 420px !important;
+        max-width: 420px !important;
+        height: 100% !important;
+        border-top-left-radius: 24px !important;
+        border-bottom-left-radius: 24px !important;
+        border-radius: 24px 0 0 24px !important;
+        transform: translateX(100%) !important;
+    }
+    #cartDrawer.showing,
+    #cartDrawer.show:not(.hiding),
+    .responsive-cart-drawer.showing, 
+    .responsive-cart-drawer.show:not(.hiding) {
+        transform: translateX(0) !important;
+    }
+}
+
 .responsive-cart-drawer:not(.show):not(.showing) {
     visibility: hidden !important;
 }

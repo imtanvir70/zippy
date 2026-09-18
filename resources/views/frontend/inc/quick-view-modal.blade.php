@@ -29,9 +29,14 @@
 <style>
 .custom-qv-modal {
     position: fixed;
-    inset: 0;
-    width: 100vw;
-    height: 100vh;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    height: 100dvh;
+    height: var(--real-vh, 100dvh);
     z-index: 10650;
     display: flex;
     visibility: hidden;
@@ -569,7 +574,7 @@
     }
 }
 
-@media (max-width: 767.98px) {
+@media (max-width: 991.98px) {
     .custom-qv-modal {
         align-items: flex-end;
         justify-content: center;
@@ -577,12 +582,18 @@
     }
     .custom-qv-container {
         width: 100%;
-        height: 92vh;
-        max-height: 94vh;
+        height: 88vh;
+        height: 88dvh;
+        height: calc(var(--real-vh, 100dvh) * 0.88);
+        max-height: calc(100dvh - 30px);
+        max-height: calc(var(--real-vh, 100dvh) - 30px);
         border-radius: 28px 28px 0 0;
         box-shadow: 0 -12px 40px rgba(0, 0, 0, 0.25);
         transform: translateY(100%);
         transition: transform 0.32s cubic-bezier(0.32, 0.72, 0, 1);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
     }
     .custom-qv-modal.show .custom-qv-container {
         transform: translateY(0);
@@ -598,7 +609,7 @@
         gap: 12px;
     }
     .qv-slider-box {
-        height: 225px !important;
+        height: clamp(180px, 28dvh, 225px) !important;
         aspect-ratio: auto !important;
         border-radius: 20px !important;
         margin: 0 auto !important;
@@ -625,7 +636,7 @@
         backdrop-filter: blur(20px);
         -webkit-backdrop-filter: blur(20px);
         border-top: 1px solid rgba(226, 232, 240, 0.85);
-        padding: 6px 14px calc(6px + env(safe-area-inset-bottom, 0px));
+        padding: 8px 14px calc(10px + env(safe-area-inset-bottom, 0px));
         box-shadow: 0 -8px 24px -4px rgba(15, 23, 42, 0.08);
         z-index: 20;
     }
