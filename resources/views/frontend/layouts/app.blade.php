@@ -310,7 +310,7 @@
         }
     </style>
 
-    <link rel="stylesheet" href="{{ asset('css/frontend.css') }}?v=3.8">
+    <link rel="stylesheet" href="{{ asset('css/frontend.css') }}?v=3.9">
 
     @stack('styles')
 </head>
@@ -371,7 +371,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js" defer data-turbo-track="reload"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" defer data-turbo-track="reload"></script>
     <script src="{{ asset('lib/axios.min.js') }}?v=1.7.9" defer data-turbo-track="reload"></script>
-    <script src="{{ asset('js/frontend.js') }}?v=3.8" defer data-turbo-track="reload" data-turbo-eval="false"></script>
+    <script src="{{ asset('js/frontend.js') }}?v=3.9" defer data-turbo-track="reload" data-turbo-eval="false"></script>
 
     @stack('scripts')
     <script data-turbo-eval="false">

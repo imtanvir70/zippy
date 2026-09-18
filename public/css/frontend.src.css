@@ -2416,11 +2416,9 @@ button:active,
   }
   .custom-qv-container {
     width: 100%;
-    height: 88vh;
-    height: 88dvh;
-    height: calc(var(--real-vh, 100dvh) * 0.88);
-    max-height: calc(100dvh - 30px);
-    max-height: calc(var(--real-vh, 100dvh) - 30px);
+    height: auto !important;
+    max-height: calc(100dvh - 30px) !important;
+    max-height: calc(var(--real-vh, 100dvh) - 30px) !important;
     border-radius: 28px 28px 0 0;
     transform: translate3d(0, 100%, 0);
     transition: transform 0.32s cubic-bezier(0.32, 0.72, 0, 1);
@@ -2448,9 +2446,9 @@ button:active,
     font-size: 13px;
   }
   .custom-qv-scroll-body {
-    padding: 6px 14px 14px;
+    padding: 4px 14px 12px;
     overflow-y: auto;
-    flex: 1 1 0;
+    flex: 0 1 auto;
     min-height: 0;
     -webkit-overflow-scrolling: touch;
   }

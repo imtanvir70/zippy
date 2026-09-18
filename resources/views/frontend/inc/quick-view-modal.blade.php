@@ -582,11 +582,9 @@
     }
     .custom-qv-container {
         width: 100%;
-        height: 88vh;
-        height: 88dvh;
-        height: calc(var(--real-vh, 100dvh) * 0.88);
-        max-height: calc(100dvh - 30px);
-        max-height: calc(var(--real-vh, 100dvh) - 30px);
+        height: auto !important;
+        max-height: calc(100dvh - 30px) !important;
+        max-height: calc(var(--real-vh, 100dvh) - 30px) !important;
         border-radius: 28px 28px 0 0;
         box-shadow: 0 -12px 40px rgba(0, 0, 0, 0.25);
         transform: translateY(100%);
@@ -609,13 +607,13 @@
         gap: 12px;
     }
     .qv-slider-box {
-        height: clamp(180px, 28dvh, 225px) !important;
+        height: clamp(165px, 26dvh, 215px) !important;
         aspect-ratio: auto !important;
         border-radius: 20px !important;
         margin: 0 auto !important;
     }
     .qv-slide-img-wrap {
-        padding: 10px !important;
+        padding: 8px !important;
     }
     .qv-thumb-btn {
         width: 42px;
@@ -624,9 +622,9 @@
         border-radius: 12px !important;
     }
     .custom-qv-scroll-body {
-        padding: 6px 14px 14px;
+        padding: 4px 14px 12px;
         overflow-y: auto;
-        flex: 1 1 0;
+        flex: 0 1 auto;
         min-height: 0;
         -webkit-overflow-scrolling: touch;
     }
