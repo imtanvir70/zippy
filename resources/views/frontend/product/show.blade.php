@@ -457,26 +457,29 @@
     .bulk-variant-item {
         background: #ffffff;
         border: 1.5px solid #e2e8f0;
-        border-radius: 12px;
-        padding: 10px 12px;
-        transition: all 0.2s ease;
+        border-radius: 18px;
+        padding: 10px 14px;
+        transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
     }
 
     .bulk-variant-item:hover {
         border-color: #cbd5e1;
         background: #f8fafc;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     }
 
     .bulk-variant-item.item-active {
         background: #f0fdf4 !important;
         border-color: #10b981 !important;
-        box-shadow: 0 2px 8px rgba(16, 185, 129, 0.12);
+        box-shadow: 0 4px 14px rgba(16, 185, 129, 0.15);
     }
 
     .bulk-variant-thumb {
-        width: 44px;
-        height: 44px;
-        border-radius: 8px;
+        width: 46px;
+        height: 46px;
+        border-radius: 12px;
         border: 1px solid #e2e8f0;
         overflow: hidden;
         flex-shrink: 0;
@@ -484,53 +487,63 @@
         padding: 2px;
         cursor: pointer;
         margin-right: 10px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+        transition: transform 0.2s ease;
+    }
+
+    .bulk-variant-thumb:hover {
+        transform: scale(1.06);
     }
 
     .bulk-variant-thumb img {
         width: 100%;
         height: 100%;
         object-fit: cover;
-        border-radius: 5px;
+        border-radius: 9px;
     }
 
     .bulk-qty-box {
         display: inline-flex;
         align-items: center;
-        border: 1px solid #cbd5e1;
-        border-radius: 8px;
-        background: #ffffff;
-        padding: 2px;
+        background: #f1f5f9;
+        border: 1px solid #e2e8f0;
+        border-radius: 9999px;
+        padding: 3px;
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.03);
     }
 
     .bulk-qty-btn {
-        width: 28px;
-        height: 28px;
+        width: 32px;
+        height: 32px;
         display: flex;
         align-items: center;
         justify-content: center;
         border: none;
-        background: #f1f5f9;
+        background: #ffffff;
         color: #0f172a;
-        border-radius: 6px;
+        border-radius: 50%;
         font-weight: 700;
-        font-size: 0.85rem;
+        font-size: 0.9rem;
         cursor: pointer;
-        transition: all 0.15s ease;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+        transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
     .bulk-qty-btn:hover {
-        background: #e2e8f0;
+        background: #0f172a;
+        color: #ffffff;
+        transform: scale(1.08);
     }
 
     .bulk-qty-btn:active {
-        transform: scale(0.92);
+        transform: scale(0.9);
     }
 
     .bulk-qty-val {
-        min-width: 32px;
+        min-width: 34px;
         text-align: center;
         font-family: var(--font-heading);
-        font-weight: 700;
+        font-weight: 800;
         font-size: 0.95rem;
         color: #0f172a;
     }
@@ -541,24 +554,24 @@
         top: 85px;
         background: #ffffff;
         border: 1px solid #e2e8f0;
-        border-radius: 18px;
-        padding: 18px 16px;
-        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
+        border-radius: 24px;
+        padding: 20px 18px;
+        box-shadow: 0 12px 32px -6px rgba(15, 23, 42, 0.06), 0 2px 8px rgba(0, 0, 0, 0.02);
         transition: all 0.2s ease;
     }
 
     .summary-header-title {
         font-family: var(--font-heading);
-        font-size: 0.92rem;
+        font-size: 0.95rem;
         font-weight: 700;
         color: #0f172a;
     }
 
     .summary-header-badge {
         font-family: var(--font-heading);
-        font-size: 0.7rem;
+        font-size: 0.72rem;
         font-weight: 700;
-        padding: 3px 9px;
+        padding: 4px 11px;
         background: #0f172a;
         color: #ffffff;
         border-radius: 50rem;
@@ -568,8 +581,8 @@
     
     .delivery-zone-card {
         border: 1.5px solid #e2e8f0;
-        border-radius: 12px;
-        padding: 10px 12px;
+        border-radius: 16px;
+        padding: 11px 14px;
         background: #ffffff;
         cursor: pointer;
         transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
@@ -583,11 +596,15 @@
     .delivery-zone-card:hover {
         border-color: #cbd5e1;
         background: #f8fafc;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
     }
 
     .delivery-zone-card.active-zone {
         border-color: #0f172a !important;
         background: #f8fafc !important;
+        box-shadow: 0 4px 14px rgba(15, 23, 42, 0.08);
+    }
         box-shadow: 0 3px 12px rgba(15, 23, 42, 0.08);
     }
 
@@ -821,39 +838,47 @@
 
     
     .product-tabs-scroll-wrap {
-        width: 100%;
+        background: #f1f5f9;
+        border-radius: 50rem;
+        padding: 4px;
+        display: inline-flex;
+        gap: 4px;
+        max-width: 100%;
         overflow-x: auto;
-        padding-bottom: 4px;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        -webkit-overflow-scrolling: touch;
+        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.04);
     }
 
     .product-tabs-scroll-wrap::-webkit-scrollbar {
-        height: 4px;
+        display: none;
     }
 
     .product-tab-btn {
-        padding: 9px 18px;
+        padding: 8px 18px;
         border-radius: 50rem;
-        font-size: 13.5px;
+        font-size: 13px;
         font-weight: 700;
         font-family: var(--font-heading);
-        color: #475569;
-        background: #f8fafc;
-        border: 1px solid #e2e8f0;
-        transition: all 0.2s ease;
+        color: #64748b;
+        background: transparent;
+        border: none;
+        transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
         white-space: nowrap;
         cursor: pointer;
     }
 
     .product-tab-btn:hover {
-        background: #e2e8f0;
         color: #0f172a;
+        background: rgba(255, 255, 255, 0.6);
     }
 
     .product-tab-btn.active {
-        background: #0f172a !important;
-        color: #ffffff !important;
-        border-color: #0f172a !important;
-        box-shadow: 0 4px 12px rgba(15, 23, 42, 0.2);
+        background: #ffffff !important;
+        color: #0f172a !important;
+        border: none !important;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08) !important;
     }
 
     
@@ -863,30 +888,31 @@
 
     .mobile-floating-action-sheet {
         position: fixed;
-        bottom: 0 !important;
-        left: 0;
-        right: 0;
-        width: 100%;
-        background: rgba(255, 255, 255, 0.96);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        border-top: 1px solid rgba(226, 232, 240, 0.85);
-        padding: 9px 12px calc(9px + env(safe-area-inset-bottom, 0px));
+        bottom: calc(10px + env(safe-area-inset-bottom, 0px)) !important;
+        left: 12px !important;
+        right: 12px !important;
+        width: auto !important;
+        background: rgba(255, 255, 255, 0.94);
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+        border: 1px solid rgba(255, 255, 255, 0.85);
+        border-radius: 28px !important;
+        padding: 8px 12px !important;
         z-index: 1040;
-        box-shadow: 0 -6px 24px -4px rgba(15, 23, 42, 0.12);
+        box-shadow: 0 16px 36px -4px rgba(15, 23, 42, 0.16), 0 4px 12px rgba(0, 0, 0, 0.04);
     }
 
     [data-bs-theme="dark"] .mobile-floating-action-sheet {
-        background: rgba(15, 23, 42, 0.95);
-        border-top-color: rgba(51, 65, 85, 0.8);
-        box-shadow: 0 -6px 24px -4px rgba(0, 0, 0, 0.35);
+        background: rgba(15, 23, 42, 0.92);
+        border-color: rgba(255, 255, 255, 0.12);
+        box-shadow: 0 16px 36px -4px rgba(0, 0, 0, 0.45);
     }
 
     .btn-mobile-back {
-        width: 40px;
-        height: 40px;
-        min-width: 40px;
-        border-radius: 12px;
+        width: 42px;
+        height: 42px;
+        min-width: 42px;
+        border-radius: 50% !important;
         background: #f1f5f9;
         color: #0f172a;
         border: 1px solid #e2e8f0;
@@ -895,13 +921,13 @@
         align-items: center;
         justify-content: center;
         cursor: pointer;
-        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
         flex-shrink: 0;
         text-decoration: none;
     }
 
     .btn-mobile-back:active {
-        transform: scale(0.92);
+        transform: scale(0.9);
         background: #e2e8f0;
     }
 
@@ -915,9 +941,44 @@
         background: #334155;
     }
 
+    .mobile-floating-action-sheet .btn-action-cart {
+        height: 44px;
+        padding: 0 16px;
+        font-size: 13.5px;
+        border-radius: 50rem !important;
+        font-weight: 700;
+        white-space: nowrap;
+        background: #ffffff;
+        border: 1.5px solid #0f172a;
+        color: #0f172a;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+        transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .mobile-floating-action-sheet .btn-action-cart:active {
+        transform: scale(0.94);
+    }
+
+    .mobile-floating-action-sheet .btn-action-buynow {
+        height: 44px;
+        padding: 0 20px;
+        font-size: 14.5px;
+        border-radius: 50rem !important;
+        font-weight: 700;
+        white-space: nowrap;
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        color: #ffffff;
+        border: none;
+        box-shadow: 0 6px 18px -2px rgba(15, 23, 42, 0.35);
+        transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .mobile-floating-action-sheet .btn-action-buynow:active {
+        transform: scale(0.94);
+        box-shadow: 0 2px 8px rgba(15, 23, 42, 0.2);
+    }
+
     @media (max-width: 991.98px) {
         .product-page-main {
-            padding-bottom: calc(85px + env(safe-area-inset-bottom, 0px)) !important;
+            padding-bottom: calc(90px + env(safe-area-inset-bottom, 0px)) !important;
         }
     }
 
@@ -1027,17 +1088,112 @@
     }
 </style>
 <style>
-@media (max-width: 991.98px) {
-    .breadcrumb-truncate {
+    /* Modern Product Breadcrumb & Top Bar */
+    .product-top-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        min-height: 38px;
+    }
+    .product-breadcrumb-nav {
+        flex: 1;
+        min-width: 0;
+        overflow: hidden;
+    }
+    .product-breadcrumb-list {
+        display: flex;
+        align-items: center;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        white-space: nowrap;
+        margin: 0;
+        padding: 4px 0;
+        list-style: none;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        -webkit-overflow-scrolling: touch;
+        gap: 6px;
+        font-size: 13px;
+    }
+    .product-breadcrumb-list::-webkit-scrollbar {
+        display: none;
+    }
+    .product-breadcrumb-list .crumb-link {
+        color: #64748b;
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.15s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        flex-shrink: 0;
+    }
+    .product-breadcrumb-list .crumb-link:hover {
+        color: #0f172a;
+    }
+    .product-breadcrumb-list .crumb-sep {
+        color: #cbd5e1;
+        font-size: 10px;
+        flex-shrink: 0;
+        user-select: none;
+        display: inline-flex;
+        align-items: center;
+    }
+    .product-breadcrumb-list .crumb-current {
+        color: #0f172a;
+        font-weight: 600;
+        max-width: 260px;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
-        max-width: 90px;
+        flex-shrink: 0;
     }
-    .breadcrumb-truncate:last-child {
-        max-width: 150px;
+    @media (max-width: 576px) {
+        .product-breadcrumb-list .crumb-current {
+            max-width: 150px;
+        }
     }
-}
+    .btn-product-share {
+        width: 36px;
+        height: 36px;
+        min-width: 36px;
+        border-radius: 50%;
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        color: #2563eb;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+        flex-shrink: 0;
+        padding: 0;
+    }
+    .btn-product-share:hover {
+        background: #f8fafc;
+        border-color: #cbd5e1;
+        color: #1d4ed8;
+        transform: translateY(-1px);
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+    }
+    .btn-product-share:active {
+        transform: scale(0.95);
+    }
+    @media (min-width: 768px) {
+        .btn-product-share {
+            width: auto;
+            border-radius: 9999px;
+            padding: 0 14px;
+            gap: 6px;
+            font-size: 12.5px;
+            font-weight: 600;
+            color: #1e293b;
+            height: 36px;
+        }
+    }
 
 @media (max-width: 767.98px) {
     /* Main Page Container & Layout */
@@ -1164,46 +1320,12 @@
     }
 
     /* Floating Bottom Action Sheet */
-    .mobile-floating-action-sheet {
-        padding: 8px 10px calc(8px + env(safe-area-inset-bottom, 0px)) !important;
-        background: rgba(255, 255, 255, 0.98) !important;
-        backdrop-filter: blur(16px) !important;
-        -webkit-backdrop-filter: blur(16px) !important;
-        border-top: 1px solid #e2e8f0 !important;
-        box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08) !important;
-        z-index: 1040 !important;
-    }
-    .btn-mobile-back {
-        width: 36px !important;
-        height: 36px !important;
-        min-width: 36px !important;
-        border-radius: 50% !important;
-        font-size: 14px !important;
-    }
     .mobile-sheet-price-col {
-        min-width: 72px !important;
+        min-width: 72px;
     }
     .mobile-sheet-price-col #mobileGrandTotalText {
-        font-size: 1.05rem !important;
+        font-size: 1.15rem !important;
         font-weight: 800 !important;
-    }
-    .mobile-floating-action-sheet .btn-action-cart {
-        flex: 1 1 0 !important;
-        height: 38px !important;
-        padding: 0 10px !important;
-        font-size: 0.8rem !important;
-        justify-content: center !important;
-        border-radius: 9999px !important;
-        white-space: nowrap !important;
-    }
-    .mobile-floating-action-sheet .btn-action-buynow {
-        flex: 1.3 1 0 !important;
-        height: 38px !important;
-        padding: 0 14px !important;
-        font-size: 0.84rem !important;
-        justify-content: center !important;
-        border-radius: 9999px !important;
-        white-space: nowrap !important;
     }
 }
 </style>
@@ -1212,37 +1334,46 @@
     <div class="container">
         
         
-        <div class="d-flex align-items-center justify-content-between gap-2 mb-3">
-            <nav aria-label="breadcrumb" class="m-0">
-                <ol class="breadcrumb align-items-center mb-0 small" style="font-size: 13px;">
-<li class="breadcrumb-item">
-    <a href="{{ route('home') }}" class="text-decoration-none text-secondary">হোম</a>
-</li>
-@if(isset($categoryBreadcrumbs) && count($categoryBreadcrumbs) > 0)
-    @foreach($categoryBreadcrumbs as $bCat)
-        <li class="breadcrumb-item breadcrumb-truncate" data-bs-toggle="tooltip" title="{{ $bCat->name_bn ?? $bCat->name }}">
-            <a href="{{ route('category.show', $bCat->slug) }}" class="text-decoration-none text-secondary">{{ $bCat->name_bn ?? $bCat->name }}</a>
-        </li>
-    @endforeach
-@elseif(!empty($product->cat_slug))
-    <li class="breadcrumb-item breadcrumb-truncate" data-bs-toggle="tooltip" title="{{ $product->cat_name_bn ?? $product->cat_name_en }}">
-        <a href="{{ route('category.show', $product->cat_slug) }}" class="text-decoration-none text-secondary">{{ $product->cat_name_bn ?? $product->cat_name_en }}</a>
-    </li>
-@endif
-<li class="breadcrumb-item active text-dark fw-semibold breadcrumb-truncate" aria-current="page" data-bs-toggle="tooltip" title="{{ $product->title }}">{{ $product->title }}</li>
+        <div class="product-top-bar mb-2.5">
+            <nav aria-label="breadcrumb" class="product-breadcrumb-nav">
+                <ol class="product-breadcrumb-list">
+                    <li>
+                        <a href="{{ route('home') }}" class="crumb-link">
+                            <i class="fa-solid fa-house" style="font-size: 11px;"></i>
+                            <span>হোম</span>
+                        </a>
+                    </li>
+                    @if(isset($categoryBreadcrumbs) && count($categoryBreadcrumbs) > 0)
+                        @foreach($categoryBreadcrumbs as $bCat)
+                            <li class="crumb-sep" aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></li>
+                            <li>
+                                <a href="{{ route('category.show', $bCat->slug) }}" class="crumb-link" title="{{ $bCat->name_bn ?? $bCat->name }}">
+                                    {{ $bCat->name_bn ?? $bCat->name }}
+                                </a>
+                            </li>
+                        @endforeach
+                    @elseif(!empty($product->cat_slug))
+                        <li class="crumb-sep" aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></li>
+                        <li>
+                            <a href="{{ route('category.show', $product->cat_slug) }}" class="crumb-link" title="{{ $product->cat_name_bn ?? $product->cat_name_en }}">
+                                {{ $product->cat_name_bn ?? $product->cat_name_en }}
+                            </a>
+                        </li>
+                    @endif
+                    <li class="crumb-sep" aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></li>
+                    <li class="crumb-current" aria-current="page" title="{{ $product->title }}">{{ $product->title }}</li>
                 </ol>
             </nav>
 
-            
-            <div class="position-relative ms-auto">
+            <div class="position-relative flex-shrink-0">
                 <button type="button" 
-                        class="btn btn-sm btn-light border bg-white rounded-pill px-3 py-1.5 text-dark fw-bold font-heading d-flex align-items-center gap-1.5 shadow-2xs transition-all" 
+                        class="btn-product-share" 
                         id="shareProductBtn" 
                         onclick="toggleShareDropdown(event)"
                         title="শেয়ার করুন"
-                        style="font-size: 12.5px;">
+                        aria-label="শেয়ার করুন">
                     <i class="fa-solid fa-share-nodes text-primary"></i>
-                    <span class="d-none d-sm-inline">শেয়ার</span>
+                    <span class="d-none d-md-inline">শেয়ার</span>
                 </button>
 
                 

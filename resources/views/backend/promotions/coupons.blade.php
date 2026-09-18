@@ -125,11 +125,11 @@
         const tableEl = document.getElementById('couponsTable');
         if (!tableEl) return;
 
-        if ($.fn.DataTable.isDataTable('#couponsTable')) {
-            $('#couponsTable').DataTable().clear().destroy();
+        if (window.VanillaDataTable && VanillaDataTable.isDataTable('#couponsTable')) {
+            VanillaDataTable.getInstance('#couponsTable').destroy();
         }
 
-        couponsTable = $('#couponsTable').DataTable({
+        couponsTable = new VanillaDataTable('#couponsTable', {
             processing: true,
             serverSide: true,
             ajax: "{{ route('admin.coupons.index') }}",

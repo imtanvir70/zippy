@@ -348,7 +348,7 @@
             </div>
         </div>
         <div class="col-md-3">
-            <button type="button" class="btn btn-outline-secondary filter-btn w-100" onclick="$('#filterCategory').val(''); $('#filterStockStatus').val(''); productsTable.draw();">
+            <button type="button" class="btn btn-outline-secondary filter-btn w-100" onclick="document.getElementById('filterCategory').value=''; document.getElementById('filterStockStatus').value=''; if(window.productsTable) window.productsTable.draw();">
                 <i class="fa-solid fa-rotate-left me-1"></i> Reset Filters
             </button>
         </div>
@@ -1032,18 +1032,20 @@
 
         productModalInstance = getProductModal();
 
-        if ($.fn.DataTable.isDataTable('#productsTable')) {
-            $('#productsTable').DataTable().clear().destroy();
+        if (window.VanillaDataTable && VanillaDataTable.isDataTable('#productsTable')) {
+            VanillaDataTable.getInstance('#productsTable').destroy();
         }
 
-        productsTable = $('#productsTable').DataTable({
+        productsTable = new VanillaDataTable('#productsTable', {
             processing: true,
             serverSide: true,
             ajax: {
                 url: "{{ route('admin.products.index') }}",
                 data: function (d) {
-                    d.category_id = $('#filterCategory').val();
-                    d.stock_status = $('#filterStockStatus').val();
+                    const catEl = document.getElementById('filterCategory');
+                    const stockEl = document.getElementById('filterStockStatus');
+                    d.category_id = catEl ? catEl.value : '';
+                    d.stock_status = stockEl ? stockEl.value : '';
                 }
             },
             columns: [
@@ -1064,10 +1066,12 @@
                 processing: '<div class="spinner-border spinner-border-sm text-primary" role="status"></div> Loading products...'
             }
         });
+        window.productsTable = productsTable;
 
-        $('#filterCategory, #filterStockStatus').off('change').on('change', function () {
-            if (productsTable) productsTable.draw();
-        });
+        const fCat = document.getElementById('filterCategory');
+        const fStock = document.getElementById('filterStockStatus');
+        if (fCat) fCat.onchange = () => { if (productsTable) productsTable.draw(); };
+        if (fStock) fStock.onchange = () => { if (productsTable) productsTable.draw(); };
 
         initDragDropAndPaste();
         updateStatusCardVisuals();

@@ -47,11 +47,11 @@
         const tableEl = document.getElementById('crmTable');
         if (!tableEl) return;
 
-        if ($.fn.DataTable.isDataTable('#crmTable')) {
-            $('#crmTable').DataTable().clear().destroy();
+        if (window.VanillaDataTable && VanillaDataTable.isDataTable('#crmTable')) {
+            VanillaDataTable.getInstance('#crmTable').destroy();
         }
 
-        crmTable = $('#crmTable').DataTable({
+        crmTable = new VanillaDataTable('#crmTable', {
             processing: true,
             serverSide: true,
             ajax: "{{ route('admin.customers.index') }}",

@@ -46,10 +46,11 @@
                 </div>
                 <div class="card-footer bg-light p-4 border-top">
                     <div class="d-flex align-items-center gap-3">
-                        <div class="flex-grow-1">
-                            <select id="productSearch" class="form-select"></select>
+                        <div class="flex-grow-1 position-relative">
+                            <input type="text" id="productSearchInput" class="form-control" placeholder="Search for a product by name or SKU..." autocomplete="off">
+                            <div id="productSearchResults" class="dropdown-menu w-100 shadow-lg p-1 border position-absolute" style="max-height: 280px; overflow-y: auto; display: none; z-index: 1050; top: 100%; left: 0;"></div>
                         </div>
-                        <button type="button" class="btn btn-primary" onclick="addProductFromSelect()">
+                        <button type="button" class="btn btn-primary" id="addProductBtn" onclick="addProductFromSelect()">
                             <i class="fa-solid fa-plus"></i> Add Product
                         </button>
                     </div>
@@ -100,10 +101,6 @@
 @endsection
 
 @push('scripts')
-<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-
 <script>
     let items = @json($items);
     const discount = {{ $discount }};
@@ -177,57 +174,91 @@
         }
     }
 
-    $(document).ready(function() {
+    let selectedProduct = null;
+    let searchDebounceTimer = null;
+
+    function initProductAutocomplete() {
         renderItems();
 
-        $('#productSearch').select2({
-            placeholder: 'Search for a product by name or SKU...',
-            ajax: {
-                url: '{{ route("admin.orders.search_products") }}',
-                dataType: 'json',
-                delay: 250,
-                data: function (params) {
-                    return { q: params.term };
-                },
-                processResults: function (data) {
-                    return { results: data };
-                },
-                cache: true
-            },
-            templateResult: formatProduct,
-            templateSelection: formatProductSelection
+        const input = document.getElementById('productSearchInput');
+        const resultsContainer = document.getElementById('productSearchResults');
+        if (!input || !resultsContainer) return;
+
+        input.addEventListener('input', function() {
+            clearTimeout(searchDebounceTimer);
+            const query = this.value.trim();
+            if (query.length < 2) {
+                resultsContainer.style.display = 'none';
+                resultsContainer.innerHTML = '';
+                selectedProduct = null;
+                return;
+            }
+
+            searchDebounceTimer = setTimeout(() => {
+                const url = '{{ route("admin.orders.search_products") }}?q=' + encodeURIComponent(query);
+                fetch(url, {
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                })
+                .then(res => res.json())
+                .then(products => {
+                    resultsContainer.innerHTML = '';
+                    if (!products || products.length === 0) {
+                        resultsContainer.innerHTML = '<div class="p-2 text-muted small text-center">No products found</div>';
+                        resultsContainer.style.display = 'block';
+                        return;
+                    }
+
+                    products.forEach(prod => {
+                        const itemEl = document.createElement('a');
+                        itemEl.href = 'javascript:void(0)';
+                        itemEl.className = 'dropdown-item p-2 d-flex align-items-center gap-2 rounded text-wrap';
+                        itemEl.innerHTML = `
+                            <img src="${prod.image || placeholderImg}" style="width:32px; height:32px; object-fit:cover; border-radius:4px;" onerror="this.src='${placeholderImg}'">
+                            <div class="flex-grow-1">
+                                <div class="small fw-bold text-dark">${prod.text}</div>
+                                <div class="text-muted" style="font-size:11px;">৳${prod.price} ${prod.sku ? '| SKU: ' + prod.sku : ''}</div>
+                            </div>
+                        `;
+                        itemEl.addEventListener('click', () => {
+                            selectedProduct = prod;
+                            input.value = prod.text;
+                            resultsContainer.style.display = 'none';
+                        });
+                        resultsContainer.appendChild(itemEl);
+                    });
+                    resultsContainer.style.display = 'block';
+                })
+                .catch(err => {
+                    console.error('Product search error:', err);
+                });
+            }, 250);
         });
-    });
 
-    function formatProduct(repo) {
-        if (repo.loading) return repo.text;
-        var $container = $(
-            "<div class='d-flex align-items-center gap-2'>" +
-                "<img src='" + (repo.image || placeholderImg) + "' style='width:30px; height:30px; object-fit:cover; border-radius:4px;' onerror=\"this.src='"+placeholderImg+"'\" />" +
-                "<div>" +
-                    "<div class='small fw-bold'>" + repo.text + "</div>" +
-                    "<div class='text-muted' style='font-size:10px;'>৳" + repo.price + (repo.sku ? " | SKU: " + repo.sku : "") + "</div>" +
-                "</div>" +
-            "</div>"
-        );
-        return $container;
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!input.contains(e.target) && !resultsContainer.contains(e.target)) {
+                resultsContainer.style.display = 'none';
+            }
+        });
     }
 
-    function formatProductSelection(repo) {
-        return repo.text || repo.id;
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initProductAutocomplete);
+    } else {
+        initProductAutocomplete();
     }
+    document.addEventListener('turbo:load', initProductAutocomplete);
 
     function addProductFromSelect() {
-        const data = $('#productSearch').select2('data');
-        if(!data || data.length === 0 || !data[0].id) {
-            alert('Please select a product first.');
+        if (!selectedProduct || !selectedProduct.id) {
+            alert('Please search and select a product first.');
             return;
         }
-        const prod = data[0];
+        const prod = selectedProduct;
         
         // check if already exists
         const existing = items.find(i => i.product_id == prod.id);
-        if(existing) {
+        if (existing) {
             existing.quantity++;
         } else {
             items.push({
@@ -239,7 +270,11 @@
             });
         }
         
-        $('#productSearch').val(null).trigger('change');
+        selectedProduct = null;
+        const input = document.getElementById('productSearchInput');
+        if (input) input.value = '';
+        const resultsContainer = document.getElementById('productSearchResults');
+        if (resultsContainer) resultsContainer.style.display = 'none';
         renderItems();
     }
 

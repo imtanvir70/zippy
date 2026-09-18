@@ -241,5 +241,4 @@
     window.setShadow = setShadow;
     window.setSidebarWidth = setSidebarWidth;
     window.refreshTooltips = refreshTooltips;
-    window.$doc = window.jQuery ? window.jQuery(document) : null;
 })();

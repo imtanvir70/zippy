@@ -41,7 +41,7 @@
             </div>
         </div>
         <div class="col-md-3">
-            <button type="button" class="btn btn-outline-secondary filter-btn w-100" onclick="$('#filterAuditModule').val('all'); $('#filterAuditAction').val('all'); auditTable.draw();">
+            <button type="button" class="btn btn-outline-secondary filter-btn w-100" onclick="document.getElementById('filterAuditModule').value='all'; document.getElementById('filterAuditAction').value='all'; if(window.auditTable) window.auditTable.draw();">
                 <i class="fa-solid fa-rotate-left me-1"></i> Reset
             </button>
         </div>
@@ -78,18 +78,20 @@
         const tableEl = document.getElementById('auditTable');
         if (!tableEl) return;
 
-        if ($.fn.DataTable.isDataTable('#auditTable')) {
-            $('#auditTable').DataTable().clear().destroy();
+        if (window.VanillaDataTable && VanillaDataTable.isDataTable('#auditTable')) {
+            VanillaDataTable.getInstance('#auditTable').destroy();
         }
 
-        auditTable = $('#auditTable').DataTable({
+        auditTable = new VanillaDataTable('#auditTable', {
             processing: true,
             serverSide: true,
             ajax: {
                 url: "{{ route('admin.audit.index') }}",
                 data: function (d) {
-                    d.module = $('#filterAuditModule').val();
-                    d.action = $('#filterAuditAction').val();
+                    const modEl = document.getElementById('filterAuditModule');
+                    const actEl = document.getElementById('filterAuditAction');
+                    d.module = modEl ? modEl.value : 'all';
+                    d.action = actEl ? actEl.value : 'all';
                 }
             },
             columns: [
@@ -110,10 +112,12 @@
                 processing: '<div class="spinner-border spinner-border-sm text-primary" role="status"></div> Loading audit trail...'
             }
         });
+        window.auditTable = auditTable;
 
-        $('#filterAuditModule, #filterAuditAction').off('change').on('change', function () {
-            if (auditTable) auditTable.draw();
-        });
+        const modEl = document.getElementById('filterAuditModule');
+        const actEl = document.getElementById('filterAuditAction');
+        if (modEl) modEl.onchange = () => { if (auditTable) auditTable.draw(); };
+        if (actEl) actEl.onchange = () => { if (auditTable) auditTable.draw(); };
     }
 
     document.addEventListener('turbo:load', initAuditTable);

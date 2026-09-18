@@ -1998,11 +1998,11 @@
         const tableEl = document.getElementById('ordersTable');
         if (!tableEl) return;
 
-        if ($.fn.DataTable.isDataTable('#ordersTable')) {
-            $('#ordersTable').DataTable().clear().destroy();
+        if (window.VanillaDataTable && VanillaDataTable.isDataTable('#ordersTable')) {
+            VanillaDataTable.getInstance('#ordersTable').destroy();
         }
 
-        ordersTable = $('#ordersTable').DataTable({
+        ordersTable = new VanillaDataTable('#ordersTable', {
             processing: true,
             serverSide: true,
             dom: "<'row'<'col-sm-12'tr>>" +
@@ -2011,8 +2011,10 @@
                 url: "{{ route('admin.orders.index') }}",
                 data: function (d) {
                     d.stage = activeStage;
-                    d.date_from = $('#filterDateFrom').val();
-                    d.date_to = $('#filterDateTo').val();
+                    const dFrom = document.getElementById('filterDateFrom');
+                    const dTo = document.getElementById('filterDateTo');
+                    d.date_from = dFrom ? dFrom.value : '';
+                    d.date_to = dTo ? dTo.value : '';
                 }
             },
             order: [[1, 'desc']],
@@ -2049,8 +2051,9 @@
                 }
             }
         });
+        window.ordersTable = ordersTable;
 
-        $('#ordersTable').off('order.dt').on('order.dt', function () {
+        ordersTable.on('order.dt', function () {
             if (!ordersTable) return;
             const order = ordersTable.order();
             if (order && order.length) {
@@ -2067,43 +2070,55 @@
             }
         });
 
-        $('#ordersTable').off('xhr.dt').on('xhr.dt', function (e, settings, json) {
+        ordersTable.on('xhr.dt', function (e, settings, json) {
             if (json && json.workflowCounts) {
                 updateWorkflowBadges(json.workflowCounts, json.todayStats);
             }
         });
 
-        $('#customSearchInput').off('input').on('input', function () {
-            const val = this.value;
-            clearTimeout(searchDebounceTimer);
-            searchDebounceTimer = setTimeout(() => {
-                if (ordersTable) ordersTable.search(val).draw();
-            }, 250);
+        const customSearch = document.getElementById('customSearchInput');
+        if (customSearch) {
+            customSearch.oninput = function () {
+                const val = this.value;
+                clearTimeout(searchDebounceTimer);
+                searchDebounceTimer = setTimeout(() => {
+                    if (ordersTable) ordersTable.search(val).draw();
+                }, 250);
+            };
+        }
+
+        document.querySelectorAll('#stageTabsBar .pipeline-tab-btn').forEach(btn => {
+            btn.onclick = function () {
+                document.querySelectorAll('#stageTabsBar .pipeline-tab-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                activeStage = this.dataset.stage;
+                clearSelection();
+                if (ordersTable) ordersTable.draw();
+            };
         });
 
-        $('#stageTabsBar .pipeline-tab-btn').off('click').on('click', function () {
-            $('#stageTabsBar .pipeline-tab-btn').removeClass('active');
-            $(this).addClass('active');
-            activeStage = $(this).data('stage');
-            clearSelection();
-            if (ordersTable) ordersTable.draw();
-        });
+        const selectAllCb = document.getElementById('selectAllCheckbox');
+        if (selectAllCb) {
+            selectAllCb.onchange = function () {
+                const isChecked = this.checked;
+                document.querySelectorAll('.order-row-checkbox').forEach(cb => cb.checked = isChecked);
+                syncSelectedOrders();
+            };
+        }
 
-        $('#selectAllCheckbox').off('change').on('change', function () {
-            const isChecked = this.checked;
-            $('.order-row-checkbox').prop('checked', isChecked);
-            syncSelectedOrders();
-        });
-
-        $('#ordersTable').off('change', '.order-row-checkbox').on('change', '.order-row-checkbox', function () {
-            syncSelectedOrders();
-        });
+        if (tableEl) {
+            tableEl.onchange = function (e) {
+                if (e.target && e.target.classList.contains('order-row-checkbox')) {
+                    syncSelectedOrders();
+                }
+            };
+        }
     }
 
     function syncSelectedOrders() {
         selectedOrderIds = [];
-        $('.order-row-checkbox:checked').each(function () {
-            selectedOrderIds.push($(this).val());
+        document.querySelectorAll('.order-row-checkbox:checked').forEach(cb => {
+            selectedOrderIds.push(cb.value);
         });
         updateBulkBarState();
     }
@@ -2120,17 +2135,19 @@
 
     function clearSelection() {
         selectedOrderIds = [];
-        $('#selectAllCheckbox').prop('checked', false);
-        $('.order-row-checkbox').prop('checked', false);
+        const selectAllCb = document.getElementById('selectAllCheckbox');
+        if (selectAllCb) selectAllCb.checked = false;
+        document.querySelectorAll('.order-row-checkbox').forEach(cb => { cb.checked = false; });
         updateBulkBarState();
     }
 
     function updateWorkflowBadges(counts, todayStats) {
         if (!counts) return;
-        $('#stageTabsBar .pipeline-tab-btn').each(function () {
-            const stage = $(this).data('stage');
+        document.querySelectorAll('#stageTabsBar .pipeline-tab-btn').forEach(btn => {
+            const stage = btn.dataset.stage;
             if (counts[stage] !== undefined) {
-                $(this).find('.badge').text(counts[stage]);
+                const b = btn.querySelector('.badge');
+                if (b) b.textContent = counts[stage];
             }
         });
         if (counts.to_call !== undefined) {
@@ -3221,8 +3238,9 @@
 
     function setWorkflowStage(stage) {
         activeStage = stage;
-        $('#stageTabsBar .pipeline-tab-btn').removeClass('active');
-        $(`#stageTabsBar .pipeline-tab-btn[data-stage="${stage}"]`).addClass('active');
+        document.querySelectorAll('#stageTabsBar .pipeline-tab-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.stage === stage);
+        });
         clearSelection();
         if (ordersTable) ordersTable.draw();
     }
@@ -3250,9 +3268,12 @@
     }
 
     function resetAllFilters() {
-        $('#filterDateFrom').val('');
-        $('#filterDateTo').val('');
-        $('#customSearchInput').val('');
+        const dFrom = document.getElementById('filterDateFrom');
+        if (dFrom) dFrom.value = '';
+        const dTo = document.getElementById('filterDateTo');
+        if (dTo) dTo.value = '';
+        const sInp = document.getElementById('customSearchInput');
+        if (sInp) sInp.value = '';
         const sortSel = document.getElementById('customSortOrder');
         if (sortSel) sortSel.value = 'newest';
         const pageSel = document.getElementById('customPageLength');

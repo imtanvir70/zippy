@@ -263,9 +263,9 @@ class MinifyHtmlMiddleware
         // Remove spaces around CSS delimiters
         $cleaned = preg_replace('/\s*([\{\};:,])\s*/', '$1', $cleaned);
 
-        // Ensure calc() expressions retain spaces around + and - operators
-        $cleaned = preg_replace_callback('/calc\([^)]+\)/i', function ($m) {
-            return preg_replace('/\s*([+\-])\s*/', ' $1 ', $m[0]);
+        // Ensure calc() operators retain spaces without breaking CSS variable/env hyphens
+        $cleaned = preg_replace_callback('/calc\((?:[^()]|\([^()]*\))+\)/i', function ($m) {
+            return preg_replace('/(?<=[0-9%)\s])\s*([+\-])\s*(?=[0-9\s]|\b(?:env|var|calc)\b)/i', ' $1 ', $m[0]);
         }, $cleaned);
 
         return trim($cleaned);

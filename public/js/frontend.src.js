@@ -666,6 +666,10 @@ function closeQuickView() {
         modalEl.classList.remove('show');
         modalEl.setAttribute('aria-hidden', 'true');
     }
+    const mobileDockEl = document.getElementById('qvMobileBottomDock');
+    if (mobileDockEl) {
+        mobileDockEl.style.display = 'none';
+    }
     document.body.classList.remove('qv-modal-open');
     unlockPageScroll();
     if (window.__qvSplide) {
@@ -688,6 +692,7 @@ function openQuickView(productId) {
     loadPartial('quick-view-modal', 'quick-view-container', () => {
         const modalEl = document.getElementById('quickViewModal');
         const bodyEl = document.getElementById('quickViewBody');
+        const mobileDockEl = document.getElementById('qvMobileBottomDock');
         if (!modalEl || !bodyEl) return;
 
         modalEl.classList.add('show');
@@ -695,12 +700,17 @@ function openQuickView(productId) {
         document.body.classList.add('qv-modal-open');
         lockPageScroll();
 
+        if (mobileDockEl) {
+            mobileDockEl.innerHTML = '';
+            mobileDockEl.style.display = 'none';
+        }
+
         bodyEl.innerHTML = `
             <div class="text-center py-5">
-                <div class="spinner-border text-dark" role="status">
+                <div class="spinner-border text-dark" role="status" style="width: 2.2rem; height: 2.2rem; border-width: 2.5px;">
                     <span class="visually-hidden">Loading...</span>
                 </div>
-                <p class="text-muted small mt-2 font-heading">লোড হচ্ছে...</p>
+                <p class="text-dark fw-bold small mt-2 font-heading">তথ্য লোড হচ্ছে...</p>
             </div>
         `;
 
@@ -726,7 +736,7 @@ function openQuickView(productId) {
                 const reviewsCountVal = parseInt(p.reviews_count || p.review_count || 0);
                 let ratingBadgeHtml = '';
                 if (reviewsCountVal > 0 && ratingVal > 0) {
-                    ratingBadgeHtml = '<span class="qv-rating-badge"><i class="fa-solid fa-star text-warning"></i> <strong>' + ratingVal.toFixed(1) + '</strong> <span class="text-muted">(' + reviewsCountVal + ' রিভিউ)</span></span>';
+                    ratingBadgeHtml = '<span class="qv-rating-badge"><i class="fa-solid fa-star text-warning"></i> <strong>' + ratingVal.toFixed(1) + '</strong> <span class="text-muted">(' + reviewsCountVal + ')</span></span>';
                 } else {
                     ratingBadgeHtml = '<span class="qv-rating-badge qv-no-reviews"><i class="fa-regular fa-star text-muted"></i> <span class="text-muted">কোনো রিভিউ নেই</span></span>';
                 }
@@ -782,7 +792,7 @@ function openQuickView(productId) {
                     }
                     variantsHtml = '<div class="qv-variant-section">' +
                         '<div class="qv-variant-header">' +
-                            '<span class="text-muted small">ভ্যারিয়েন্ট নির্বাচন করুন:</span>' +
+                            '<span class="text-muted small">ভ্যারিয়েন্ট:</span>' +
                             '<span class="qv-selected-name" id="qvVariantLabel">' + (window.qvSelectedVariant || '') + '</span>' +
                         '</div>' +
                         '<div class="qv-variant-pills">' + pillButtons + '</div>' +
@@ -829,10 +839,11 @@ function openQuickView(productId) {
                                 ${p.short_desc || p.short_description || p.description || 'প্রিমিয়াম কোয়ালিটি এবং দ্রুততম হোম ডেলিভারি সার্ভিস।'}
                             </p>
                             
-                            <div class="qv-action-row">
+                            <!-- Desktop Action Row -->
+                            <div class="qv-action-row d-none d-md-flex">
                                 <div class="qv-qty-selector">
                                     <button type="button" class="qv-qty-btn" onclick="adjustQvQty(-1)" aria-label="Decrease">−</button>
-                                    <span class="qv-qty-number" id="qvQtyDisplay">1</span>
+                                    <span class="qv-qty-number qv-qty-display" id="qvQtyDisplay">1</span>
                                     <button type="button" class="qv-qty-btn" onclick="adjustQvQty(1)" aria-label="Increase">+</button>
                                 </div>
                                 <button type="button" class="qv-add-cart-btn" onclick="addToCart(${p.id}, window.qvCurrentQty, window.qvSelectedVariant, null, this)">
@@ -848,6 +859,43 @@ function openQuickView(productId) {
                         </div>
                     </div>
                 `;
+
+                // Populate Mobile Bottom Action Dock
+                if (mobileDockEl) {
+                    mobileDockEl.innerHTML = `
+                        <div class="d-flex align-items-center gap-2.5 w-100">
+                            <div class="qv-qty-selector">
+                                <button type="button" class="qv-qty-btn" onclick="adjustQvQty(-1)" aria-label="Decrease">−</button>
+                                <span class="qv-qty-number qv-qty-display">1</span>
+                                <button type="button" class="qv-qty-btn" onclick="adjustQvQty(1)" aria-label="Increase">+</button>
+                            </div>
+                            <button type="button" class="qv-add-cart-btn flex-grow-1" onclick="addToCart(${p.id}, window.qvCurrentQty, window.qvSelectedVariant, null, this)">
+                                <i class="fa-solid fa-bag-shopping"></i>
+                                <span>কার্টে যোগ করুন</span>
+                            </button>
+                        </div>
+                    `;
+                    mobileDockEl.style.display = 'block';
+                }
+
+                // Touch swipe support on image slider
+                const sliderBox = bodyEl.querySelector('.qv-slider-box');
+                if (sliderBox && gallery.length > 1) {
+                    let touchStartX = 0;
+                    let touchEndX = 0;
+                    sliderBox.addEventListener('touchstart', (e) => {
+                        touchStartX = e.changedTouches[0].screenX;
+                    }, { passive: true });
+                    sliderBox.addEventListener('touchend', (e) => {
+                        touchEndX = e.changedTouches[0].screenX;
+                        const diff = touchEndX - touchStartX;
+                        if (diff < -35) {
+                            stepQvSlide(1);
+                        } else if (diff > 35) {
+                            stepQvSlide(-1);
+                        }
+                    }, { passive: true });
+                }
             })
             .catch(err => {
                 bodyEl.innerHTML = `<div class="text-center py-5 text-danger"><i class="fa-solid fa-triangle-exclamation fs-3 mb-2"></i><p class="mb-0">তথ্য লোড করা সম্ভব হয়নি।</p></div>`;
@@ -944,8 +992,9 @@ window.selectQvVariant = selectQvVariant;
 function adjustQvQty(delta) {
     window.qvCurrentQty = Math.max(1, (window.qvCurrentQty || 1) + delta);
     qvCurrentQty = window.qvCurrentQty;
-    const disp = document.getElementById('qvQtyDisplay');
-    if (disp) disp.innerText = window.qvCurrentQty;
+    document.querySelectorAll('.qv-qty-display, #qvQtyDisplay').forEach(el => {
+        el.innerText = window.qvCurrentQty;
+    });
 }
 window.adjustQvQty = adjustQvQty;
 

@@ -123,7 +123,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('backend/lib/select2.min.css') }}" data-turbo-track="reload">
+
 
     <style>
         :root {
@@ -175,8 +175,8 @@
             width: 100% !important;
             margin-left: auto !important;
             margin-right: auto !important;
-            padding-left: 16px !important;
-            padding-right: 16px !important;
+            padding-left: clamp(8px, 2vw, 24px) !important;
+            padding-right: clamp(8px, 2vw, 24px) !important;
         }
 
         .main-header {
@@ -291,9 +291,13 @@
             bottom: 24px;
         }
 
-        @media (max-width: 767.98px) {
+        @media (max-width: 991.98px) {
             body {
-                padding-bottom: calc(72px + env(safe-area-inset-bottom, 0px));
+                padding-bottom: calc(76px + env(safe-area-inset-bottom, 0px));
+            }
+            body:has(.mobile-floating-action-sheet),
+            body:has(.zk-mobile-bottom-bar) {
+                padding-bottom: 0 !important;
             }
             .native-app-toast-container {
                 bottom: calc(85px + env(safe-area-inset-bottom, 0px));
@@ -306,7 +310,7 @@
         }
     </style>
 
-    <link rel="stylesheet" href="{{ asset('css/frontend.css') }}?v=3.1">
+    <link rel="stylesheet" href="{{ asset('css/frontend.css') }}?v=3.7">
 
     @stack('styles')
 </head>
@@ -363,13 +367,11 @@
         </div>
     </div>
 
-    <script src="{{ asset('backend/lib/jquery-3.7.1.min.js') }}" data-turbo-track="reload" data-turbo-eval="false"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer data-turbo-track="reload"></script>
-    <script src="{{ asset('backend/lib/select2.min.js') }}" data-turbo-track="reload" data-turbo-eval="false"></script>
     <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js" defer data-turbo-track="reload"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" defer data-turbo-track="reload"></script>
     <script src="{{ asset('lib/axios.min.js') }}?v=1.7.9" defer data-turbo-track="reload"></script>
-    <script src="{{ asset('js/frontend.js') }}?v=3.1" defer data-turbo-track="reload" data-turbo-eval="false"></script>
+    <script src="{{ asset('js/frontend.js') }}?v=3.5" defer data-turbo-track="reload" data-turbo-eval="false"></script>
 
     @stack('scripts')
     <script data-turbo-eval="false">
@@ -533,10 +535,7 @@
                 clearInterval(window.__liveViewersInterval);
                 window.__liveViewersInterval = null;
             }
-            if (typeof window.jQuery !== 'undefined' && window.jQuery.fn && window.jQuery.fn.select2) {
-                try { window.jQuery('#geoDivisionSelect, #geoDistrictSelect, #geoUpazilaSelect').select2('destroy'); } catch(e) {}
-                window.jQuery('.select2-container').remove();
-            }
+            document.querySelectorAll('.zk-ss-dropdown, .zk-ss-container, .select2-container').forEach(el => el.remove());
         });
 
         document.addEventListener('turbo:before-render', () => {
@@ -566,10 +565,7 @@
             document.querySelectorAll('.offcanvas-backdrop, .modal-backdrop').forEach(el => {
                 el.remove();
             });
-            if (typeof window.jQuery !== 'undefined' && window.jQuery.fn && window.jQuery.fn.select2) {
-                try { window.jQuery('#geoDivisionSelect, #geoDistrictSelect, #geoUpazilaSelect').select2('destroy'); } catch(e) {}
-                window.jQuery('.select2-container').remove();
-            }
+            document.querySelectorAll('.zk-ss-dropdown, .zk-ss-container, .select2-container').forEach(el => el.remove());
             if (typeof window.unlockPageScroll === 'function') {
                 window.unlockPageScroll(true);
             }

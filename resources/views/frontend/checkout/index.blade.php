@@ -685,8 +685,8 @@
 <style>
 .zk-checkout-wrapper, .zk-checkout-wrapper *, .zk-checkout-wrapper *::before, .zk-checkout-wrapper *::after { box-sizing: border-box; }
 .zk-checkout-wrapper { background-color: #fafafa; min-height: 100vh; font-family: 'Inter', 'Hind Siliguri', sans-serif; }
-.zk-card { background: #ffffff; border-color: #eaeaea !important; }
-.shadow-custom { box-shadow: 0 10px 40px -10px rgba(0,0,0,0.06), 0 0 1px 1px rgba(0,0,0,0.02); }
+.zk-card { background: #ffffff; border-color: #eaeaea !important; border-radius: 22px !important; }
+.shadow-custom { box-shadow: 0 10px 36px -8px rgba(0,0,0,0.06), 0 0 1px 1px rgba(0,0,0,0.02); }
 
 .fs-10 { font-size: 10px !important; }
 .fs-11 { font-size: 11px !important; }
@@ -700,80 +700,91 @@
 .fs-22 { font-size: 22px !important; }
 .cursor-pointer { cursor: pointer; }
 .transition-transform { transition: transform 0.2s ease; }
-.zk-panel-icon { width: 38px; height: 38px; min-width: 38px; display: flex; align-items: center; justify-content: center; }
+.zk-panel-icon { width: 40px; height: 40px; min-width: 40px; border-radius: 50% !important; display: flex; align-items: center; justify-content: center; }
 
 .zk-stepper-wrap { width: 100%; }
 .zk-stepper { display: flex; align-items: center; justify-content: space-between; }
 .zk-step-item { display: flex; align-items: center; gap: 10px; cursor: pointer; user-select: none; transition: all 0.2s ease; }
-.zk-step-num { width: 34px; height: 34px; border-radius: 50%; background: #f1f5f9; color: #64748b; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.3s ease; }
+.zk-step-num { width: 36px; height: 36px; border-radius: 50%; background: #f1f5f9; color: #64748b; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
 .zk-step-text { display: flex; flex-direction: column; line-height: 1.3; }
 .zk-step-title { font-size: 13.5px; font-weight: 600; color: #64748b; transition: color 0.3s ease; }
 .zk-step-sub { font-size: 11px; color: #94a3b8; }
-.zk-step-divider { height: 2px; background: #e2e8f0; margin: 0 16px; border-radius: 4px; transition: background 0.3s ease; }
+.zk-step-divider { height: 2px; background: #e2e8f0; margin: 0 16px; border-radius: 999px; transition: background 0.3s ease; }
 
-.zk-step-item.zk-step-active .zk-step-num { background: #000000; color: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+.zk-step-item.zk-step-active .zk-step-num { background: #000000; color: #fff; box-shadow: 0 6px 16px rgba(0,0,0,0.22); transform: scale(1.06); }
 .zk-step-item.zk-step-active .zk-step-title { color: #000000; font-weight: 700; }
 .zk-step-item.zk-step-active .zk-step-sub { color: #64748b; }
 .zk-step-item.zk-step-complete .zk-step-num { background: #000000; color: #fff; }
 .zk-step-item.zk-step-complete .zk-step-title { color: #000000; font-weight: 700; }
 
-.zk-input, .zk-select { background-color: #fff; border: 1.5px solid #e2e8f0; color: #000; font-size: 14px; padding: 12px 16px; height: 50px; transition: all 0.2s ease; width: 100%; box-sizing: border-box; border-radius: 12px; }
+.zk-input, .zk-select { background-color: #fff; border: 1.5px solid #e2e8f0; color: #000; font-size: 14px; padding: 12px 18px; height: 50px; transition: all 0.2s ease; width: 100%; box-sizing: border-box; border-radius: 16px !important; }
 .zk-input:focus, .zk-select:focus { border-color: #000000; box-shadow: 0 0 0 3px rgba(0,0,0,0.06); outline: none; }
-.zk-input-group { background: #fff; border: 1.5px solid #e2e8f0; border-radius: 12px; transition: all 0.2s ease; }
+.zk-input-group { background: #fff; border: 1.5px solid #e2e8f0; border-radius: 16px !important; transition: all 0.2s ease; overflow: hidden; }
 .zk-input-group .input-group-text { background-color: transparent; border: none; height: 48px; }
 .zk-input-group .zk-input { border: none !important; height: 48px; font-size: 14px; box-shadow: none !important; }
 .zk-input-group:focus-within { border-color: #000000; box-shadow: 0 0 0 3px rgba(0,0,0,0.06); }
-.zk-input-group:has(.btn) .zk-input { border-radius: 0; }
-.zk-input-group .btn { border-radius: 0 10px 10px 0; height: 48px; }
-.zk-textarea { border: 1.5px solid #e2e8f0; padding: 14px 16px !important; font-size: 14px; min-height: 95px; width: 100%; transition: all 0.2s ease; border-radius: 12px; }
+.zk-input-group:has(.btn) .zk-input { border-radius: 0 !important; }
+.zk-input-group .btn { border-radius: 0 14px 14px 0 !important; height: 48px; }
+.zk-textarea { border: 1.5px solid #e2e8f0; padding: 14px 18px !important; font-size: 14px; min-height: 95px; width: 100%; transition: all 0.2s ease; border-radius: 16px !important; }
 .zk-textarea:focus { border-color: #000000; box-shadow: 0 0 0 3px rgba(0,0,0,0.06); outline: none; }
 .zk-textarea-compact { min-height: 70px !important; }
 
-.select2-container { width: 100% !important; }
-.select2-container--default .select2-selection--single { background: #fff; border: 1.5px solid #e2e8f0; border-radius: 12px; height: 50px; display: flex; align-items: center; transition: all 0.2s ease; box-shadow: 0 1px 2px rgba(0,0,0,0.02); }
-.select2-container--default.select2-container--focus .select2-selection--single,
-.select2-container--default.select2-container--open .select2-selection--single { border-color: #000000; box-shadow: 0 0 0 3px rgba(0,0,0,0.06); }
-.select2-container--default .select2-selection--single .select2-selection__rendered { color: #000 !important; font-size: 14px; font-weight: 500; padding-left: 16px; padding-right: 36px; line-height: 48px; }
-.select2-container--default .select2-selection--single .select2-selection__arrow { height: 48px; right: 12px; }
-.select2-dropdown { border: 1.5px solid #000 !important; border-radius: 12px !important; box-shadow: 0 15px 35px rgba(0,0,0,0.1) !important; padding-top: 6px; }
-.select2-search--dropdown .select2-search__field { border: 1.5px solid #e2e8f0 !important; border-radius: 8px !important; padding: 10px 14px !important; font-size: 14px !important; outline: none; }
-.select2-search--dropdown .select2-search__field:focus { border-color: #000 !important; box-shadow: 0 0 0 2px rgba(0,0,0,0.08) !important; }
-.select2-results__option { padding: 10px 14px; font-size: 13.5px; }
-.select2-container--default .select2-results__option--highlighted.select2-results__option--selectable { background-color: #000000; color: #fff; border-radius: 6px; margin: 0 6px; }
+.zk-ss-container { position: relative; width: 100%; font-family: inherit; }
+.zk-ss-selection { background: #fff; border: 1.5px solid #e2e8f0; border-radius: 16px !important; height: 50px; display: flex; align-items: center; justify-content: space-between; transition: all 0.2s ease; box-shadow: 0 1px 2px rgba(0,0,0,0.02); cursor: pointer; padding-left: 18px; padding-right: 14px; }
+.zk-ss-container.zk-ss-open .zk-ss-selection, .zk-ss-selection:focus { border-color: #000000; box-shadow: 0 0 0 3px rgba(0,0,0,0.06); outline: none; }
+.zk-ss-selection.zk-ss-disabled { background: #f8fafc; cursor: not-allowed; opacity: 0.7; }
+.zk-ss-rendered { color: #000; font-size: 14px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-right: 16px; }
+.zk-ss-rendered.zk-ss-placeholder { color: #64748b; }
+.zk-ss-arrow { display: flex; align-items: center; justify-content: center; width: 24px; flex-shrink: 0; }
+.zk-ss-arrow:after { content: ""; border: solid #000; border-width: 0 1.5px 1.5px 0; display: inline-block; padding: 3px; transform: rotate(45deg); transition: transform 0.2s ease; margin-bottom: 2px; }
+.zk-ss-container.zk-ss-open .zk-ss-arrow:after { transform: rotate(-135deg); margin-bottom: -2px; }
+.zk-ss-dropdown { position: absolute; top: calc(100% + 6px); left: 0; right: 0; background: #fff; border: 1.5px solid #000; border-radius: 18px !important; box-shadow: 0 16px 36px rgba(0,0,0,0.12); z-index: 9999; display: none; flex-direction: column; max-height: 300px; overflow: hidden; }
+.zk-ss-container.zk-ss-open .zk-ss-dropdown { display: flex; }
+.zk-ss-search { padding: 8px; border-bottom: 1px solid #f1f5f9; }
+.zk-ss-search-input { width: 100%; border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 10px 14px; font-size: 14px; outline: none; box-sizing: border-box; background: transparent; }
+.zk-ss-search-input:focus { border-color: #000; box-shadow: 0 0 0 2px rgba(0,0,0,0.08); }
+.zk-ss-options { overflow-y: auto; padding: 6px 0; max-height: 250px; }
+.zk-ss-option { padding: 10px 16px; font-size: 13.5px; cursor: pointer; color: #000; }
+.zk-ss-option:hover, .zk-ss-option.zk-ss-highlighted { background-color: #000000; color: #fff; border-radius: 10px; margin: 0 6px; padding: 10px 10px; }
+.zk-ss-no-results { padding: 10px 16px; font-size: 13.5px; color: #64748b; text-align: center; }
 
-.zk-btn-primary { background: #000000; color: #fff; border: none; font-weight: 600; transition: all 0.2s ease; }
+.zk-btn-primary { background: #000000; color: #fff; border: none; font-weight: 600; border-radius: 50rem !important; transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1); }
 .zk-btn-primary:hover { background: #1a1a1a; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(0,0,0,0.15); color: #fff; }
-.zk-btn-outline { background: #fff; color: #000000; border: 1.5px solid #cbd5e1; font-weight: 600; transition: all 0.2s ease; border-radius: 12px; }
+.zk-btn-primary:active { transform: scale(0.95); }
+.zk-btn-outline { background: #fff; color: #000000; border: 1.5px solid #cbd5e1; font-weight: 600; transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1); border-radius: 50rem !important; }
 .zk-btn-outline:hover { background: #f8fafc; border-color: #000; }
-.zk-btn-edit { background: #fff; border: 1px solid #e2e8f0; color: #000000; font-size: 11.5px; font-weight: 600; }
+.zk-btn-outline:active { transform: scale(0.95); }
+.zk-btn-edit { background: #fff; border: 1px solid #e2e8f0; color: #000000; font-size: 11.5px; font-weight: 600; border-radius: 50rem !important; }
 .zk-btn-edit:hover { background: #000; color: #fff; border-color: #000; }
 
-.zk-radio-card { border: 1.5px solid #e2e8f0 !important; transition: all 0.2s ease; background: #fff; }
+.zk-radio-card { border: 1.5px solid #e2e8f0 !important; border-radius: 18px !important; transition: all 0.2s ease; background: #fff; }
 .zk-radio-card:hover { border-color: #cbd5e1 !important; background: #fbfbfb; }
-.zk-radio-card:has(input:checked) { border-color: #000000 !important; background: #fff; box-shadow: 0 4px 15px rgba(0,0,0,0.04); }
+.zk-radio-card:has(input:checked) { border-color: #000000 !important; background: #fff; box-shadow: 0 4px 18px rgba(0,0,0,0.05); }
 .zk-radio-disabled { opacity: 0.55; cursor: not-allowed !important; background: #f8fafc !important; }
-.zk-check-input { width: 18px; height: 18px; border: 2px solid #cbd5e1; }
+.zk-check-input { width: 18px; height: 18px; border: 2px solid #cbd5e1; border-radius: 50% !important; }
 .zk-check-input:checked { background-color: #000000; border-color: #000000; }
 
-.zk-zone-notice { background: #f8fafc; border-color: #eaeaea !important; border-radius: 16px; }
+.zk-zone-notice { background: #f8fafc; border-color: #eaeaea !important; border-radius: 18px !important; }
 .zk-sticky-sidebar { position: sticky; top: 100px; }
 .zk-cart-scroll { max-height: 280px; overflow-y: auto; padding-right: 6px; }
 .zk-cart-scroll::-webkit-scrollbar { width: 4px; }
 .zk-cart-scroll::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 10px; }
-.zk-img-box { width: 58px; height: 58px; border-radius: 12px; overflow: hidden; background: #f1f5f9; border: 1px solid #eaeaea; }
+.zk-img-box { width: 58px; height: 58px; border-radius: 16px !important; overflow: hidden; background: #f1f5f9; border: 1px solid #eaeaea; }
 .zk-prod-thumb { width: 100%; height: 100%; object-fit: cover; }
 
-.zk-counter { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 30px; padding: 3px; }
-.zk-counter-btn { width: 28px; height: 28px; background: #fff; border: 1px solid #e2e8f0; border-radius: 50%; color: #000; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; }
+.zk-counter { background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 50rem !important; padding: 3px; }
+.zk-counter-btn { width: 28px; height: 28px; background: #fff; border: 1px solid #e2e8f0; border-radius: 50% !important; color: #000; display: flex; align-items: center; justify-content: center; transition: all 0.15s cubic-bezier(0.34, 1.56, 0.64, 1); box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
 .zk-counter-btn:hover { background: #000000; color: #fff; border-color: #000; }
+.zk-counter-btn:active { transform: scale(0.88); }
 .zk-counter-num { width: 30px; text-align: center; font-weight: 700; color: #000; font-size: 13px; }
-.zk-trash-btn { width: 34px; height: 34px; border-radius: 10px; background: #fef2f2; border: 1px solid #fee2e2; color: #ef4444; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; }
+.zk-trash-btn { width: 32px; height: 32px; border-radius: 50% !important; background: #fef2f2; border: 1px solid #fee2e2; color: #ef4444; display: flex; align-items: center; justify-content: center; transition: all 0.15s cubic-bezier(0.34, 1.56, 0.64, 1); }
 .zk-trash-btn:hover { background: #ef4444; color: #fff; }
+.zk-trash-btn:active { transform: scale(0.88); }
 
-.zk-coupon-badge { background: #f8fafc; border-color: #e2e8f0; display: flex; align-items: center; width: 100%; box-sizing: border-box; }
-.zk-coupon-pill { background: #fff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 6px 12px; transition: all 0.2s ease; }
+.zk-coupon-badge { background: #f8fafc; border-color: #e2e8f0; display: flex; align-items: center; width: 100%; box-sizing: border-box; border-radius: 50rem !important; }
+.zk-coupon-pill { background: #fff; border: 1px solid #e2e8f0; border-radius: 50rem !important; padding: 6px 14px; transition: all 0.2s ease; }
 .zk-coupon-pill:hover { border-color: #000; transform: translateY(-1px); }
-.zk-calc-box { background-color: #f8fafc; border-color: #eaeaea !important; border-radius: 16px; }
+.zk-calc-box { background-color: #f8fafc; border-color: #eaeaea !important; border-radius: 20px !important; }
 .zk-calc-divider { height: 1px; background: #e2e8f0; }
 .border-end-md { border-right: 1px solid #eaeaea; }
 
@@ -783,24 +794,25 @@
 
 .zk-mobile-bottom-bar {
     position: fixed;
-    bottom: 0 !important;
-    left: 0;
-    right: 0;
-    width: 100%;
-    background: rgba(255, 255, 255, 0.96);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-top: 1px solid rgba(226, 232, 240, 0.85);
-    padding: 9px 12px calc(9px + env(safe-area-inset-bottom, 0px));
+    bottom: calc(10px + env(safe-area-inset-bottom, 0px)) !important;
+    left: 12px !important;
+    right: 12px !important;
+    width: auto !important;
+    background: rgba(255, 255, 255, 0.94);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.85);
+    border-radius: 28px !important;
+    padding: 8px 12px !important;
     z-index: 1050;
-    box-shadow: 0 -6px 24px -4px rgba(15, 23, 42, 0.12);
+    box-shadow: 0 16px 36px -4px rgba(15, 23, 42, 0.16), 0 4px 12px rgba(0, 0, 0, 0.04);
 }
 
 .btn-mobile-back {
-    width: 40px;
-    height: 40px;
-    min-width: 40px;
-    border-radius: 12px;
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    border-radius: 50% !important;
     background: #f1f5f9;
     color: #0f172a;
     border: 1px solid #e2e8f0;
@@ -809,20 +821,20 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.2s ease;
     flex-shrink: 0;
     text-decoration: none;
 }
 
 .btn-mobile-back:active {
-    transform: scale(0.92);
+    transform: scale(0.9);
     background: #e2e8f0;
 }
 
 [data-bs-theme="dark"] .zk-mobile-bottom-bar {
-    background: rgba(15, 23, 42, 0.95);
-    border-top-color: rgba(51, 65, 85, 0.8);
-    box-shadow: 0 -6px 24px -4px rgba(0, 0, 0, 0.35);
+    background: rgba(15, 23, 42, 0.92);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 16px 36px -4px rgba(0, 0, 0, 0.5);
 }
 
 [data-bs-theme="dark"] .btn-mobile-back {
@@ -835,18 +847,32 @@
     background: #334155;
 }
 
+#mobileStickyFooterBtn {
+    height: 44px;
+    font-size: 14.5px;
+    font-weight: 700;
+    border-radius: 50rem !important;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22);
+    letter-spacing: 0.2px;
+    transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.2s ease, box-shadow 0.2s ease;
+}
+
+#mobileStickyFooterBtn:active {
+    transform: scale(0.94);
+}
+
 @media (max-width: 991px) {
     .zk-checkout-wrapper {
         background: #fafafa;
         padding-top: 12px;
-        padding-bottom: calc(85px + env(safe-area-inset-bottom, 0px)) !important;
+        padding-bottom: calc(95px + env(safe-area-inset-bottom, 0px)) !important;
     }
     .border-end-md { border-right: none !important; border-bottom: 1px solid #eaeaea; padding-bottom: 20px !important; margin-bottom: 12px !important; }
 }
 @media (max-width: 576px) {
     .zk-step-item { flex-direction: column; gap: 4px; }
     .zk-step-text { text-align: center; }
-    .zk-step-num { width: 30px; height: 30px; font-size: 12px; }
+    .zk-step-num { width: 32px; height: 32px; font-size: 12px; }
     .zk-step-title { font-size: 11.5px; }
     .zk-img-box { width: 50px; height: 50px; }
 }
@@ -897,19 +923,236 @@
     let currentDistrictId = '';
     let currentUpazilaId = '';
 
-    function whenSelect2Ready(callback, maxAttempts = 60) {
-        let attempts = 0;
-        function check() {
-            if (typeof window.jQuery !== 'undefined' && window.jQuery.fn && typeof window.jQuery.fn.select2 === 'function') {
-                callback(window.jQuery);
-            } else if (attempts < maxAttempts) {
-                attempts++;
-                setTimeout(check, 30);
+    class ZkSearchableSelect {
+        constructor(selectElement, options = {}) {
+            this.select = selectElement;
+            this.options = options;
+            if (this.select.zkSearchableSelect) {
+                this.select.zkSearchableSelect.destroy();
+            }
+            this.select.zkSearchableSelect = this;
+            this.init();
+        }
+
+        init() {
+            this.select.style.display = 'none';
+            this.container = document.createElement('div');
+            this.container.className = 'zk-ss-container';
+            
+            this.selection = document.createElement('div');
+            this.selection.className = 'zk-ss-selection';
+            this.selection.tabIndex = 0;
+            
+            this.rendered = document.createElement('div');
+            this.rendered.className = 'zk-ss-rendered';
+            
+            this.arrow = document.createElement('div');
+            this.arrow.className = 'zk-ss-arrow';
+            
+            this.selection.appendChild(this.rendered);
+            this.selection.appendChild(this.arrow);
+            this.container.appendChild(this.selection);
+            
+            this.dropdown = document.createElement('div');
+            this.dropdown.className = 'zk-ss-dropdown';
+            
+            this.searchContainer = document.createElement('div');
+            this.searchContainer.className = 'zk-ss-search';
+            
+            this.searchInput = document.createElement('input');
+            this.searchInput.type = 'text';
+            this.searchInput.className = 'zk-ss-search-input';
+            this.searchInput.autocomplete = 'off';
+            this.searchInput.spellcheck = false;
+            
+            this.searchContainer.appendChild(this.searchInput);
+            this.dropdown.appendChild(this.searchContainer);
+            
+            this.optionsContainer = document.createElement('div');
+            this.optionsContainer.className = 'zk-ss-options';
+            this.dropdown.appendChild(this.optionsContainer);
+            
+            this.container.appendChild(this.dropdown);
+            
+            this.select.parentNode.insertBefore(this.container, this.select.nextSibling);
+            
+            this.updateDisabledState();
+            this.updateSelectedText();
+            this.bindEvents();
+        }
+
+        destroy() {
+            if (this.container && this.container.parentNode) {
+                this.container.parentNode.removeChild(this.container);
+            }
+            this.select.style.display = '';
+            delete this.select.zkSearchableSelect;
+        }
+
+        updateDisabledState() {
+            if (this.select.disabled) {
+                this.selection.classList.add('zk-ss-disabled');
+                this.selection.removeAttribute('tabindex');
+                this.close();
             } else {
-                callback(null);
+                this.selection.classList.remove('zk-ss-disabled');
+                this.selection.tabIndex = 0;
             }
         }
-        check();
+
+        updateSelectedText() {
+            const selectedOption = this.select.options[this.select.selectedIndex];
+            if (selectedOption && selectedOption.value !== "") {
+                this.rendered.textContent = selectedOption.textContent;
+                this.rendered.classList.remove('zk-ss-placeholder');
+            } else {
+                this.rendered.textContent = this.options.placeholder || 'Select...';
+                this.rendered.classList.add('zk-ss-placeholder');
+            }
+        }
+
+        bindEvents() {
+            this.selection.addEventListener('click', (e) => {
+                if (this.select.disabled) return;
+                this.toggle();
+            });
+
+            this.selection.addEventListener('keydown', (e) => {
+                if (this.select.disabled) return;
+                if (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    this.open();
+                }
+            });
+
+            this.searchInput.addEventListener('input', () => {
+                this.renderOptions(this.searchInput.value);
+            });
+            
+            this.searchInput.addEventListener('keydown', (e) => {
+                const visibleOptions = Array.from(this.optionsContainer.querySelectorAll('.zk-ss-option'));
+                const highlighted = this.optionsContainer.querySelector('.zk-ss-highlighted');
+                const currentIndex = visibleOptions.indexOf(highlighted);
+
+                if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    if (visibleOptions.length > 0) {
+                        if (highlighted) highlighted.classList.remove('zk-ss-highlighted');
+                        const nextIndex = currentIndex < visibleOptions.length - 1 ? currentIndex + 1 : 0;
+                        visibleOptions[nextIndex].classList.add('zk-ss-highlighted');
+                        visibleOptions[nextIndex].scrollIntoView({ block: 'nearest' });
+                    }
+                } else if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    if (visibleOptions.length > 0) {
+                        if (highlighted) highlighted.classList.remove('zk-ss-highlighted');
+                        const prevIndex = currentIndex > 0 ? currentIndex - 1 : visibleOptions.length - 1;
+                        visibleOptions[prevIndex].classList.add('zk-ss-highlighted');
+                        visibleOptions[prevIndex].scrollIntoView({ block: 'nearest' });
+                    }
+                } else if (e.key === 'Enter') {
+                    e.preventDefault();
+                    if (highlighted) {
+                        highlighted.click();
+                    }
+                } else if (e.key === 'Escape') {
+                    e.preventDefault();
+                    this.close();
+                    this.selection.focus();
+                }
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!this.container.contains(e.target)) {
+                    this.close();
+                }
+            });
+            
+            this.select.addEventListener('change', () => {
+                this.updateDisabledState();
+                this.updateSelectedText();
+            });
+        }
+
+        renderOptions(searchTerm = '') {
+            this.optionsContainer.innerHTML = '';
+            let hasResults = false;
+            
+            const term = searchTerm.toLowerCase().trim();
+
+            Array.from(this.select.options).forEach((opt, index) => {
+                if (opt.value === "") return;
+                
+                const text = opt.textContent.toLowerCase();
+                const en = (opt.getAttribute('data-en') || opt.dataset?.en || '').toLowerCase();
+                const bn = (opt.getAttribute('data-bn') || opt.dataset?.bn || '').toLowerCase();
+                
+                if (!term || text.includes(term) || en.includes(term) || bn.includes(term)) {
+                    hasResults = true;
+                    const optionEl = document.createElement('div');
+                    optionEl.className = 'zk-ss-option';
+                    if (opt.selected) {
+                        optionEl.classList.add('zk-ss-highlighted');
+                    }
+                    optionEl.textContent = opt.textContent;
+                    optionEl.addEventListener('click', () => {
+                        this.select.value = opt.value;
+                        this.select.dispatchEvent(new Event('change', { bubbles: true }));
+                        
+                        if (this.options.onSelect) {
+                            this.options.onSelect(opt.value);
+                        }
+                        
+                        this.close();
+                        this.selection.focus();
+                    });
+                    this.optionsContainer.appendChild(optionEl);
+                }
+            });
+
+            if (!hasResults) {
+                const noResults = document.createElement('div');
+                noResults.className = 'zk-ss-no-results';
+                noResults.textContent = this.options.noResultsText || 'No results found';
+                this.optionsContainer.appendChild(noResults);
+            }
+        }
+
+        isOpen() {
+            return this.container.classList.contains('zk-ss-open');
+        }
+
+        toggle() {
+            if (this.isOpen()) this.close();
+            else this.open();
+        }
+
+        open() {
+            if (this.select.disabled) return;
+            
+            document.querySelectorAll('.zk-ss-container.zk-ss-open').forEach(c => {
+                if (c !== this.container) c.classList.remove('zk-ss-open');
+            });
+            
+            this.container.classList.add('zk-ss-open');
+            this.searchInput.value = '';
+            this.renderOptions();
+            
+            setTimeout(() => {
+                this.searchInput.focus();
+            }, 10);
+            
+            setTimeout(() => {
+                const highlighted = this.optionsContainer.querySelector('.zk-ss-highlighted');
+                if (highlighted) {
+                    highlighted.scrollIntoView({ block: 'nearest' });
+                }
+            }, 20);
+        }
+
+        close() {
+            this.container.classList.remove('zk-ss-open');
+        }
     }
 
     function triggerAutoOpen(selector) {
@@ -920,47 +1163,24 @@
             try {
                 const el = document.querySelector(selector);
                 if (!el) return;
-                const $el = $(el);
-                $el.prop('disabled', false);
+                
+                el.disabled = false;
 
-                if (!$el.data('select2')) {
+                if (!el.zkSearchableSelect) {
                     if (selector === '#geoDivisionSelect') initDivisionSelect();
                     else if (selector === '#geoDistrictSelect') initDistrictSelect();
                     else if (selector === '#geoUpazilaSelect') initUpazilaSelect();
                 }
 
-                if ($el.data('select2')) {
-                    if (!$el.data('select2').isOpen()) {
-                        $el.select2('open');
+                if (el.zkSearchableSelect) {
+                    if (!el.zkSearchableSelect.isOpen()) {
+                        el.zkSearchableSelect.open();
                     }
+                    el.zkSearchableSelect.container.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                 } else {
                     el.focus();
+                    el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                 }
-
-                const focusSearchField = () => {
-                    const searchField = document.querySelector('.select2-container--open .select2-search__field')
-                        || document.querySelector('.select2-search--dropdown .select2-search__field');
-                    if (searchField) {
-                        searchField.focus();
-                        const len = searchField.value ? searchField.value.length : 0;
-                        if (typeof searchField.setSelectionRange === 'function') {
-                            searchField.setSelectionRange(len, len);
-                        }
-                        return true;
-                    }
-                    return false;
-                };
-
-                if (!focusSearchField()) {
-                    setTimeout(focusSearchField, 40);
-                    setTimeout(focusSearchField, 90);
-                    setTimeout(focusSearchField, 160);
-                }
-
-                const container = el.nextElementSibling && el.nextElementSibling.classList.contains('select2-container')
-                    ? el.nextElementSibling
-                    : el;
-                container.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
             } catch (e) {}
         }, 60);
     }
@@ -973,183 +1193,114 @@
         }
     }
 
-    function customGeoMatcher(params, data) {
-        if (!params.term || jQuery.trim(params.term) === '') return data;
-        if (typeof data.text === 'undefined') return null;
-        const term = params.term.toLowerCase().trim();
-        const text = (data.text || '').toLowerCase();
-        const el = data.element;
-        const en = el ? ((el.getAttribute('data-en') || el.dataset?.en || '')).toLowerCase() : '';
-        const bn = el ? ((el.getAttribute('data-bn') || el.dataset?.bn || '')).toLowerCase() : '';
-        if (text.indexOf(term) > -1 || en.indexOf(term) > -1 || bn.indexOf(term) > -1) {
-            return data;
-        }
-        return null;
-    }
-
     function initDivisionSelect() {
-        if (typeof window.jQuery === 'undefined' || !window.jQuery.fn || typeof window.jQuery.fn.select2 === 'undefined') return;
-        const $ = window.jQuery;
-        const $div = $('#geoDivisionSelect');
-        if (!$div.length) return;
-        if ($div.data('select2')) {
-            try { $div.select2('destroy'); } catch(e) {}
-        }
-        $div.removeClass('select2-hidden-accessible').removeAttr('data-select2-id').removeAttr('aria-hidden').removeAttr('tabindex');
-        $div.parent().find('.select2-container').remove();
-        $div.select2({
+        const divEl = document.getElementById('geoDivisionSelect');
+        if (!divEl) return;
+        
+        new ZkSearchableSelect(divEl, {
             placeholder: 'বিভাগ নির্বাচন করুন',
-            width: '100%',
-            minimumResultsForSearch: 0,
-            matcher: customGeoMatcher,
-            language: {
-                noResults: () => 'কোনো বিভাগ পাওয়া যায়নি',
-                searching: () => 'অনুসন্ধান করা হচ্ছে...'
+            noResultsText: 'কোনো বিভাগ পাওয়া যায়নি',
+            onSelect: function(val) {
+                if (val) {
+                    window.onDivisionChange(val, false);
+                    setTimeout(() => {
+                        triggerAutoOpen('#geoDistrictSelect');
+                    }, 160);
+                }
             }
         });
-
-        $div.off('.geoDiv');
-        $div.on('select2:select.geoDiv', function(e) {
-            const val = (e.params && e.params.data) ? e.params.data.id : $(this).val();
-            if (val) {
-                window.onDivisionChange(val, false);
-                setTimeout(() => {
-                    triggerAutoOpen('#geoDistrictSelect');
-                }, 160);
-            }
-        });
-        $div.on('change.geoDiv', function() {
-            const val = $(this).val();
-            if (val && String(currentDivisionId) !== String(val)) {
-                window.onDivisionChange(val, false);
-            }
-        });
+        
+        if (!divEl.dataset.initDone) {
+            divEl.dataset.initDone = 'true';
+            divEl.addEventListener('change', function() {
+                const val = this.value;
+                if (val && String(currentDivisionId) !== String(val)) {
+                    window.onDivisionChange(val, false);
+                }
+            });
+        }
     }
 
     function initDistrictSelect() {
-        if (typeof window.jQuery === 'undefined' || !window.jQuery.fn || typeof window.jQuery.fn.select2 === 'undefined') return;
-        const $ = window.jQuery;
-        const $dist = $('#geoDistrictSelect');
-        if (!$dist.length) return;
-        if ($dist.data('select2')) {
-            try { $dist.select2('destroy'); } catch(e) {}
+        const distEl = document.getElementById('geoDistrictSelect');
+        if (!distEl) return;
+        
+        new ZkSearchableSelect(distEl, {
+            placeholder: distEl.disabled ? 'আগে বিভাগ বাছুন' : 'জেলা নির্বাচন করুন',
+            noResultsText: 'কোনো জেলা পাওয়া যায়নি',
+            onSelect: function(val) {
+                if (val) {
+                    window.onDistrictChange(val, false);
+                    setTimeout(() => {
+                        triggerAutoOpen('#geoUpazilaSelect');
+                    }, 160);
+                }
+            }
+        });
+        
+        if (!distEl.dataset.initDone) {
+            distEl.dataset.initDone = 'true';
+            distEl.addEventListener('change', function() {
+                const val = this.value;
+                if (val && String(currentDistrictId) !== String(val)) {
+                    window.onDistrictChange(val, false);
+                }
+            });
         }
-        $dist.removeClass('select2-hidden-accessible').removeAttr('data-select2-id').removeAttr('aria-hidden').removeAttr('tabindex');
-        $dist.parent().find('.select2-container').remove();
-        $dist.select2({
-            placeholder: $dist.prop('disabled') ? 'আগে বিভাগ বাছুন' : 'জেলা নির্বাচন করুন',
-            width: '100%',
-            minimumResultsForSearch: 0,
-            matcher: customGeoMatcher,
-            language: {
-                noResults: () => 'কোনো জেলা পাওয়া যায়নি',
-                searching: () => 'অনুসন্ধান করা হচ্ছে...'
-            }
-        });
-
-        $dist.off('.geoDist');
-        $dist.on('select2:select.geoDist', function(e) {
-            const val = (e.params && e.params.data) ? e.params.data.id : $(this).val();
-            if (val) {
-                window.onDistrictChange(val, false);
-                setTimeout(() => {
-                    triggerAutoOpen('#geoUpazilaSelect');
-                }, 160);
-            }
-        });
-        $dist.on('change.geoDist', function() {
-            const val = $(this).val();
-            if (val && String(currentDistrictId) !== String(val)) {
-                window.onDistrictChange(val, false);
-            }
-        });
     }
 
     function initUpazilaSelect() {
-        if (typeof window.jQuery === 'undefined' || !window.jQuery.fn || typeof window.jQuery.fn.select2 === 'undefined') return;
-        const $ = window.jQuery;
-        const $up = $('#geoUpazilaSelect');
-        if (!$up.length) return;
-        if ($up.data('select2')) {
-            try { $up.select2('destroy'); } catch(e) {}
+        const upEl = document.getElementById('geoUpazilaSelect');
+        if (!upEl) return;
+        
+        new ZkSearchableSelect(upEl, {
+            placeholder: upEl.disabled ? 'আগে জেলা বাছুন' : 'থানা / উপজেলা নির্বাচন করুন',
+            noResultsText: 'কোনো থানা পাওয়া যায়নি',
+            onSelect: function(val) {
+                if (val) {
+                    currentUpazilaId = String(val);
+                    window.onUpazilaChange(val);
+                    setTimeout(() => {
+                        focusCustomerAddress();
+                    }, 160);
+                }
+            }
+        });
+        
+        if (!upEl.dataset.initDone) {
+            upEl.dataset.initDone = 'true';
+            upEl.addEventListener('change', function() {
+                const val = this.value;
+                if (val && String(currentUpazilaId) !== String(val)) {
+                    currentUpazilaId = String(val);
+                    window.onUpazilaChange(val);
+                }
+            });
         }
-        $up.removeClass('select2-hidden-accessible').removeAttr('data-select2-id').removeAttr('aria-hidden').removeAttr('tabindex');
-        $up.parent().find('.select2-container').remove();
-        $up.select2({
-            placeholder: $up.prop('disabled') ? 'আগে জেলা বাছুন' : 'থানা / উপজেলা নির্বাচন করুন',
-            width: '100%',
-            minimumResultsForSearch: 0,
-            matcher: customGeoMatcher,
-            language: {
-                noResults: () => 'কোনো থানা পাওয়া যায়নি',
-                searching: () => 'অনুসন্ধান করা হচ্ছে...'
-            }
-        });
-
-        $up.off('.geoUp');
-        $up.on('select2:select.geoUp', function(e) {
-            const val = (e.params && e.params.data) ? e.params.data.id : $(this).val();
-            if (val) {
-                currentUpazilaId = String(val);
-                window.onUpazilaChange(val);
-                setTimeout(() => {
-                    focusCustomerAddress();
-                }, 160);
-            }
-        });
-        $up.on('change.geoUp', function() {
-            const val = $(this).val();
-            if (val && String(currentUpazilaId) !== String(val)) {
-                currentUpazilaId = String(val);
-                window.onUpazilaChange(val);
-            }
-        });
     }
 
     function initSelect2Boxes() {
-        whenSelect2Ready(($) => {
-            if (!$) return;
-            initDivisionSelect();
-            initDistrictSelect();
-            initUpazilaSelect();
-            $(document).off('select2:open.geoFocus').on('select2:open.geoFocus', () => {
-                const focusInput = () => {
-                    const field = document.querySelector('.select2-container--open .select2-search__field')
-                        || document.querySelector('.select2-search--dropdown .select2-search__field');
-                    if (field) {
-                        field.focus();
-                        return true;
-                    }
-                    return false;
-                };
-                if (!focusInput()) {
-                    setTimeout(focusInput, 30);
-                    setTimeout(focusInput, 80);
-                    setTimeout(focusInput, 150);
-                }
-            });
-        });
+        initDivisionSelect();
+        initDistrictSelect();
+        initUpazilaSelect();
     }
 
     function safeSelect2Open(selector) {
         try {
-            if (typeof jQuery === 'undefined') {
-                const el = document.querySelector(selector);
-                if (el) el.focus();
-                return;
-            }
-            const $el = $(selector);
-            if (!$el.length) return;
-            if (!$el.data('select2')) {
+            const el = document.querySelector(selector);
+            if (!el) return;
+            
+            if (!el.zkSearchableSelect) {
                 if (selector === '#geoDivisionSelect') initDivisionSelect();
                 else if (selector === '#geoDistrictSelect') initDistrictSelect();
                 else if (selector === '#geoUpazilaSelect') initUpazilaSelect();
                 else initSelect2Boxes();
             }
-            if ($el.data('select2') && $el.hasClass('select2-hidden-accessible')) {
-                $el.select2('open');
+            
+            if (el.zkSearchableSelect) {
+                el.zkSearchableSelect.open();
             } else {
-                $el.trigger('focus');
+                el.focus();
             }
         } catch (e) {
             try {
@@ -1818,7 +1969,7 @@
                         const optBn = opt.getAttribute('data-bn') || opt.dataset?.bn || opt.textContent;
                         if (optBn && (optBn.includes(targetDiv) || targetDiv.includes(optBn))) {
                             divEl.value = opt.value;
-                            $(divEl).trigger('change');
+                            divEl.dispatchEvent(new Event('change', { bubbles: true }));
                             window.onDivisionChange(opt.value);
                             break;
                         }
@@ -1832,7 +1983,7 @@
                                     const optBn = opt.getAttribute('data-bn') || opt.dataset?.bn || opt.textContent;
                                     if (optBn && (optBn.includes(targetDist) || targetDist.includes(optBn))) {
                                         distEl.value = opt.value;
-                                        $(distEl).trigger('change');
+                                        distEl.dispatchEvent(new Event('change', { bubbles: true }));
                                         window.onDistrictChange(opt.value);
                                         break;
                                     }
@@ -1846,7 +1997,7 @@
                                                 const optBn = opt.getAttribute('data-bn') || opt.dataset?.bn || opt.textContent;
                                                 if (optBn && (optBn.includes(targetUp) || targetUp.includes(optBn))) {
                                                     upEl.value = opt.value;
-                                                    $(upEl).trigger('change');
+                                                    upEl.dispatchEvent(new Event('change', { bubbles: true }));
                                                     window.onUpazilaChange(opt.value);
                                                     break;
                                                 }
@@ -1893,12 +2044,7 @@
             }
         });
         document.addEventListener('turbo:before-cache', () => {
-            if (typeof window.jQuery !== 'undefined' && window.jQuery.fn && window.jQuery.fn.select2) {
-                try { window.jQuery('#geoDivisionSelect').select2('destroy'); } catch(e) {}
-                try { window.jQuery('#geoDistrictSelect').select2('destroy'); } catch(e) {}
-                try { window.jQuery('#geoUpazilaSelect').select2('destroy'); } catch(e) {}
-                window.jQuery('.select2-container').remove();
-            }
+            document.querySelectorAll('.zk-ss-container').forEach(el => el.remove());
         });
     }
     window.reinitCheckoutGeo = safeInit;

@@ -64,7 +64,7 @@
             </div>
         </div>
         <div class="col-md-6">
-            <button type="button" class="btn btn-outline-secondary filter-btn w-100" onclick="$('#filterRefundStatus').val('all'); refundsTable.draw();">
+            <button type="button" class="btn btn-outline-secondary filter-btn w-100" onclick="document.getElementById('filterRefundStatus').value='all'; if(window.refundsTable) window.refundsTable.draw();">
                 <i class="fa-solid fa-rotate-left me-1"></i> Reset Filters
             </button>
         </div>
@@ -102,17 +102,18 @@
         const tableEl = document.getElementById('refundsTable');
         if (!tableEl) return;
 
-        if ($.fn.DataTable.isDataTable('#refundsTable')) {
-            $('#refundsTable').DataTable().clear().destroy();
+        if (window.VanillaDataTable && VanillaDataTable.isDataTable('#refundsTable')) {
+            VanillaDataTable.getInstance('#refundsTable').destroy();
         }
 
-        refundsTable = $('#refundsTable').DataTable({
+        refundsTable = new VanillaDataTable('#refundsTable', {
             processing: true,
             serverSide: true,
             ajax: {
                 url: "{{ route('admin.refunds.index') }}",
                 data: function (d) {
-                    d.status = $('#filterRefundStatus').val();
+                    const st = document.getElementById('filterRefundStatus');
+                    d.status = st ? st.value : 'all';
                 }
             },
             columns: [
@@ -134,10 +135,14 @@
                 processing: '<div class="spinner-border spinner-border-sm text-primary" role="status"></div> Loading refunds...'
             }
         });
+        window.refundsTable = refundsTable;
 
-        $('#filterRefundStatus').off('change').on('change', function () {
-            if (refundsTable) refundsTable.draw();
-        });
+        const fStatus = document.getElementById('filterRefundStatus');
+        if (fStatus) {
+            fStatus.onchange = () => {
+                if (refundsTable) refundsTable.draw();
+            };
+        }
     }
 
     document.addEventListener('turbo:load', initRefundsTable);

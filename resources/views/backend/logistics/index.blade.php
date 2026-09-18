@@ -63,7 +63,7 @@
             </div>
         </div>
         <div class="col-md-6">
-            <button type="button" class="btn btn-outline-secondary filter-btn w-100" onclick="$('#filterCourierProvider').val('all'); logisticsTable.draw();">
+            <button type="button" class="btn btn-outline-secondary filter-btn w-100" onclick="document.getElementById('filterCourierProvider').value='all'; if(window.logisticsTable) window.logisticsTable.draw();">
                 <i class="fa-solid fa-rotate-left me-1"></i> Reset Filters
             </button>
         </div>
@@ -100,17 +100,18 @@
         const tableEl = document.getElementById('logisticsTable');
         if (!tableEl) return;
 
-        if ($.fn.DataTable.isDataTable('#logisticsTable')) {
-            $('#logisticsTable').DataTable().clear().destroy();
+        if (window.VanillaDataTable && VanillaDataTable.isDataTable('#logisticsTable')) {
+            VanillaDataTable.getInstance('#logisticsTable').destroy();
         }
 
-        logisticsTable = $('#logisticsTable').DataTable({
+        logisticsTable = new VanillaDataTable('#logisticsTable', {
             processing: true,
             serverSide: true,
             ajax: {
                 url: "{{ route('admin.logistics.index') }}",
                 data: function (d) {
-                    d.provider = $('#filterCourierProvider').val();
+                    const p = document.getElementById('filterCourierProvider');
+                    d.provider = p ? p.value : 'all';
                 }
             },
             columns: [
@@ -131,10 +132,14 @@
                 processing: '<div class="spinner-border spinner-border-sm text-primary" role="status"></div> Loading consignments...'
             }
         });
+        window.logisticsTable = logisticsTable;
 
-        $('#filterCourierProvider').off('change').on('change', function () {
-            if (logisticsTable) logisticsTable.draw();
-        });
+        const fProv = document.getElementById('filterCourierProvider');
+        if (fProv) {
+            fProv.onchange = () => {
+                if (logisticsTable) logisticsTable.draw();
+            };
+        }
     }
 
     document.addEventListener('turbo:load', initLogisticsTable);

@@ -318,11 +318,12 @@
                 });
             }
 
-            if (window.jQuery && window.jQuery.fn && window.jQuery.fn.DataTable) {
-                var dt = window.jQuery(".dataTable").DataTable();
-                if (dt && typeof dt.ajax !== "undefined" && typeof dt.ajax.reload === "function") {
-                    dt.ajax.reload(null, false);
-                }
+            if (window.VanillaDataTable && VanillaDataTable.instances) {
+                Object.values(VanillaDataTable.instances).forEach(function(dt) {
+                    if (dt && dt.ajax && typeof dt.ajax.reload === 'function') {
+                        dt.ajax.reload(null, false);
+                    }
+                });
             }
 
             document.dispatchEvent(new CustomEvent("admin:form-submitted", {

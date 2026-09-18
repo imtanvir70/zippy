@@ -53,7 +53,7 @@
             </div>
         </div>
         <div class="col-md-6">
-            <button type="button" class="btn btn-outline-secondary filter-btn w-100" onclick="$('#filterSupportStatus').val('all'); supportTable.draw();">
+            <button type="button" class="btn btn-outline-secondary filter-btn w-100" onclick="document.getElementById('filterSupportStatus').value='all'; if(window.supportTable) window.supportTable.draw();">
                 <i class="fa-solid fa-rotate-left me-1"></i> Reset Filters
             </button>
         </div>
@@ -90,17 +90,18 @@
         const tableEl = document.getElementById('supportTable');
         if (!tableEl) return;
 
-        if ($.fn.DataTable.isDataTable('#supportTable')) {
-            $('#supportTable').DataTable().clear().destroy();
+        if (window.VanillaDataTable && VanillaDataTable.isDataTable('#supportTable')) {
+            VanillaDataTable.getInstance('#supportTable').destroy();
         }
 
-        supportTable = $('#supportTable').DataTable({
+        supportTable = new VanillaDataTable('#supportTable', {
             processing: true,
             serverSide: true,
             ajax: {
                 url: "{{ route('admin.support.index') }}",
                 data: function (d) {
-                    d.status = $('#filterSupportStatus').val();
+                    const st = document.getElementById('filterSupportStatus');
+                    d.status = st ? st.value : 'all';
                 }
             },
             columns: [
@@ -121,10 +122,14 @@
                 processing: '<div class="spinner-border spinner-border-sm text-primary" role="status"></div> Loading tickets...'
             }
         });
+        window.supportTable = supportTable;
 
-        $('#filterSupportStatus').off('change').on('change', function () {
-            if (supportTable) supportTable.draw();
-        });
+        const fStatus = document.getElementById('filterSupportStatus');
+        if (fStatus) {
+            fStatus.onchange = () => {
+                if (supportTable) supportTable.draw();
+            };
+        }
     }
 
     document.addEventListener('turbo:load', initSupportTable);

@@ -51,7 +51,7 @@
             </div>
         </div>
         <div class="col-md-6">
-            <button type="button" class="btn btn-outline-secondary filter-btn w-100" onclick="$('#filterRecovered').val('all'); abandonedTable.draw();">
+            <button type="button" class="btn btn-outline-secondary filter-btn w-100" onclick="document.getElementById('filterRecovered').value='all'; if(window.abandonedTable) window.abandonedTable.draw();">
                 <i class="fa-solid fa-rotate-left me-1"></i> Reset Filters
             </button>
         </div>
@@ -88,17 +88,18 @@
         const tableEl = document.getElementById('abandonedTable');
         if (!tableEl) return;
 
-        if ($.fn.DataTable.isDataTable('#abandonedTable')) {
-            $('#abandonedTable').DataTable().clear().destroy();
+        if (window.VanillaDataTable && VanillaDataTable.isDataTable('#abandonedTable')) {
+            VanillaDataTable.getInstance('#abandonedTable').destroy();
         }
 
-        abandonedTable = $('#abandonedTable').DataTable({
+        abandonedTable = new VanillaDataTable('#abandonedTable', {
             processing: true,
             serverSide: true,
             ajax: {
                 url: "{{ route('admin.abandoned.index') }}",
                 data: function (d) {
-                    d.recovered = $('#filterRecovered').val();
+                    const el = document.getElementById('filterRecovered');
+                    d.recovered = el ? el.value : 'all';
                 }
             },
             columns: [
@@ -119,10 +120,14 @@
                 processing: '<div class="spinner-border spinner-border-sm text-primary" role="status"></div> Loading abandoned carts...'
             }
         });
+        window.abandonedTable = abandonedTable;
 
-        $('#filterRecovered').off('change').on('change', function () {
-            if (abandonedTable) abandonedTable.draw();
-        });
+        const filterRec = document.getElementById('filterRecovered');
+        if (filterRec) {
+            filterRec.onchange = function () {
+                if (abandonedTable) abandonedTable.draw();
+            };
+        }
     }
 
     document.addEventListener('turbo:load', initAbandonedTable);

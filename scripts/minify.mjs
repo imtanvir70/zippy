@@ -324,7 +324,8 @@ const files = [
     { type: 'js',  path: 'public/js/frontend.js',   backup: 'public/js/frontend.src.js' },
     { type: 'js',  path: 'public/js/tracking.js',   backup: 'public/js/tracking.src.js' },
     { type: 'css', path: 'public/backend/css/admin-shell.css', backup: 'public/backend/css/admin-shell.src.css' },
-    { type: 'js',  path: 'public/backend/js/admin-shell.js',   backup: 'public/backend/js/admin-shell.src.js' }
+    { type: 'js',  path: 'public/backend/js/admin-shell.js',   backup: 'public/backend/js/admin-shell.src.js' },
+    { type: 'js',  path: 'public/backend/js/vanilla-datatable.js', backup: 'public/backend/js/vanilla-datatable.src.js' }
 ];
 
 console.log('--- Starting Safe Minification ---');

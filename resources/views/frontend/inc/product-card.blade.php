@@ -202,17 +202,17 @@
 <style>
 .zb-product-card {
     background: #fff;
-    border-radius: 14px;
+    border-radius: 20px;
     overflow: hidden;
-    box-shadow: 0 1px 4px rgba(0,0,0,.06), 0 2px 10px rgba(0,0,0,.04);
+    box-shadow: 0 4px 16px -2px rgba(15, 23, 42, 0.05), 0 2px 6px -1px rgba(0,0,0,0.03);
     display: flex;
     flex-direction: column;
     height: 100%;
-    transition: box-shadow 0.22s ease, transform 0.22s ease;
-    border: 1px solid #f0f0f0;
+    transition: box-shadow 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    border: 1px solid rgba(226, 232, 240, 0.8);
 }
 .zb-product-card:hover {
-    box-shadow: 0 8px 32px rgba(0,0,0,.12);
+    box-shadow: 0 12px 30px -4px rgba(15, 23, 42, 0.12);
     transform: translateY(-3px);
 }
 .zb-product-img-wrap {
@@ -269,40 +269,47 @@
 }
 .zb-product-badge {
     position: absolute;
-    top: 8px;
-    left: 8px;
-    font-size: 10px;
+    top: 10px;
+    left: 10px;
+    font-size: 10.5px;
     font-weight: 700;
-    padding: 3px 8px;
-    border-radius: 20px;
+    padding: 4px 10px;
+    border-radius: 50rem !important;
     color: #fff;
-    letter-spacing: 0.03em;
-    line-height: 1.4;
+    letter-spacing: 0.02em;
+    line-height: 1.3;
     z-index: 3;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
 }
 .zb-quickview-btn {
     position: absolute;
     top: 10px;
     right: 10px;
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    background: #ffffff;
-    border: none;
+    width: 34px;
+    height: 34px;
+    border-radius: 50% !important;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.8);
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 13px;
-    color: #475569;
+    color: #334155;
     cursor: pointer;
-    transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+    transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
     z-index: 3;
-    box-shadow: 0 2px 8px rgba(0,0,0,.1);
+    box-shadow: 0 3px 12px rgba(0,0,0,.08);
 }
 .zb-quickview-btn:hover {
     background: #0f172a;
     color: #ffffff;
     box-shadow: 0 6px 16px rgba(15, 23, 42, 0.25);
+    transform: scale(1.06);
+}
+.zb-quickview-btn:active {
+    transform: scale(0.9);
 }
 @media (min-width: 992px) {
     .zb-quickview-btn {
@@ -314,7 +321,7 @@
         transform: translateY(0) scale(1);
     }
     .zb-product-card:hover .zb-quickview-btn:hover {
-        transform: translateY(-2px) scale(1.05);
+        transform: translateY(-2px) scale(1.06);
     }
 }
 @media (max-width: 991.98px) {
@@ -324,19 +331,19 @@
     }
 }
 .zb-product-body {
-    padding: 10px 10px 12px;
+    padding: 12px 12px 14px;
     display: flex;
     flex-direction: column;
     flex: 1;
-    gap: 4px;
+    gap: 5px;
 }
 @media (min-width: 1260px) {
-    .zb-product-body { padding: 12px 14px 14px; gap: 6px; }
+    .zb-product-body { padding: 14px 16px 16px; gap: 6px; }
 }
 .zb-product-rating {
     display: flex;
     align-items: center;
-    gap: 3px;
+    gap: 4px;
     font-size: 11px;
     color: #64748b;
 }
@@ -345,20 +352,20 @@
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
-    font-size: 12.5px;
+    font-size: 13px;
     font-weight: 600;
-    color: #1e293b;
+    color: #0f172a;
     text-decoration: none;
     line-height: 1.35;
-    min-height: 34px;
+    min-height: 35px;
     transition: color 0.15s;
 }
 .zb-product-title:hover {
-    color: #0f172a;
+    color: #2563eb;
     text-decoration: none;
 }
 @media (min-width: 1260px) {
-    .zb-product-title { font-size: 13.5px; min-height: 36px; }
+    .zb-product-title { font-size: 14px; min-height: 38px; }
 }
 .zb-product-price-row {
     display: flex;
@@ -371,18 +378,18 @@
 .zb-product-price-group {
     display: inline-flex;
     align-items: baseline;
-    gap: 5px;
+    gap: 6px;
     white-space: nowrap;
 }
 .zb-product-price {
-    font-size: 14.5px;
-    font-weight: 700;
-    color: #111;
+    font-size: 15px;
+    font-weight: 800;
+    color: #0f172a;
     line-height: 1.2;
 }
 .zb-product-oldprice {
     font-size: 11.5px;
-    color: #64748b;
+    color: #94a3b8;
     text-decoration: line-through;
     line-height: 1.2;
 }
@@ -390,13 +397,13 @@
     display: inline-flex;
     align-items: center;
     gap: 4.5px;
-    font-size: 11px;
+    font-size: 10.5px;
     font-weight: 600;
     color: #475569;
-    background: #f8fafc;
+    background: #f1f5f9;
     border: 1px solid #e2e8f0;
-    padding: 2.5px 8px;
-    border-radius: 6px;
+    padding: 3px 8px;
+    border-radius: 50rem !important;
     max-width: 95px;
     line-height: 1.2;
     transition: all 0.2s ease;
@@ -404,8 +411,8 @@
 }
 .zb-product-card:hover .zb-product-variant-badge {
     border-color: #cbd5e1;
-    background: #f1f5f9;
-    color: #1e293b;
+    background: #e2e8f0;
+    color: #0f172a;
 }
 .zb-variant-dot {
     width: 6px;
@@ -425,99 +432,38 @@
     justify-content: center;
     gap: 6px;
     width: 100%;
-    padding: 8px 10px;
-    border-radius: 9px;
+    padding: 9px 12px;
+    border-radius: 50rem !important;
     background: #0f172a;
     color: #fff;
     border: none;
     font-size: 13px;
-    font-weight: 600;
+    font-weight: 700;
     cursor: pointer;
     margin-top: auto;
-    transition: background 0.18s ease, transform 0.12s ease;
+    transition: background 0.18s ease, transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.18s ease;
     letter-spacing: 0.01em;
     white-space: nowrap;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.12);
 }
 .zb-btn-cart:hover {
-    background: #334155;
+    background: #1e293b;
     color: #fff;
-    transform: scale(1.01);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(15, 23, 42, 0.2);
 }
 .zb-btn-cart:active {
-    transform: scale(0.98);
+    transform: scale(0.94);
 }
 .btn-cart-content {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
-@media (max-width: 767.98px) {
+/* Granular Fluid Breakpoints for Product Cards (320px to 1400px+) */
+@media (max-width: 359.98px) {
     .zb-product-card {
-        border-radius: 12px;
-    }
-    .zb-product-body {
-        padding: 8px 8px 10px;
-        gap: 3px;
-    }
-    .zb-product-title {
-        font-size: 11.5px;
-        line-height: 1.3;
-        min-height: 30px;
-    }
-    .zb-product-rating {
-        font-size: 10px;
-        gap: 2px;
-    }
-    .zb-product-price-row {
-        gap: 4px;
-    }
-    .zb-product-price {
-        font-size: 13px;
-    }
-    .zb-product-oldprice {
-        font-size: 10.5px;
-    }
-    .zb-product-variant-badge {
-        font-size: 9.5px;
-        padding: 1.5px 5.5px;
-        border-radius: 5px;
-        max-width: 75px;
-        gap: 3.5px;
-    }
-    .zb-variant-dot {
-        width: 5px;
-        height: 5px;
-    }
-    .zb-btn-cart {
-        padding: 6px 6px;
-        font-size: 11.5px;
-        border-radius: 8px;
-        gap: 4px;
-    }
-    .cart-anim-bag {
-        font-size: 11px;
-    }
-    .cart-anim-text, .cart-success-text {
-        font-size: 11px;
-    }
-    .zb-product-badge {
-        font-size: 9px;
-        padding: 2px 6px;
-        top: 6px;
-        left: 6px;
-        border-radius: 6px;
-    }
-    .zb-quickview-btn {
-        width: 26px;
-        height: 26px;
-        font-size: 10.5px;
-        top: 6px;
-        right: 6px;
-    }
-}
-@media (max-width: 379.98px) {
-    .zb-product-card {
-        border-radius: 10px;
+        border-radius: 14px !important;
     }
     .zb-product-body {
         padding: 6px 6px 8px;
@@ -528,25 +474,250 @@
         min-height: 28px;
         line-height: 1.25;
     }
+    .zb-product-rating {
+        font-size: 9.5px;
+        gap: 2px;
+    }
+    .zb-product-price-row {
+        gap: 3px;
+        min-height: 20px;
+    }
     .zb-product-price {
-        font-size: 12.5px;
+        font-size: 12px;
     }
     .zb-product-oldprice {
-        font-size: 10px;
+        font-size: 9.5px;
     }
     .zb-product-variant-badge {
-        font-size: 9px;
-        padding: 1px 4px;
-        max-width: 60px;
+        font-size: 8.5px;
+        padding: 1px 4.5px;
+        border-radius: 50rem !important;
+        max-width: 55px;
+        gap: 2.5px;
+    }
+    .zb-variant-dot {
+        width: 4px;
+        height: 4px;
     }
     .zb-btn-cart {
         padding: 5px 4px;
-        font-size: 11px;
-        border-radius: 7px;
+        font-size: 10.5px;
+        border-radius: 50rem !important;
         gap: 3px;
     }
+    .cart-anim-bag {
+        font-size: 10px;
+    }
     .cart-anim-text, .cart-success-text {
+        font-size: 10px;
+    }
+    .zb-product-badge {
+        font-size: 8.5px;
+        padding: 2px 5px;
+        top: 5px;
+        left: 5px;
+        border-radius: 50rem !important;
+    }
+    .zb-quickview-btn {
+        width: 24px;
+        height: 24px;
+        font-size: 10px;
+        top: 5px;
+        right: 5px;
+    }
+}
+
+@media (min-width: 360px) and (max-width: 539.98px) {
+    .zb-product-card {
+        border-radius: 18px !important;
+    }
+    .zb-product-body {
+        padding: 8px 9px 11px;
+        gap: 3px;
+    }
+    .zb-product-title {
+        font-size: 12px;
+        line-height: 1.3;
+        min-height: 31px;
+    }
+    .zb-product-rating {
+        font-size: 10px;
+        gap: 2px;
+    }
+    .zb-product-price-row {
+        gap: 4px;
+    }
+    .zb-product-price {
+        font-size: 13.5px;
+    }
+    .zb-product-oldprice {
         font-size: 10.5px;
+    }
+    .zb-product-variant-badge {
+        font-size: 9.5px;
+        padding: 2px 6px;
+        border-radius: 50rem !important;
+        max-width: 75px;
+        gap: 3.5px;
+    }
+    .zb-variant-dot {
+        width: 5px;
+        height: 5px;
+    }
+    .zb-btn-cart {
+        padding: 7px 8px;
+        font-size: 11.5px;
+        border-radius: 50rem !important;
+        gap: 4px;
+    }
+    .cart-anim-bag {
+        font-size: 11px;
+    }
+    .cart-anim-text, .cart-success-text {
+        font-size: 11px;
+    }
+    .zb-product-badge {
+        font-size: 9px;
+        padding: 2.5px 7px;
+        top: 7px;
+        left: 7px;
+        border-radius: 50rem !important;
+    }
+    .zb-quickview-btn {
+        width: 28px;
+        height: 28px;
+        font-size: 11px;
+        top: 7px;
+        right: 7px;
+    }
+}
+
+@media (min-width: 540px) and (max-width: 719.98px) {
+    .zb-product-card {
+        border-radius: 18px !important;
+    }
+    .zb-product-body {
+        padding: 9px 10px 12px;
+        gap: 3.5px;
+    }
+    .zb-product-title {
+        font-size: 12px;
+        line-height: 1.3;
+        min-height: 32px;
+    }
+    .zb-product-rating {
+        font-size: 10.5px;
+    }
+    .zb-product-price {
+        font-size: 13.5px;
+    }
+    .zb-product-oldprice {
+        font-size: 10.5px;
+    }
+    .zb-product-variant-badge {
+        font-size: 9.5px;
+        max-width: 72px;
+    }
+    .zb-btn-cart {
+        padding: 7px 8px;
+        font-size: 11.5px;
+    }
+    .zb-product-badge {
+        font-size: 9.5px;
+        padding: 3px 8px;
+        top: 8px;
+        left: 8px;
+    }
+    .zb-quickview-btn {
+        width: 28px;
+        height: 28px;
+        font-size: 11px;
+        top: 8px;
+        right: 8px;
+    }
+}
+
+@media (min-width: 720px) and (max-width: 959.98px) {
+    .zb-product-card {
+        border-radius: 18px !important;
+    }
+    .zb-product-body {
+        padding: 10px 10px 12px;
+        gap: 4px;
+    }
+    .zb-product-title {
+        font-size: 12.5px;
+        line-height: 1.32;
+        min-height: 33px;
+    }
+    .zb-product-price {
+        font-size: 14px;
+    }
+    .zb-product-oldprice {
+        font-size: 11px;
+    }
+    .zb-product-variant-badge {
+        font-size: 10px;
+        max-width: 80px;
+    }
+    .zb-btn-cart {
+        padding: 7.5px 10px;
+        font-size: 12px;
+    }
+    .zb-product-badge {
+        font-size: 10px;
+        padding: 3px 8px;
+        top: 8px;
+        left: 8px;
+    }
+    .zb-quickview-btn {
+        width: 30px;
+        height: 30px;
+        font-size: 11.5px;
+        top: 8px;
+        right: 8px;
+    }
+}
+
+@media (min-width: 960px) and (max-width: 1199.98px) {
+    .zb-product-card {
+        border-radius: 20px;
+    }
+    .zb-product-body {
+        padding: 11px 12px 14px;
+        gap: 4.5px;
+    }
+    .zb-product-title {
+        font-size: 13px;
+        line-height: 1.35;
+        min-height: 35px;
+    }
+    .zb-product-price {
+        font-size: 14.5px;
+    }
+    .zb-product-oldprice {
+        font-size: 11px;
+    }
+    .zb-product-variant-badge {
+        font-size: 10px;
+        max-width: 85px;
+    }
+    .zb-btn-cart {
+        padding: 8px 10px;
+        font-size: 12.5px;
+    }
+    .zb-product-badge {
+        font-size: 10px;
+        padding: 3.5px 8px;
+        top: 9px;
+        left: 9px;
+    }
+    .zb-quickview-btn {
+        width: 32px;
+        height: 32px;
+        font-size: 12px;
+        top: 9px;
+        right: 9px;
     }
 }
 </style>

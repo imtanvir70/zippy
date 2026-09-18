@@ -264,11 +264,11 @@
         catModalInstance = getCatModal();
         safeDeleteModalInstance = getSafeDeleteModal();
 
-        if ($.fn.DataTable.isDataTable('#categoriesTable')) {
-            $('#categoriesTable').DataTable().clear().destroy();
+        if (window.VanillaDataTable && VanillaDataTable.isDataTable('#categoriesTable')) {
+            VanillaDataTable.getInstance('#categoriesTable').destroy();
         }
 
-        categoriesTable = $('#categoriesTable').DataTable({
+        categoriesTable = new VanillaDataTable('#categoriesTable', {
             processing: true,
             serverSide: true,
             ajax: "{{ route('admin.categories.index') }}",

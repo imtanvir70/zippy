@@ -47,11 +47,11 @@
         const tableEl = document.getElementById('customersTable');
         if (!tableEl) return;
 
-        if ($.fn.DataTable.isDataTable('#customersTable')) {
-            $('#customersTable').DataTable().clear().destroy();
+        if (window.VanillaDataTable && VanillaDataTable.isDataTable('#customersTable')) {
+            VanillaDataTable.getInstance('#customersTable').destroy();
         }
 
-        customersTable = $('#customersTable').DataTable({
+        customersTable = new VanillaDataTable('#customersTable', {
             processing: true,
             serverSide: true,
             ajax: "{{ route('admin.customers.index') }}",

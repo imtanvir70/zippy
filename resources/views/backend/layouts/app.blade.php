@@ -37,7 +37,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="{{ asset('backend/lib/bootstrap.min.css') }}" data-turbo-track="reload">
-    <link rel="stylesheet" href="{{ asset('backend/lib/select2.min.css') }}" data-turbo-track="reload">
     <link rel="stylesheet" href="{{ asset('backend/lib/dataTables.bootstrap5.min.css') }}" data-turbo-track="reload">
     <link rel="stylesheet" href="{{ asset('backend/lib/all.min.css') }}" data-turbo-track="reload">
     <link rel="stylesheet" href="{{ asset('backend/lib/template.css') }}" data-turbo-track="reload">
@@ -2341,9 +2340,7 @@
                 display: none !important;
             }
             .form-control,
-            .form-select,
-            .select2-container--default .select2-selection--single,
-            .select2-container--default .select2-selection--multiple {
+            .form-select {
                 font-size: 16px !important;
             }
             .dataTables_wrapper .dataTables_length,
@@ -2475,12 +2472,10 @@
     </div>
 </div>
 
-<script src="{{ asset('backend/lib/jquery-3.7.1.min.js') }}" data-turbo-track="reload" data-turbo-eval="false"></script>
 <script src="{{ asset('backend/lib/bootstrap.bundle.min.js') }}" data-turbo-track="reload" data-turbo-eval="false"></script>
-<script src="{{ asset('backend/lib/select2.min.js') }}" data-turbo-track="reload" data-turbo-eval="false"></script>
-<script src="{{ asset('backend/lib/jquery.dataTables.min.js') }}" data-turbo-track="reload" data-turbo-eval="false"></script>
 <script src="{{ asset('backend/lib/template.js') }}" data-turbo-track="reload" data-turbo-eval="false"></script>
 <script src="{{ asset('lib/axios.min.js') }}?v=1.7.9" data-turbo-track="reload" data-turbo-eval="false"></script>
+<script src="{{ asset('backend/js/vanilla-datatable.js') }}" data-turbo-track="reload" data-turbo-eval="false"></script>
 <script src="{{ asset('backend/js/admin-shell.js') }}" data-turbo-track="reload" data-turbo-eval="false"></script>
 
 <script data-turbo-eval="false">
@@ -2534,19 +2529,22 @@
         });
     }
 
-    if (typeof jQuery !== 'undefined') {
-        $(document).on('processing.dt', function (e, settings, processing) {
-            var wrapper = $(settings.nTableWrapper);
-            var table = $(settings.nTable);
+    document.addEventListener('processing.dt', function (e) {
+        var detail = e.detail || {};
+        var settings = detail.settings || {};
+        var processing = detail.processing;
+        var wrapper = settings.nTableWrapper;
+        var table = settings.nTable;
+        if (wrapper && table) {
             if (processing) {
-                wrapper.addClass('dt-is-processing');
-                table.addClass('dt-table-processing');
+                wrapper.classList.add('dt-is-processing');
+                table.classList.add('dt-table-processing');
             } else {
-                wrapper.removeClass('dt-is-processing');
-                table.removeClass('dt-table-processing');
+                wrapper.classList.remove('dt-is-processing');
+                table.classList.remove('dt-table-processing');
             }
-        });
-    }
+        }
+    });
 
     function updateHeaderThemeIcon(theme) {
         var icon = document.getElementById('headerThemeIcon');
@@ -3258,11 +3256,12 @@
                     if (el) el.innerHTML = targetRes.data;
                 });
             }
-            if (window.jQuery && window.jQuery.fn && window.jQuery.fn.DataTable) {
-                var dt = window.jQuery('.dataTable').DataTable();
-                if (dt && typeof dt.ajax !== 'undefined' && typeof dt.ajax.reload === 'function') {
-                    dt.ajax.reload(null, false);
-                }
+            if (window.VanillaDataTable && VanillaDataTable.instances) {
+                Object.values(VanillaDataTable.instances).forEach(function(dt) {
+                    if (dt && dt.ajax && typeof dt.ajax.reload === 'function') {
+                        dt.ajax.reload(null, false);
+                    }
+                });
             }
             if (typeof options.onSuccess === 'function') options.onSuccess(res);
         }).catch(function() {
@@ -3300,17 +3299,6 @@
             });
         }
 
-        if (window.jQuery && window.jQuery.fn && window.jQuery.fn.select2) {
-            window.jQuery('select.select2').each(function() {
-                if (!window.jQuery(this).data('select2')) {
-                    window.jQuery(this).select2({
-                        width: '100%',
-                        placeholder: window.jQuery(this).attr('placeholder') || 'Select an option',
-                        allowClear: true
-                    });
-                }
-            });
-        }
 
         if (localStorage.getItem('sidebar_collapsed') === 'true' && window.innerWidth >= 992) {
             var shell = document.getElementById('appShell');
@@ -3398,13 +3386,6 @@
         document.documentElement.removeAttribute('style');
         document.body.classList.remove('modal-open', 'overflow-hidden');
         document.body.removeAttribute('style');
-        if (window.jQuery && window.jQuery.fn && window.jQuery.fn.select2) {
-            window.jQuery('select.select2').each(function() {
-                if (window.jQuery(this).data('select2')) {
-                    window.jQuery(this).select2('destroy');
-                }
-            });
-        }
         if (window.Swal && typeof Swal.isVisible === 'function' && Swal.isVisible()) {
             Swal.close();
         }

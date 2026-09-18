@@ -62,7 +62,7 @@
             </div>
         </div>
         <div class="col-md-3">
-            <button type="button" class="btn btn-outline-secondary filter-btn w-100" onclick="$('#filterFraudStatus').val('all'); $('#filterFraudMinScore').val(''); fraudTable.draw();">
+            <button type="button" class="btn btn-outline-secondary filter-btn w-100" onclick="document.getElementById('filterFraudStatus').value='all'; document.getElementById('filterFraudMinScore').value=''; if(window.fraudTable) window.fraudTable.draw();">
                 <i class="fa-solid fa-rotate-left me-1"></i> Reset
             </button>
         </div>
@@ -99,18 +99,20 @@
         const tableEl = document.getElementById('fraudTable');
         if (!tableEl) return;
 
-        if ($.fn.DataTable.isDataTable('#fraudTable')) {
-            $('#fraudTable').DataTable().clear().destroy();
+        if (window.VanillaDataTable && VanillaDataTable.isDataTable('#fraudTable')) {
+            VanillaDataTable.getInstance('#fraudTable').destroy();
         }
 
-        fraudTable = $('#fraudTable').DataTable({
+        fraudTable = new VanillaDataTable('#fraudTable', {
             processing: true,
             serverSide: true,
             ajax: {
                 url: "{{ route('admin.fraud.index') }}",
                 data: function (d) {
-                    d.status = $('#filterFraudStatus').val();
-                    d.min_score = $('#filterFraudMinScore').val();
+                    const st = document.getElementById('filterFraudStatus');
+                    const sc = document.getElementById('filterFraudMinScore');
+                    d.status = st ? st.value : 'all';
+                    d.min_score = sc ? sc.value : '';
                 }
             },
             columns: [
@@ -131,10 +133,12 @@
                 processing: '<div class="spinner-border spinner-border-sm text-primary" role="status"></div> Scanning orders...'
             }
         });
+        window.fraudTable = fraudTable;
 
-        $('#filterFraudStatus, #filterFraudMinScore').off('change').on('change', function () {
-            if (fraudTable) fraudTable.draw();
-        });
+        const fStatus = document.getElementById('filterFraudStatus');
+        const fScore = document.getElementById('filterFraudMinScore');
+        if (fStatus) fStatus.onchange = () => { if (fraudTable) fraudTable.draw(); };
+        if (fScore) fScore.onchange = () => { if (fraudTable) fraudTable.draw(); };
     }
 
     document.addEventListener('turbo:load', initFraudTable);

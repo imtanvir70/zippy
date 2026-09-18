@@ -205,45 +205,69 @@
     }
 }
 
-@media (max-width: 767.98px) {
+@media (max-width: 991.98px) {
+    .zippy-chatbot-container {
+        bottom: calc(78px + env(safe-area-inset-bottom, 0px)) !important;
+        right: 16px !important;
+        z-index: 1045;
+    }
+    .zippy-chat-trigger {
+        position: relative !important;
+        bottom: auto !important;
+        right: auto !important;
+        width: 48px !important;
+        height: 48px !important;
+        box-shadow: 0 8px 20px -3px rgba(37, 99, 235, 0.45), 0 3px 10px rgba(0, 0, 0, 0.15) !important;
+    }
+    .zippy-chat-trigger .trigger-icon {
+        font-size: 20px !important;
+    }
     .zippy-chat-tooltip {
-        bottom: 66px;
-        right: 0;
-        width: 260px;
-        padding: 10px 12px;
+        bottom: 56px !important;
+        right: 0 !important;
+        width: min(260px, calc(100vw - 32px)) !important;
+        max-width: calc(100vw - 32px) !important;
+        padding: 9px 12px !important;
+        border-radius: 14px !important;
     }
     .zippy-chat-tooltip::after {
-        right: 18px;
+        right: 16px !important;
     }
     .zippy-tooltip-title {
-        font-size: 0.82rem;
+        font-size: 0.82rem !important;
     }
     .zippy-tooltip-desc {
-        font-size: 0.74rem;
+        font-size: 0.74rem !important;
     }
-    .zippy-chatbot-container {
-        bottom: calc(72px + env(safe-area-inset-bottom, 0px));
-        right: 14px;
-    }
+
     body:has(.mobile-floating-action-sheet) .zippy-chatbot-container,
     .has-floating-action-sheet .zippy-chatbot-container {
-        bottom: calc(64px + env(safe-area-inset-bottom, 0px));
-        right: 10px;
+        bottom: calc(84px + env(safe-area-inset-bottom, 0px)) !important;
+        right: 16px !important;
     }
     body:has(.mobile-floating-action-sheet) .zippy-chat-trigger,
     .has-floating-action-sheet .zippy-chat-trigger {
-        width: 48px;
-        height: 48px;
+        width: 48px !important;
+        height: 48px !important;
     }
     body:has(.mobile-floating-action-sheet) .zippy-chat-trigger .trigger-icon,
     .has-floating-action-sheet .zippy-chat-trigger .trigger-icon {
-        font-size: 18px;
+        font-size: 20px !important;
     }
-    .zippy-chat-tooltip {
-        width: min(280px, calc(100vw - 28px));
-        max-width: calc(100vw - 28px);
-        bottom: 64px;
-        right: 0;
+
+    body:has(.zk-mobile-bottom-bar) .zippy-chatbot-container,
+    .zk-checkout-wrapper .zippy-chatbot-container {
+        bottom: calc(84px + env(safe-area-inset-bottom, 0px)) !important;
+        right: 16px !important;
+    }
+    body:has(.zk-mobile-bottom-bar) .zippy-chat-trigger,
+    .zk-checkout-wrapper .zippy-chat-trigger {
+        width: 48px !important;
+        height: 48px !important;
+    }
+    body:has(.zk-mobile-bottom-bar) .zippy-chat-trigger .trigger-icon,
+    .zk-checkout-wrapper .zippy-chat-trigger .trigger-icon {
+        font-size: 20px !important;
     }
     .zippy-chatbot-container.active {
         position: fixed;
@@ -1824,9 +1848,9 @@
                 return;
             }
 
-            /* Trigger, close, backdrop, and tooltip clicks are handled
-               by the global delegation in frontend.src.js — do NOT
-               duplicate them here or toggleChat() fires twice. */
+            /* Trigger, close, backdrop, and tooltip clicks are already
+               handled by the global delegation in frontend.src.js.
+               Do NOT add handlers for them here or toggleChat() fires twice. */
         });
 
         let touchStartY = 0;
