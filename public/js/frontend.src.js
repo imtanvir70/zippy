@@ -820,6 +820,7 @@ function openQuickView(productId) {
                 let variantsHtml = '';
                 window.__qvVariants = Array.isArray(p.variants) ? p.variants : [];
                 window.qvBasePrice = price;
+                window.qvOldPrice = oldPrice;
                 if (window.__qvVariants.length > 0) {
                     const firstVar = window.__qvVariants[0];
                     const firstVarName = typeof firstVar === 'object' ? (firstVar.name || firstVar.title) : firstVar;
@@ -839,8 +840,8 @@ function openQuickView(productId) {
                         '<div class="qv-variant-pills">' + pillButtons + '</div>' +
                     '</div>';
                 }
-                let oldPriceHtml = (oldPrice > price && oldPrice > 0) ? '<span class="qv-old-price">৳ ' + oldPrice.toLocaleString('en-US') + '</span>' : '';
-                let savingsHtml = savingsAmount > 0 ? '<span class="qv-savings-tag">৳ ' + savingsAmount.toLocaleString('en-US') + ' ছাড়</span>' : '';
+                let oldPriceHtml = (oldPrice > price && oldPrice > 0) ? '<span class="qv-old-price" id="qvOldPriceDisplay">৳ ' + oldPrice.toLocaleString('en-US') + '</span>' : '<span class="qv-old-price" id="qvOldPriceDisplay" style="display:none;"></span>';
+                let savingsHtml = savingsAmount > 0 ? '<span class="qv-savings-tag" id="qvSavingsDisplay">৳ ' + savingsAmount.toLocaleString('en-US') + ' ছাড়</span>' : '<span class="qv-savings-tag" id="qvSavingsDisplay" style="display:none;"></span>';
                 let videoHtml = p.video_url ? '<div class="my-2"><a href="' + p.video_url + '" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-danger rounded-pill px-3 py-1 font-heading d-inline-flex align-items-center gap-1.5" style="font-size: 0.78rem;"><i class="fa-brands fa-youtube fs-6"></i><span>ভিডিও রিভিউ দেখুন</span></a></div>' : '';
 
                 bodyEl.innerHTML = `
@@ -997,12 +998,14 @@ window.selectQvThumb = selectQvThumb;
 function selectQvVariant(btnEl, vIdxOrName, variantPrice, variantImg) {
     let variantName = vIdxOrName;
     let vPrice = variantPrice;
+    let vOldPrice = window.qvOldPrice || 0;
     let vImg = variantImg;
 
     if (typeof vIdxOrName === 'number' && window.__qvVariants && window.__qvVariants[vIdxOrName]) {
         const v = window.__qvVariants[vIdxOrName];
         variantName = typeof v === 'object' ? (v.name || v.title) : v;
-        vPrice = typeof v === 'object' ? (v.price || window.qvBasePrice) : window.qvBasePrice;
+        vPrice = typeof v === 'object' ? (v.price ?? window.qvBasePrice) : window.qvBasePrice;
+        vOldPrice = typeof v === 'object' ? (v.old_price || window.qvOldPrice || 0) : (window.qvOldPrice || 0);
         vImg = typeof v === 'object' ? (v.image || '') : '';
     }
 
@@ -1017,10 +1020,31 @@ function selectQvVariant(btnEl, vIdxOrName, variantPrice, variantImg) {
     if (labelEl) {
         labelEl.innerText = variantName;
     }
+
+    const currentP = parseFloat(vPrice) || window.qvBasePrice || 0;
+    const oldP = parseFloat(vOldPrice) || 0;
     const priceDisplay = document.getElementById('qvPriceDisplay');
-    if (priceDisplay && vPrice) {
-        priceDisplay.innerText = '৳ ' + parseFloat(vPrice).toLocaleString('en-US');
+    if (priceDisplay && currentP > 0) {
+        priceDisplay.innerText = '৳ ' + currentP.toLocaleString('en-US');
     }
+
+    const oldPriceDisplay = document.getElementById('qvOldPriceDisplay');
+    const savingsDisplay = document.getElementById('qvSavingsDisplay');
+    if (oldP > currentP && currentP > 0) {
+        const saveAmt = oldP - currentP;
+        if (oldPriceDisplay) {
+            oldPriceDisplay.innerText = '৳ ' + oldP.toLocaleString('en-US');
+            oldPriceDisplay.style.display = '';
+        }
+        if (savingsDisplay) {
+            savingsDisplay.innerText = '৳ ' + saveAmt.toLocaleString('en-US') + ' ছাড়';
+            savingsDisplay.style.display = '';
+        }
+    } else {
+        if (oldPriceDisplay) oldPriceDisplay.style.display = 'none';
+        if (savingsDisplay) savingsDisplay.style.display = 'none';
+    }
+
     if (vImg && Array.isArray(window.__qvGalleryList)) {
         const foundIdx = window.__qvGalleryList.findIndex(url => url === vImg || (vImg && url && url.endsWith(vImg)));
         if (foundIdx !== -1) {

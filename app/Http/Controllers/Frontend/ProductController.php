@@ -719,7 +719,7 @@ class ProductController extends Controller
                 $galleryImages = [$product->main_image];
             }
 
-            $variants = $this->normalizeVariants($product->variants, $product->price, $galleryImages, $product->main_image, $product->stock_qty);
+            $variants = $this->normalizeVariants($product->variants, $product->price, $galleryImages, $product->main_image, $product->stock_qty, $product->old_price);
 
             $specifications = is_array($product->specifications) ? $product->specifications : (json_decode($product->specifications ?? '', true) ?: []);
             if (is_string($specifications)) {
