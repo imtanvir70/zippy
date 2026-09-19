@@ -403,7 +403,8 @@
     }
 
     function loadSalesData() {
-        if (sessionStorage.getItem(DISMISS_KEY) === '1') return;
+        if (sessionStorage.getItem(DISMISS_KEY) === '1' || window.__recentSalesLoaded) return;
+        window.__recentSalesLoaded = true;
         axios.get("{{ route('api.recent_sales') }}", {
             headers: { 'Accept': 'application/json' }
         })
@@ -411,21 +412,37 @@
             var data = response.data;
             if (data && data.success && Array.isArray(data.sales) && data.sales.length > 0) {
                 salesQueue = data.sales;
+                window.__recentSalesQueue = data.sales;
                 bindEvents();
-                if (!cycleTimer) {
-                    setTimeout(function() {
-                        displayNextSale();
-                        cycleTimer = setInterval(displayNextSale, CYCLE_INTERVAL);
-                    }, INITIAL_DELAY);
+                if (window.__recentSalesInterval) {
+                    clearInterval(window.__recentSalesInterval);
+                    window.__recentSalesInterval = null;
                 }
+                if (window.__recentSalesInitialTimeout) {
+                    clearTimeout(window.__recentSalesInitialTimeout);
+                    window.__recentSalesInitialTimeout = null;
+                }
+                window.__recentSalesInitialTimeout = setTimeout(function() {
+                    displayNextSale();
+                    window.__recentSalesInterval = setInterval(displayNextSale, CYCLE_INTERVAL);
+                }, INITIAL_DELAY);
             }
         })
-        .catch(function() {});
+        .catch(function() {
+            window.__recentSalesLoaded = false;
+        });
     }
 
     function initToast() {
         bindEvents();
-        if (salesQueue.length === 0) {
+        if (window.__recentSalesQueue && window.__recentSalesQueue.length > 0) {
+            salesQueue = window.__recentSalesQueue;
+            if (!window.__recentSalesInterval) {
+                window.__recentSalesInterval = setInterval(displayNextSale, CYCLE_INTERVAL);
+            }
+            return;
+        }
+        if (salesQueue.length === 0 && !window.__recentSalesLoaded) {
             loadSalesData();
         }
     }
@@ -441,7 +458,18 @@
                 els.wrapper.classList.remove('is-visible');
                 els.wrapper.style.display = 'none';
             }
-            if (autoHideTimer) clearTimeout(autoHideTimer);
+            if (autoHideTimer) {
+                clearTimeout(autoHideTimer);
+                autoHideTimer = null;
+            }
+            if (window.__recentSalesInterval) {
+                clearInterval(window.__recentSalesInterval);
+                window.__recentSalesInterval = null;
+            }
+            if (window.__recentSalesInitialTimeout) {
+                clearTimeout(window.__recentSalesInitialTimeout);
+                window.__recentSalesInitialTimeout = null;
+            }
         });
     }
 

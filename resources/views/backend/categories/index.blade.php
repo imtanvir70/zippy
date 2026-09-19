@@ -617,6 +617,7 @@
                         confirmButtonColor: '#ef4444',
                         cancelButtonColor: '#64748b',
                         confirmButtonText: '<i class="fa-solid fa-trash-can me-1"></i> Yes, delete it!'
+                        confirmButtonHtml: '<i class="fa-solid fa-trash-can me-1"></i> Yes, delete it!'
                     }).then(result => {
                         if (result.isConfirmed) {
                             executeCategoryDelete(id, null);

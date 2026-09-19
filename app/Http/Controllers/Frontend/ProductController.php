@@ -369,12 +369,12 @@ class ProductController extends Controller
 
     public function category(Request $request, $slug)
     {
-        $category = DB::table('categories')->where('slug', $slug)->where('is_active', 1)->first();
+        $allCategoriesMap = FrontendCacheService::activeCategories()->keyBy('id');
+        $category = $allCategoriesMap->firstWhere('slug', $slug);
         if (!$category) {
             abort(404, 'ক্যাটাগরি পাওয়া যায়নি');
         }
 
-        $allCategoriesMap = FrontendCacheService::activeCategories()->keyBy('id');
         $childCategories = $allCategoriesMap->where('parent_id', $category->id)->sortBy('sort_order')->values();
         $childCatIds = $childCategories->pluck('id')->toArray();
         $grandChildCatIds = $allCategoriesMap->whereIn('parent_id', $childCatIds)->pluck('id')->toArray();

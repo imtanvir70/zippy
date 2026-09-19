@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class FrontendCacheService
 {
-    public const TTL = 60;
+    public const TTL = 600;
 
     public static function settings(): array
     {
@@ -137,7 +137,7 @@ class FrontendCacheService
         Cache::forget('theme_settings_all');
     }
 
-    public static function flushProducts(?int $productId = null): void
+    public static function flushProducts(?int $productId = null, ?string $slug = null): void
     {
         Cache::forget('fc.home.data');
         Cache::forget('home_payload_v1');
@@ -146,6 +146,10 @@ class FrontendCacheService
         Cache::forget('fc.sitemap.xml');
         if ($productId) {
             Cache::forget('fc.product.sold.' . $productId);
+            Cache::forget('fc.product.quickview.' . $productId);
+        }
+        if ($slug) {
+            Cache::forget('fc.product.show_page.' . md5($slug));
         }
     }
 }

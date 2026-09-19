@@ -155,6 +155,22 @@
                 clearTimeout(recentSalesTimer);
                 recentSalesTimer = null;
             }
+            if (window.__recentSalesInitialTimeout) {
+                clearTimeout(window.__recentSalesInitialTimeout);
+                window.__recentSalesInitialTimeout = null;
+            }
+            if (window.__recentSalesInterval) {
+                clearInterval(window.__recentSalesInterval);
+                window.__recentSalesInterval = null;
+            }
+            if (window.__cartInterval) {
+                clearInterval(window.__cartInterval);
+                window.__cartInterval = null;
+            }
+            if (window.__chatHistoryInterval) {
+                clearInterval(window.__chatHistoryInterval);
+                window.__chatHistoryInterval = null;
+            }
             if (window.__liveViewersInterval) {
                 clearInterval(window.__liveViewersInterval);
                 window.__liveViewersInterval = null;
@@ -197,18 +213,18 @@
         }
         initRecentSalesTimer();
 
-        if ('requestIdleCallback' in window) {
-            window.requestIdleCallback(() => {
+        if (!window.__partialsInitialized) {
+            window.__partialsInitialized = true;
+            const initPartials = () => {
                 loadPartial('bottom-sheet', 'bottom-sheet-container');
                 loadPartial('cart-drawer', 'cart-drawer-container');
                 loadPartial('chatbot', 'chatbot-container');
-            }, { timeout: 2500 });
-        } else {
-            setTimeout(() => {
-                loadPartial('bottom-sheet', 'bottom-sheet-container');
-                loadPartial('cart-drawer', 'cart-drawer-container');
-                loadPartial('chatbot', 'chatbot-container');
-            }, 1200);
+            };
+            if ('requestIdleCallback' in window) {
+                window.requestIdleCallback(initPartials, { timeout: 2500 });
+            } else {
+                setTimeout(initPartials, 1200);
+            }
         }
 
         if (!window.__headerScrollBound) {
@@ -300,6 +316,8 @@
 
     var recentSalesTimer = null;
     function initRecentSalesTimer() {
+        if (window.__recentSalesInitialized || document.getElementById('recentSalesToastWrapper')) return;
+        window.__recentSalesInitialized = true;
         if (recentSalesTimer) clearTimeout(recentSalesTimer);
         recentSalesTimer = setTimeout(() => {
             loadPartial('recent-sales-popup', 'recent-sales-container');
@@ -1021,7 +1039,11 @@ function adjustQvQty(delta) {
 }
 window.adjustQvQty = adjustQvQty;
 
-function fetchCart() {
+function fetchCart(force = false) {
+    if (!force && window.currentCartData) {
+        renderCartUI(window.currentCartData);
+        return;
+    }
     axios.get('/cart/get')
         .then(res => {
             window.currentCartData = res.data;
@@ -1371,7 +1393,7 @@ function applyDrawerCoupon() {
             if (res.data.success) {
                 if (feedback) feedback.classList.add('d-none');
                 showToast(res.data.message || 'কুপন প্রয়োগ করা হয়েছে!');
-                fetchCart();
+                fetchCart(true);
             } else {
                 if (feedback) {
                     feedback.className = 'small mt-1 text-danger';
@@ -1398,7 +1420,7 @@ function removeDrawerCoupon() {
     axios.post('/cart/remove-coupon')
         .then(() => {
             showToast('কুপন সরানো হয়েছে');
-            fetchCart();
+            fetchCart(true);
         })
         .catch(() => {});
 }

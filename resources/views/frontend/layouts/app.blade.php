@@ -6,7 +6,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Modularized Analytics & Pixel Engine -->
     {!! \App\Services\Marketing\MetaPixelService::renderHeadScript() !!}
-    <script src="{{ asset('js/tracking.js') }}?v=1.0" data-turbo-track="reload" data-turbo-eval="false"></script>
+    <script src="{{ asset('js/tracking.js') }}?v=1.1" data-turbo-track="reload" data-turbo-eval="false"></script>
     {!! \App\Services\Marketing\GtmService::renderHeadScript() !!}
     @stack('preload')
     
@@ -80,6 +80,11 @@
     <meta name="turbo-cache-control" content="no-preview">
 
     <script src="https://cdn.jsdelivr.net/npm/@hotwired/turbo@7.3.0/dist/turbo.es2017-umd.js" defer data-turbo-track="reload"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer data-turbo-track="reload"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js" defer data-turbo-track="reload"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" defer data-turbo-track="reload"></script>
+    <script src="{{ asset('lib/axios.min.js') }}?v=1.7.9" defer data-turbo-track="reload"></script>
+    <script src="{{ asset('js/frontend.js') }}?v=4.2" defer data-turbo-track="reload"></script>
     <style>
         .turbo-progress-bar {
             height: 2.5px;
@@ -114,10 +119,12 @@
         };
     </script>
 
+    <link rel="dns-prefetch" href="//cdn.jsdelivr.net">
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@300;400;500;600;700;800&family=Hind+Siliguri:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700;800&display=swap" media="print" onload="this.media='all'">
-    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@300;400;500;600;700;800&family=Hind+Siliguri:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700;800&display=swap"></noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@400;500;600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&family=Mina:wght@400;700&family=Montserrat:wght@400;500;600;700;800&family=Noto+Sans+Bengali:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&family=Tiro+Bangla:ital@0;1&family=Urbanist:wght@400;500;600;700;800&display=swap" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@400;500;600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&family=Mina:wght@400;700&family=Montserrat:wght@400;500;600;700;800&family=Noto+Sans+Bengali:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&family=Tiro+Bangla:ital@0;1&family=Urbanist:wght@400;500;600;700;800&display=swap"></noscript>
     <link rel="stylesheet" href="{{ asset('lib/all.min.css') }}" media="print" onload="this.media='all'">
     <noscript><link rel="stylesheet" href="{{ asset('lib/all.min.css') }}"></noscript>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css">
@@ -147,7 +154,7 @@
             --primary-dark: #000000;
             --accent: {{ $themeSettings['accent_color'] ?? '#0f172a' }};
             --brand-dark: #000000;
-            --font-custom: '{{ $themeSettings['font_family'] ?? 'Plus Jakarta Sans' }}', 'Inter', 'Anek Bangla', system-ui, sans-serif;
+            --font-custom: '{{ $themeSettings['font_family'] ?? 'Outfit' }}', 'Hind Siliguri', 'Noto Sans Bengali', 'Anek Bangla', 'Inter', system-ui, sans-serif;
             --font-sans: var(--font-custom);
             --font-heading: var(--font-custom);
             --app-bg: #f8fafc;
@@ -334,8 +341,10 @@
             <path d="M3.5 8.5L6.5 11.5L12.5 4.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
         </symbol>
     </svg>
-    {!! \App\Services\Marketing\GtmService::renderBodyScript() !!}
-    {!! \App\Services\Marketing\MetaPixelService::renderBodyScript() !!}
+    <div data-turbo-permanent id="marketing-noscript-container">
+        {!! \App\Services\Marketing\GtmService::renderBodyScript() !!}
+        {!! \App\Services\Marketing\MetaPixelService::renderBodyScript() !!}
+    </div>
     @include('frontend.inc.topbar')
     @include('frontend.inc.header')
     @include('frontend.inc.nav-categories')
@@ -381,11 +390,6 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer data-turbo-track="reload"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js" defer data-turbo-track="reload"></script>
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" defer data-turbo-track="reload"></script>
-    <script src="{{ asset('lib/axios.min.js') }}?v=1.7.9" defer data-turbo-track="reload"></script>
-    <script src="{{ asset('js/frontend.js') }}?v=4.0" defer data-turbo-track="reload" data-turbo-eval="false"></script>
 
     @stack('scripts')
     <script data-turbo-eval="false">

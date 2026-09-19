@@ -126,6 +126,7 @@
                  width="300"
                  height="300"
                  decoding="async"
+                 loading="lazy"
                  onerror="this.onerror=null; this.style.display='none';">
         @endif
 

@@ -1821,6 +1821,10 @@
         if (!c) return;
         const isActive = c.classList.toggle('active');
         if (isActive) {
+            if (!window.__chatbotHistoryLoaded) {
+                window.__chatbotHistoryLoaded = true;
+                loadHistory();
+            }
             if (window.innerWidth <= 768) {
                 if (typeof window.lockPageScroll === 'function') {
                     window.lockPageScroll();
@@ -2714,11 +2718,6 @@
         });
     }
 
-    function initChatbotHistory() {
-        if (window.__chatbotHistoryLoaded) return;
-        window.__chatbotHistoryLoaded = true;
-        loadHistory();
-    }
-    document.addEventListener('turbo:load', initChatbotHistory);
+
 })();
 </script>
