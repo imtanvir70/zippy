@@ -15,76 +15,107 @@ class ProductController extends Controller
 {
     public function show($slug)
     {
-        $product = DB::table('products')
-            ->join('categories', 'products.category_id', '=', 'categories.id')
-            ->select(
-                'products.*',
-                'categories.name as cat_name_en',
-                'categories.name_bn as cat_name_bn',
-                'categories.slug as cat_slug',
-                'categories.parent_id as cat_parent_id'
-            )
-            ->where('products.slug', $slug)
-            ->where('products.is_active', 1)
-            ->first();
+        $cacheKey = 'fc.product.show_page.' . md5($slug);
 
-        if (!$product) {
+        $cachedProductData = Cache::remember($cacheKey, FrontendCacheService::TTL, function () use ($slug) {
+            $product = DB::table('products')
+                ->join('categories', 'products.category_id', '=', 'categories.id')
+                ->select(
+                    'products.*',
+                    'categories.name as cat_name_en',
+                    'categories.name_bn as cat_name_bn',
+                    'categories.slug as cat_slug',
+                    'categories.parent_id as cat_parent_id'
+                )
+                ->where('products.slug', $slug)
+                ->where('products.is_active', 1)
+                ->first();
+
+            if (!$product) {
+                return null;
+            }
+
+            $categoryMap = FrontendCacheService::activeCategories()->keyBy('id');
+            $categoryBreadcrumbs = [];
+            $currCat = $categoryMap->get($product->category_id);
+            while ($currCat) {
+                array_unshift($categoryBreadcrumbs, $currCat);
+                $currCat = !empty($currCat->parent_id) ? $categoryMap->get($currCat->parent_id) : null;
+            }
+
+            $galleryImages = is_array($product->gallery_images) ? $product->gallery_images : (json_decode($product->gallery_images ?? '', true) ?: []);
+            if (is_string($galleryImages)) {
+                $galleryImages = json_decode($galleryImages, true) ?: [];
+            }
+            if (!is_array($galleryImages) || empty($galleryImages)) {
+                $galleryImages = [$product->main_image];
+            }
+
+            $variants = $this->normalizeVariants($product->variants, $product->price, $galleryImages, $product->main_image, $product->stock_qty);
+
+            $specifications = is_array($product->specifications) ? $product->specifications : (json_decode($product->specifications ?? '', true) ?: []);
+            if (is_string($specifications)) {
+                $specifications = json_decode($specifications, true) ?: [];
+            }
+            if (!is_array($specifications)) {
+                $specifications = [];
+            }
+
+            $relatedProducts = DB::table('products')
+                ->join('categories', 'products.category_id', '=', 'categories.id')
+                ->select(
+                    'products.id',
+                    'products.title',
+                    'products.slug',
+                    'products.price',
+                    'products.old_price',
+                    'products.main_image',
+                    'products.gallery_images',
+                    'products.rating',
+                    'products.reviews_count',
+                    'products.tag',
+                    'products.badge_type',
+                    'products.stock_qty',
+                    'products.variants',
+                    'categories.name_bn as category_name',
+                    'categories.slug as category_slug'
+                )
+                ->where('products.category_id', $product->category_id)
+                ->where('products.id', '!=', $product->id)
+                ->where('products.is_active', 1)
+                ->limit(6)
+                ->get();
+
+            $verifiedBuyers = DB::table('order_items')
+                ->join('orders', 'order_items.order_id', '=', 'orders.id')
+                ->where('order_items.product_id', $product->id)
+                ->select('orders.customer_name', 'orders.created_at', 'order_items.product_title', 'order_items.quantity')
+                ->orderByDesc('orders.id')
+                ->limit(10)
+                ->get();
+
+            return [
+                'product' => (array) $product,
+                'categoryBreadcrumbs' => array_map(fn($c) => (array) $c, $categoryBreadcrumbs),
+                'galleryImages' => $galleryImages,
+                'variants' => $variants,
+                'specifications' => $specifications,
+                'relatedProducts' => array_map(fn($p) => (array) $p, $relatedProducts->all()),
+                'verifiedBuyers' => array_map(fn($v) => (array) $v, $verifiedBuyers->all()),
+            ];
+        });
+
+        if (!$cachedProductData || empty($cachedProductData['product'])) {
             abort(404, 'প্রোডাক্টটি খুঁজে পাওয়া যায়নি');
         }
 
-        $categoryMap = FrontendCacheService::activeCategories()->keyBy('id');
-        $categoryBreadcrumbs = [];
-        $currCat = $categoryMap->get($product->category_id);
-        while ($currCat) {
-            array_unshift($categoryBreadcrumbs, $currCat);
-            $currCat = !empty($currCat->parent_id) ? $categoryMap->get($currCat->parent_id) : null;
-        }
-
-        $galleryImages = is_array($product->gallery_images) ? $product->gallery_images : (json_decode($product->gallery_images ?? '', true) ?: []);
-        if (is_string($galleryImages)) {
-            $galleryImages = json_decode($galleryImages, true) ?: [];
-        }
-        if (!is_array($galleryImages) || empty($galleryImages)) {
-            $galleryImages = [$product->main_image];
-        }
-
-        $variants = $this->normalizeVariants($product->variants, $product->price, $galleryImages, $product->main_image, $product->stock_qty);
-
-
-        $specifications = is_array($product->specifications) ? $product->specifications : (json_decode($product->specifications ?? '', true) ?: []);
-        if (is_string($specifications)) {
-            $specifications = json_decode($specifications, true) ?: [];
-        }
-        if (!is_array($specifications)) {
-            $specifications = [];
-        }
-
-
-
-        $relatedProducts = DB::table('products')
-            ->join('categories', 'products.category_id', '=', 'categories.id')
-            ->select(
-                'products.id',
-                'products.title',
-                'products.slug',
-                'products.price',
-                'products.old_price',
-                'products.main_image',
-                'products.gallery_images',
-                'products.rating',
-                'products.reviews_count',
-                'products.tag',
-                'products.badge_type',
-                'products.stock_qty',
-                'products.variants',
-                'categories.name_bn as category_name',
-                'categories.slug as category_slug'
-            )
-            ->where('products.category_id', $product->category_id)
-            ->where('products.id', '!=', $product->id)
-            ->where('products.is_active', 1)
-            ->limit(6)
-            ->get();
+        $product = (object) $cachedProductData['product'];
+        $categoryBreadcrumbs = array_map(fn($c) => (object) $c, $cachedProductData['categoryBreadcrumbs'] ?? []);
+        $galleryImages = $cachedProductData['galleryImages'] ?? [];
+        $variants = $cachedProductData['variants'] ?? [];
+        $specifications = $cachedProductData['specifications'] ?? [];
+        $relatedProducts = collect(array_map(fn($p) => (object) $p, $cachedProductData['relatedProducts'] ?? []));
+        $verifiedBuyers = collect(array_map(fn($v) => (object) $v, $cachedProductData['verifiedBuyers'] ?? []));
 
         $settings = FrontendCacheService::settings();
         $globalFreeShipping = !empty($settings['free_shipping_enabled']) && $settings['free_shipping_enabled'] == '1';
@@ -97,14 +128,6 @@ class ProductController extends Controller
         $siteName = $settings['site_name'] ?? 'ZippyBD';
         $supportPhone = $settings['phone'] ?? '01700-000000';
         $supportEmail = $settings['email'] ?? 'support@zippybd.com';
-
-        $verifiedBuyers = DB::table('order_items')
-            ->join('orders', 'order_items.order_id', '=', 'orders.id')
-            ->where('order_items.product_id', $product->id)
-            ->select('orders.customer_name', 'orders.created_at', 'order_items.product_title', 'order_items.quantity')
-            ->orderByDesc('orders.id')
-            ->limit(10)
-            ->get();
 
         $totalSoldUnits = (int) Cache::remember('fc.product.sold.' . $product->id, FrontendCacheService::TTL, function () use ($product) {
             return (int) DB::table('order_items')->where('product_id', $product->id)->sum('quantity');
@@ -369,7 +392,20 @@ class ProductController extends Controller
             ->whereIn('products.category_id', $targetCategoryIds)
             ->where('products.is_active', 1)
             ->select(
-                'products.*',
+                'products.id',
+                'products.category_id',
+                'products.title',
+                'products.slug',
+                'products.price',
+                'products.old_price',
+                'products.main_image',
+                'products.gallery_images',
+                'products.rating',
+                'products.reviews_count',
+                'products.tag',
+                'products.badge_type',
+                'products.stock_qty',
+                'products.variants',
                 'categories.name as cat_name_en',
                 'categories.name_bn as category_name',
                 'categories.slug as category_slug'
@@ -409,7 +445,20 @@ class ProductController extends Controller
             ->join('categories', 'products.category_id', '=', 'categories.id')
             ->where('products.is_active', 1)
             ->select(
-                'products.*',
+                'products.id',
+                'products.category_id',
+                'products.title',
+                'products.slug',
+                'products.price',
+                'products.old_price',
+                'products.main_image',
+                'products.gallery_images',
+                'products.rating',
+                'products.reviews_count',
+                'products.tag',
+                'products.badge_type',
+                'products.stock_qty',
+                'products.variants',
                 'categories.name as cat_name_en',
                 'categories.name_bn as category_name',
                 'categories.slug as category_slug'
@@ -451,7 +500,20 @@ class ProductController extends Controller
             ->join('categories', 'products.category_id', '=', 'categories.id')
             ->where('products.is_active', 1)
             ->select(
-                'products.*',
+                'products.id',
+                'products.category_id',
+                'products.title',
+                'products.slug',
+                'products.price',
+                'products.old_price',
+                'products.main_image',
+                'products.gallery_images',
+                'products.rating',
+                'products.reviews_count',
+                'products.tag',
+                'products.badge_type',
+                'products.stock_qty',
+                'products.variants',
                 'categories.name as cat_name_en',
                 'categories.name_bn as category_name',
                 'categories.slug as category_slug'
@@ -507,7 +569,20 @@ class ProductController extends Controller
             ->leftJoinSub($salesSub, 'sales', 'sales.product_id', '=', 'products.id')
             ->where('products.is_active', 1)
             ->select(
-                'products.*',
+                'products.id',
+                'products.category_id',
+                'products.title',
+                'products.slug',
+                'products.price',
+                'products.old_price',
+                'products.main_image',
+                'products.gallery_images',
+                'products.rating',
+                'products.reviews_count',
+                'products.tag',
+                'products.badge_type',
+                'products.stock_qty',
+                'products.variants',
                 'categories.name as cat_name_en',
                 'categories.name_bn as category_name',
                 'categories.slug as category_slug',
@@ -551,7 +626,20 @@ class ProductController extends Controller
             ->where('products.is_active', 1)
             ->where('products.is_flash_deal', 1)
             ->select(
-                'products.*',
+                'products.id',
+                'products.category_id',
+                'products.title',
+                'products.slug',
+                'products.price',
+                'products.old_price',
+                'products.main_image',
+                'products.gallery_images',
+                'products.rating',
+                'products.reviews_count',
+                'products.tag',
+                'products.badge_type',
+                'products.stock_qty',
+                'products.variants',
                 'categories.name as cat_name_en',
                 'categories.name_bn as category_name',
                 'categories.slug as category_slug'
@@ -587,46 +675,63 @@ class ProductController extends Controller
 
     public function quickView($id)
     {
-        $product = DB::table('products')
-            ->join('categories', 'products.category_id', '=', 'categories.id')
-            ->select(
-                'products.*',
-                'categories.name_bn as category_name'
-            )
-            ->where('products.id', $id)
-            ->first();
+        $cacheKey = 'fc.product.quickview.' . (int) $id;
 
-        if (!$product) {
-            return response()->json(['success' => false, 'message' => 'Product not found'], 404);
-        }
+        $productData = Cache::remember($cacheKey, FrontendCacheService::TTL, function () use ($id) {
+            $product = DB::table('products')
+                ->join('categories', 'products.category_id', '=', 'categories.id')
+                ->select(
+                    'products.id',
+                    'products.title',
+                    'products.slug',
+                    'products.price',
+                    'products.old_price',
+                    'products.main_image',
+                    'products.gallery_images',
+                    'products.rating',
+                    'products.reviews_count',
+                    'products.tag',
+                    'products.badge_type',
+                    'products.stock_qty',
+                    'products.variants',
+                    'products.short_desc',
+                    'products.description',
+                    'products.specifications',
+                    'categories.name_bn as category_name'
+                )
+                ->where('products.id', $id)
+                ->where('products.is_active', 1)
+                ->first();
 
-        $saveAmt = ($product->old_price && $product->old_price > $product->price)
-            ? ($product->old_price - $product->price)
-            : 0;
+            if (!$product) {
+                return null;
+            }
 
-        $galleryImages = is_array($product->gallery_images) ? $product->gallery_images : (json_decode($product->gallery_images ?? '', true) ?: []);
-        if (is_string($galleryImages)) {
-            $galleryImages = json_decode($galleryImages, true) ?: [];
-        }
-        if (!is_array($galleryImages) || empty($galleryImages)) {
-            $galleryImages = [$product->main_image];
-        }
+            $saveAmt = ($product->old_price && $product->old_price > $product->price)
+                ? ($product->old_price - $product->price)
+                : 0;
 
-        $variants = $this->normalizeVariants($product->variants, $product->price, $galleryImages, $product->main_image, $product->stock_qty);
+            $galleryImages = is_array($product->gallery_images) ? $product->gallery_images : (json_decode($product->gallery_images ?? '', true) ?: []);
+            if (is_string($galleryImages)) {
+                $galleryImages = json_decode($galleryImages, true) ?: [];
+            }
+            if (!is_array($galleryImages) || empty($galleryImages)) {
+                $galleryImages = [$product->main_image];
+            }
 
-        $specifications = is_array($product->specifications) ? $product->specifications : (json_decode($product->specifications ?? '', true) ?: []);
-        if (is_string($specifications)) {
-            $specifications = json_decode($specifications, true) ?: [];
-        }
-        if (!is_array($specifications)) {
-            $specifications = [];
-        }
+            $variants = $this->normalizeVariants($product->variants, $product->price, $galleryImages, $product->main_image, $product->stock_qty);
 
-        $stats = ReviewService::getProductReviewStats($product->id);
+            $specifications = is_array($product->specifications) ? $product->specifications : (json_decode($product->specifications ?? '', true) ?: []);
+            if (is_string($specifications)) {
+                $specifications = json_decode($specifications, true) ?: [];
+            }
+            if (!is_array($specifications)) {
+                $specifications = [];
+            }
 
-        return response()->json([
-            'success' => true,
-            'product' => [
+            $stats = ReviewService::getProductReviewStats($product->id);
+
+            return [
                 'id' => $product->id,
                 'title' => $product->title,
                 'slug' => $product->slug,
@@ -645,7 +750,16 @@ class ProductController extends Controller
                 'short_desc' => $product->short_desc,
                 'description' => $product->description,
                 'in_stock' => $product->stock_qty > 0,
-            ]
+            ];
+        });
+
+        if (!$productData) {
+            return response()->json(['success' => false, 'message' => 'Product not found'], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'product' => $productData,
         ]);
     }
 

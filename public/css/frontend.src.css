@@ -2455,6 +2455,12 @@ button:active,
   .qv-mobile-bottom-dock {
     padding: 8px 14px calc(10px + env(safe-area-inset-bottom, 0px));
   }
+  .qv-mobile-bottom-dock > div {
+    display: flex;
+    align-items: center;
+    gap: 12px !important;
+    width: 100%;
+  }
 }
 
 .qv-slider-box {

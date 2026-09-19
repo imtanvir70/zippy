@@ -886,7 +886,7 @@ function openQuickView(productId) {
                 // Populate Mobile Bottom Action Dock
                 if (mobileDockEl) {
                     mobileDockEl.innerHTML = `
-                        <div class="d-flex align-items-center gap-2.5 w-100">
+                        <div class="d-flex align-items-center w-100" style="gap: 12px !important;">
                             <div class="qv-qty-selector">
                                 <button type="button" class="qv-qty-btn" onclick="adjustQvQty(-1)" aria-label="Decrease">−</button>
                                 <span class="qv-qty-number qv-qty-display">1</span>

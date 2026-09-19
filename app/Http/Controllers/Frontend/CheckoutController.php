@@ -140,33 +140,39 @@ class CheckoutController extends Controller
         $grandTotal = max(0, $subtotal + $shippingCost - $discount);
         $coupon = $couponSession;
 
-        $divisions = DB::table('divisions')->select('id', 'name', 'bn_name')->orderBy('id')->get();
-        $districts = DB::table('districts')->select('id', 'division_id', 'name', 'bn_name')->orderBy('name')->get()->groupBy('division_id');
-        $upazilas = DB::table('upazilas')->select('id', 'district_id', 'name', 'bn_name')->orderBy('name')->get()->groupBy('district_id');
+        $divisions = Cache::remember('fc.geo.divisions_hierarchy', 86400, function () {
+            $divs = DB::table('divisions')->select('id', 'name', 'bn_name')->orderBy('id')->get();
+            $districts = DB::table('districts')->select('id', 'division_id', 'name', 'bn_name')->orderBy('name')->get()->groupBy('division_id');
+            $upazilas = DB::table('upazilas')->select('id', 'district_id', 'name', 'bn_name')->orderBy('name')->get()->groupBy('district_id');
 
-        foreach ($divisions as $div) {
-            $divDistricts = $districts->get($div->id, collect());
-            foreach ($divDistricts as $dist) {
-                $dist->upazilas = $upazilas->get($dist->id, collect())->values();
+            foreach ($divs as $div) {
+                $divDistricts = $districts->get($div->id, collect());
+                foreach ($divDistricts as $dist) {
+                    $dist->upazilas = $upazilas->get($dist->id, collect())->values()->all();
+                }
+                $div->districts = $divDistricts->values()->all();
             }
-            $div->districts = $divDistricts->values();
-        }
 
-        $now = now();
-        $availableCoupons = DB::table('coupons')
-            ->where('is_active', 1)
-            ->where(function ($q) use ($now) {
-                $q->whereNull('start_date')->orWhere('start_date', '<=', $now);
-            })
-            ->where(function ($q) use ($now) {
-                $q->whereNull('end_date')->orWhere('end_date', '>=', $now);
-            })
-            ->where(function ($q) {
-                $q->whereNull('usage_limit')->orWhereRaw('used_count < usage_limit');
-            })
-            ->select('id', 'code', 'type', 'value', 'min_order_amount', 'max_discount_amount')
-            ->orderBy('min_order_amount', 'asc')
-            ->get();
+            return json_decode(json_encode($divs), true);
+        });
+
+        $availableCoupons = Cache::remember('fc.coupons.checkout_available', 300, function () {
+            $now = now();
+            return DB::table('coupons')
+                ->where('is_active', 1)
+                ->where(function ($q) use ($now) {
+                    $q->whereNull('start_date')->orWhere('start_date', '<=', $now);
+                })
+                ->where(function ($q) use ($now) {
+                    $q->whereNull('end_date')->orWhere('end_date', '>=', $now);
+                })
+                ->where(function ($q) {
+                    $q->whereNull('usage_limit')->orWhereRaw('used_count < usage_limit');
+                })
+                ->select('id', 'code', 'type', 'value', 'min_order_amount', 'max_discount_amount')
+                ->orderBy('min_order_amount', 'asc')
+                ->get();
+        });
 
         $orderBump = DB::table('order_bumps')
             ->join('products', 'products.id', '=', 'order_bumps.bump_product_id')

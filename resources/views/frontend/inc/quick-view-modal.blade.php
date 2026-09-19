@@ -638,6 +638,12 @@
         box-shadow: 0 -8px 24px -4px rgba(15, 23, 42, 0.08);
         z-index: 20;
     }
+    .qv-mobile-bottom-dock > div {
+        display: flex;
+        align-items: center;
+        gap: 12px !important;
+        width: 100%;
+    }
     .qv-product-title {
         font-size: 1.15rem;
         margin-bottom: 6px;
