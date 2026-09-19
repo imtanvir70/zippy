@@ -1265,9 +1265,9 @@ class ProductSeeder extends Seeder
             unset($p['cat']);
             $p['category_id'] = $cats[$catSlug]->id;
             $p['sku'] = 'ZB-' . strtoupper(Str::random(6));
-            $p['meta_title'] = "{$p['title']} - ZippyBD অনলাইন শপ";
+            $p['meta_title'] = "{$p['title']} - Zippy অনলাইন শপ";
             $p['meta_description'] = $p['short_desc'];
-            $p['meta_keywords'] = "{$p['title']}, {$cats[$catSlug]->name_bn}, ZippyBD, gadget, bangladesh";
+            $p['meta_keywords'] = "{$p['title']}, {$cats[$catSlug]->name_bn}, Zippy, gadget, bangladesh";
             $gallery = $p['gallery_images'] ?? [$p['main_image']];
             if (count($gallery) <= 1) {
                 $catFallback = match ($catSlug) {

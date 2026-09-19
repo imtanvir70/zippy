@@ -56,7 +56,7 @@ class AbandonedCartController extends Controller
                     $itemTitle = $firstItem ? ($firstItem['title'] ?? ($firstItem['name'] ?? 'পণ্য')) : 'আপনার পছন্দের গ্যাজেট';
                     $custName = trim($row->customer_name ?: 'সম্মানিত গ্রাহক');
 
-                    $waMessage = "আসসালামু আলাইকুম {$custName}! ZippyBD-তে আপনার কার্টে '{$itemTitle}' অর্ডারটি অসম্পূর্ণ রয়েছে। আপনার অর্ডারটি এখনই কনফার্ম করতে বা কোনো সহায়তা লাগলে আমাদের জানান। আমরা দিচ্ছি দ্রুততম হোম ডেলিভারি ও ক্যাশ অন ডেলিভারি সুবিধা! চেকআউট সম্পন্ন করতে ক্লিক করুন: " . url('/checkout');
+                    $waMessage = "আসসালামু আলাইকুম {$custName}! Zippy-তে আপনার কার্টে '{$itemTitle}' অর্ডারটি অসম্পূর্ণ রয়েছে। আপনার অর্ডারটি এখনই কনফার্ম করতে বা কোনো সহায়তা লাগলে আমাদের জানান। আমরা দিচ্ছি দ্রুততম হোম ডেলিভারি ও ক্যাশ অন ডেলিভারি সুবিধা! চেকআউট সম্পন্ন করতে ক্লিক করুন: " . url('/checkout');
 
                     $waBtn = ($digits && strlen($digits) >= 10) ? '<a href="https://wa.me/' . $cleanPhone . '?text=' . urlencode($waMessage) . '" target="_blank" class="btn btn-sm btn-success text-white" title="WhatsApp Recovery Message"><i class="fa-brands fa-whatsapp me-1"></i> WhatsApp</a>' : '';
                     $recoverBtn = !$row->is_recovered ? '<button type="button" class="btn btn-sm btn-light border text-primary" onclick="markCartRecovered(' . $row->id . ')" title="Mark Recovered"><i class="fa-solid fa-check"></i></button>' : '';

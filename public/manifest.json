@@ -1,13 +1,13 @@
 {
-  "name": "ZippyBD - Premium E-Commerce",
-  "short_name": "ZippyBD",
+  "name": "Zippy - Premium E-Commerce",
+  "short_name": "Zippy",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0f172a",
   "theme_color": "#0f172a",
   "orientation": "portrait-primary",
   "scope": "/",
-  "description": "ZippyBD - বাংলাদেশের সেরা প্রিমিয়াম গ্যাজেট, মেকানিক্যাল কিবোর্ড ও লাইফস্টাইল স্টোর।",
+  "description": "Zippy - বাংলাদেশের সেরা প্রিমিয়াম গ্যাজেট, মেকানিক্যাল কিবোর্ড ও লাইফস্টাইল স্টোর।",
   "icons": [
     {
       "src": "/favicon.ico",

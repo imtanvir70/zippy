@@ -14,7 +14,7 @@ class DynamicFreeShippingTest extends TestCase
     {
         $adminId = DB::table('users')->insertGetId([
             'name' => 'Admin User',
-            'email' => 'admin@zippybd.com',
+            'email' => 'admin@Zippy.com',
             'password' => bcrypt('password123'),
             'created_at' => now(),
             'updated_at' => now(),
@@ -50,7 +50,7 @@ class DynamicFreeShippingTest extends TestCase
 
         $adminId = DB::table('users')->insertGetId([
             'name' => 'Admin User',
-            'email' => 'admin@zippybd.com',
+            'email' => 'admin@Zippy.com',
             'password' => bcrypt('password123'),
             'created_at' => now(),
             'updated_at' => now(),

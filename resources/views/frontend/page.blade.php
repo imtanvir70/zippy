@@ -1,6 +1,6 @@
 @extends('frontend.layouts.app')
 
-@section('title', ($page->title ?? 'Page') . ' - ' . ($settings['store_name'] ?? 'ZippyBD'))
+@section('title', ($page->title ?? 'Page') . ' - ' . ($settings['store_name'] ?? 'Zippy'))
 
 @section('content')
 <div class="custom-page-wrapper py-4 py-md-5">
@@ -36,7 +36,7 @@
                         </div>
                         <h1 class="page-main-title font-heading fw-bold text-dark m-0 mb-2">{{ $page->title }}</h1>
                         <p class="text-muted mb-0" style="font-size: 14.5px;">
-                            {{ $settings['store_name'] ?? 'ZippyBD' }} এর অফিশিয়াল নির্দেশিকা ও তথ্যাবলী নিচে বিস্তারিত তুলে ধরা হলো।
+                            {{ $settings['store_name'] ?? 'Zippy' }} এর অফিশিয়াল নির্দেশিকা ও তথ্যাবলী নিচে বিস্তারিত তুলে ধরা হলো।
                         </p>
                     </div>
                 </div>

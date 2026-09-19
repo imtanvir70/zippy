@@ -20,7 +20,7 @@ class AuthController extends Controller
 
         $socialLoginSetting = DB::table('social_login_settings')->first();
         $storeSetting = DB::table('settings')->where('key', 'store_name')->first();
-        $storeName = $storeSetting ? $storeSetting->value : 'ZippyBD';
+        $storeName = $storeSetting ? $storeSetting->value : 'Zippy';
 
         return view('backend.auth.login', compact('socialLoginSetting', 'storeName'));
     }
@@ -114,7 +114,7 @@ class AuthController extends Controller
         }
 
         $storeSetting = DB::table('settings')->where('key', 'store_name')->first();
-        $storeName = $storeSetting ? $storeSetting->value : 'ZippyBD';
+        $storeName = $storeSetting ? $storeSetting->value : 'Zippy';
         $email = $request->query('email', session('reset_email', ''));
         $step = (int) $request->query('step', session('reset_step', 1));
         $otp = $request->query('otp', '');
@@ -156,7 +156,7 @@ class AuthController extends Controller
         );
 
         $storeSetting = DB::table('settings')->where('key', 'store_name')->first();
-        $storeName = $storeSetting ? $storeSetting->value : 'ZippyBD';
+        $storeName = $storeSetting ? $storeSetting->value : 'Zippy';
 
         \App\Services\Mail\DynamicMailConfigService::apply();
 

@@ -18,7 +18,7 @@ class AdminTest extends TestCase
         // Seed Administrator User
         DB::table('users')->insert([
             'name' => 'Administrator',
-            'email' => 'admin@zippybd.com',
+            'email' => 'admin@Zippy.com',
             'password' => Hash::make('admin123'),
             'created_at' => now(),
             'updated_at' => now(),
@@ -65,7 +65,7 @@ class AdminTest extends TestCase
         ]);
 
         DB::table('settings')->insert([
-            ['key' => 'store_name', 'value' => 'ZippyBD', 'created_at' => now(), 'updated_at' => now()],
+            ['key' => 'store_name', 'value' => 'Zippy', 'created_at' => now(), 'updated_at' => now()],
             ['key' => 'store_phone', 'value' => '01700000000', 'created_at' => now(), 'updated_at' => now()],
             ['key' => 'store_whatsapp', 'value' => '01700000000', 'created_at' => now(), 'updated_at' => now()],
             ['key' => 'shipping_dhaka', 'value' => '60', 'created_at' => now(), 'updated_at' => now()],
@@ -79,7 +79,7 @@ class AdminTest extends TestCase
             'admin_logged_in' => true,
             'admin_id' => 1,
             'admin_name' => 'Administrator',
-            'admin_email' => 'admin@zippybd.com'
+            'admin_email' => 'admin@Zippy.com'
         ]);
     }
 
@@ -93,7 +93,7 @@ class AdminTest extends TestCase
     {
         $response = $this->get(route('admin.login'));
         $response->assertStatus(200);
-        $response->assertSee('admin@zippybd.com');
+        $response->assertSee('admin@Zippy.com');
         $response->assertSee('admin123');
         $response->assertSee('Solve IT');
     }
@@ -101,7 +101,7 @@ class AdminTest extends TestCase
     public function test_admin_can_login_with_valid_credentials()
     {
         $response = $this->post(route('admin.login.post'), [
-            'email' => 'admin@zippybd.com',
+            'email' => 'admin@Zippy.com',
             'password' => 'admin123',
         ]);
 
@@ -112,7 +112,7 @@ class AdminTest extends TestCase
     public function test_admin_login_fails_with_invalid_credentials()
     {
         $response = $this->post(route('admin.login.post'), [
-            'email' => 'admin@zippybd.com',
+            'email' => 'admin@Zippy.com',
             'password' => 'wrongpassword',
         ]);
 
@@ -342,12 +342,12 @@ class AdminTest extends TestCase
     public function test_verify_otp_ajax_valid()
     {
         DB::table('password_reset_tokens')->updateOrInsert(
-            ['email' => 'admin@zippybd.com'],
+            ['email' => 'admin@Zippy.com'],
             ['token' => Hash::make('123456'), 'created_at' => now()]
         );
 
         $response = $this->postJson(route('admin.forgot_password.verify_otp_ajax'), [
-            'email' => 'admin@zippybd.com',
+            'email' => 'admin@Zippy.com',
             'otp' => '123456',
         ]);
 
@@ -361,12 +361,12 @@ class AdminTest extends TestCase
     public function test_verify_otp_ajax_invalid()
     {
         DB::table('password_reset_tokens')->updateOrInsert(
-            ['email' => 'admin@zippybd.com'],
+            ['email' => 'admin@Zippy.com'],
             ['token' => Hash::make('123456'), 'created_at' => now()]
         );
 
         $response = $this->postJson(route('admin.forgot_password.verify_otp_ajax'), [
-            'email' => 'admin@zippybd.com',
+            'email' => 'admin@Zippy.com',
             'otp' => '999999',
         ]);
 
@@ -380,12 +380,12 @@ class AdminTest extends TestCase
     public function test_verify_otp_ajax_expired()
     {
         DB::table('password_reset_tokens')->updateOrInsert(
-            ['email' => 'admin@zippybd.com'],
+            ['email' => 'admin@Zippy.com'],
             ['token' => Hash::make('123456'), 'created_at' => now()->subMinutes(20)]
         );
 
         $response = $this->postJson(route('admin.forgot_password.verify_otp_ajax'), [
-            'email' => 'admin@zippybd.com',
+            'email' => 'admin@Zippy.com',
             'otp' => '123456',
         ]);
 

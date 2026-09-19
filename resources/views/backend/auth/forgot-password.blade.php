@@ -621,7 +621,7 @@
                         </div>
                         <div class="input-field-wrap">
                             <span class="input-prefix-icon"><i class="fa-regular fa-envelope"></i></span>
-                            <input type="email" name="email" id="forgotEmailInput" class="input-element" placeholder="admin@zippybd.com" value="{{ old('email', $email ?? '') }}" required autocomplete="email" autofocus>
+                            <input type="email" name="email" id="forgotEmailInput" class="input-element" placeholder="admin@Zippy.com" value="{{ old('email', $email ?? '') }}" required autocomplete="email" autofocus>
                         </div>
                     </div>
 

@@ -850,7 +850,7 @@
                         </div>
                         <div class="col-md-6">
                             <label class="form-label fw-bold small text-light">Email Address <span class="text-danger">*</span></label>
-                            <input type="email" name="email" class="form-control am-input" placeholder="sales@zippybd.com" required>
+                            <input type="email" name="email" class="form-control am-input" placeholder="sales@Zippy.com" required>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label fw-bold small text-light">Branch / Location</label>

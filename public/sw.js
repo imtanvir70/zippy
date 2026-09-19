@@ -1,4 +1,4 @@
-const CACHE_NAME = 'zippybd-v4';
+const CACHE_NAME = 'Zippy-v4';
 const ASSETS_TO_CACHE = [
   '/manifest.json',
   '/lib/all.min.css',

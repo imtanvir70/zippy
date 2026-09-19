@@ -4,8 +4,8 @@
     $searchTerm = $queryText ?? ($query ?? request('q', ''));
 @endphp
 
-@section('title', 'অনুসন্ধানের ফলাফল: "' . $searchTerm . '" | ' . ($settings['store_name'] ?? 'ZippyBD'))
-@section('meta_description', '"' . $searchTerm . '" লিখে অনুসন্ধানকৃত পণ্যের তালিকা দেখুন ' . ($settings['store_name'] ?? 'ZippyBD') . ' এ। সেরা দাম ও দ্রুততম হোম ডেলিভারি।')
+@section('title', 'অনুসন্ধানের ফলাফল: "' . $searchTerm . '" | ' . ($settings['store_name'] ?? 'Zippy'))
+@section('meta_description', '"' . $searchTerm . '" লিখে অনুসন্ধানকৃত পণ্যের তালিকা দেখুন ' . ($settings['store_name'] ?? 'Zippy') . ' এ। সেরা দাম ও দ্রুততম হোম ডেলিভারি।')
 
 @section('content')
 <div class="container-fluid px-3 px-md-4 px-xl-5 py-4">

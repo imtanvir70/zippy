@@ -83,6 +83,15 @@
                 </div>
 
                 <div class="mb-3">
+                    <label for="fbAppId" class="form-label fw-bold">Facebook App ID (fb:app_id) <span class="text-muted fw-normal">(ঐচ্ছিক / ডিবাগার ওয়ার্নিং দূর করার জন্য)</span></label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-light text-muted"><i class="fa-brands fa-facebook-f"></i></span>
+                        <input type="text" class="form-control font-monospace" name="fb_app_id" id="fbAppId" value="{{ old('fb_app_id', $settings['fb_app_id'] ?? '') }}" placeholder="e.g. 123456789012345">
+                    </div>
+                    <div class="form-text small text-muted">developers.facebook.com থেকে আপনার মেটা অ্যাপ আইডি দিন। এটি বসালে ফেসবুক ডিবাগারের "missing fb:app_id" ওয়ার্নিং দূর হয়ে যাবে।</div>
+                </div>
+
+                <div class="mb-3">
                     <label for="metaCapiAccessToken" class="form-label fw-bold">Meta CAPI System User Access Token <span class="text-danger">*</span></label>
                     <div class="position-relative">
                         <textarea class="form-control font-monospace" name="meta_capi_access_token" id="metaCapiAccessToken" rows="4" placeholder="EAAB... (Paste your Meta Graph API System User Token here)" style="font-size: 13px;">{{ old('meta_capi_access_token', $settings['meta_capi_access_token'] ?? '') }}</textarea>

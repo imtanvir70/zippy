@@ -80,7 +80,7 @@
                     </div>
                     <div>
                         <label class="form-label small fw-bold">Sender ID / Masking</label>
-                        <input type="text" name="sms_sender_id" class="form-control" value="{{ $setting->sms_sender_id }}" placeholder="e.g. ZippyBD">
+                        <input type="text" name="sms_sender_id" class="form-control" value="{{ $setting->sms_sender_id }}" placeholder="e.g. Zippy">
                     </div>
                 </div>
             </div>

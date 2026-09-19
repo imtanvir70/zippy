@@ -712,7 +712,7 @@ fbq('track', 'Purchase', { content_type: 'product', content_ids: @{{content_ids}
                     <div class="row g-2">
                         <div class="col-md-6">
                             <label class="form-label small fw-bold">SMTP Username / Email</label>
-                            <input type="text" name="mail_username" class="form-control" placeholder="security@zippybd.com" value="{{ $settings['mail_username'] ?? 'security@zippybd.com' }}">
+                            <input type="text" name="mail_username" class="form-control" placeholder="security@Zippy.com" value="{{ $settings['mail_username'] ?? 'security@Zippy.com' }}">
                         </div>
                         <div class="col-md-6">
                             <label class="form-label small fw-bold">SMTP Password</label>
@@ -727,11 +727,11 @@ fbq('track', 'Purchase', { content_type: 'product', content_ids: @{{content_ids}
                     <div class="row g-2">
                         <div class="col-md-6">
                             <label class="form-label small fw-bold">Sender Name (From Name)</label>
-                            <input type="text" name="mail_from_name" class="form-control" placeholder="ZippyBD Security" value="{{ $settings['mail_from_name'] ?? 'ZippyBD Security' }}">
+                            <input type="text" name="mail_from_name" class="form-control" placeholder="Zippy Security" value="{{ $settings['mail_from_name'] ?? 'Zippy Security' }}">
                         </div>
                         <div class="col-md-6">
                             <label class="form-label small fw-bold">Sender Address (From Email)</label>
-                            <input type="email" name="mail_from_address" class="form-control" placeholder="security@zippybd.com" value="{{ $settings['mail_from_address'] ?? 'security@zippybd.com' }}">
+                            <input type="email" name="mail_from_address" class="form-control" placeholder="security@Zippy.com" value="{{ $settings['mail_from_address'] ?? 'security@Zippy.com' }}">
                         </div>
                     </div>
                 </div>
@@ -750,7 +750,7 @@ fbq('track', 'Purchase', { content_type: 'product', content_ids: @{{content_ids}
                 </p>
                 <div class="mb-3">
                     <label class="form-label small fw-bold">Recipient Email Address</label>
-                    <input type="email" id="testEmailRecipient" class="form-control" placeholder="admin@example.com" value="{{ $settings['mail_from_address'] ?? 'security@zippybd.com' }}">
+                    <input type="email" id="testEmailRecipient" class="form-control" placeholder="admin@example.com" value="{{ $settings['mail_from_address'] ?? 'security@Zippy.com' }}">
                 </div>
                 <button type="button" class="btn btn-outline-success w-100 py-2 fw-semibold" id="sendTestEmailBtn" onclick="runLiveSmtpTest()">
                     <i class="fa-solid fa-paper-plane me-1.5"></i> Send Test Verification Email

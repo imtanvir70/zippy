@@ -26,5 +26,5 @@ Allow: /
 User-agent: CCBot
 Allow: /
 
-Sitemap: https://zippybd.com/sitemap.xml
-LLMs-Txt: https://zippybd.com/llms.txt
+Sitemap: https://Zippy.com/sitemap.xml
+LLMs-Txt: https://Zippy.com/llms.txt

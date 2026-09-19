@@ -38,7 +38,7 @@ class FacebookFeedTest extends TestCase
         ]);
 
         DB::table('settings')->insert([
-            ['key' => 'store_name', 'value' => 'ZippyBD', 'created_at' => now(), 'updated_at' => now()],
+            ['key' => 'store_name', 'value' => 'Zippy', 'created_at' => now(), 'updated_at' => now()],
         ]);
 
         $response = $this->get('/facebook-product-feed.xml');
@@ -50,6 +50,6 @@ class FacebookFeedTest extends TestCase
         $response->assertSee('<g:availability>in stock</g:availability>', false);
         $response->assertSee('<g:condition>new</g:condition>', false);
         $response->assertSee('<g:price>1850.00 BDT</g:price>', false);
-        $response->assertSee('<g:brand>ZippyBD</g:brand>', false);
+        $response->assertSee('<g:brand>Zippy</g:brand>', false);
     }
 }

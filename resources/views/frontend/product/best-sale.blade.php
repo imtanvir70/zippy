@@ -1,7 +1,7 @@
 @extends('frontend.layouts.app')
 
-@section('title', 'বেস্ট সেলিং প্রোডাক্টস ও টপ রেটেড কালেকশন | ' . ($settings['store_name'] ?? 'ZippyBD'))
-@section('meta_description', 'গ্রাহকদের সবচেয়ে পছন্দের এবং সর্বাধিক বিক্রিত প্রিমিয়াম গ্যাজেট ও ইলেকট্রনিক্স পণ্য কালেকশন দেখুন ' . ($settings['store_name'] ?? 'ZippyBD') . ' এ।')
+@section('title', 'বেস্ট সেলিং প্রোডাক্টস ও টপ রেটেড কালেকশন | ' . ($settings['store_name'] ?? 'Zippy'))
+@section('meta_description', 'গ্রাহকদের সবচেয়ে পছন্দের এবং সর্বাধিক বিক্রিত প্রিমিয়াম গ্যাজেট ও ইলেকট্রনিক্স পণ্য কালেকশন দেখুন ' . ($settings['store_name'] ?? 'Zippy') . ' এ।')
 
 @section('content')
 <div class="container-fluid px-3 px-md-4 px-xl-5 py-4">

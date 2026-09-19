@@ -143,7 +143,7 @@
                     <div>
                         <h6 class="fw-bold mb-1 small">OAuth Consent Screen কনফিগার</h6>
                         <small class="text-muted">
-                            User Type "External" দিন এবং অ্যাপ নাম হিসেবে <strong>{{ $settings['store_name'] ?? 'ZippyBD' }}</strong> দিন।
+                            User Type "External" দিন এবং অ্যাপ নাম হিসেবে <strong>{{ $settings['store_name'] ?? 'Zippy' }}</strong> দিন।
                         </small>
                     </div>
                 </div>

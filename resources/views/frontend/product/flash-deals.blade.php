@@ -1,7 +1,7 @@
 @extends('frontend.layouts.app')
 
-@section('title', 'ফ্ল্যাশ সেল ও স্পেশাল ডিসকাউন্ট অফার | ' . ($settings['store_name'] ?? 'ZippyBD'))
-@section('meta_description', 'সীমিত সময়ের মেগা ফ্ল্যাশ ডিলস অফারে সেরা গ্যাজেট ও ইলেকট্রনিক্স পণ্য কিনুন সবচেয়ে সাশ্রয়ী মূল্যে ' . ($settings['store_name'] ?? 'ZippyBD') . ' থেকে।')
+@section('title', 'ফ্ল্যাশ সেল ও স্পেশাল ডিসকাউন্ট অফার | ' . ($settings['store_name'] ?? 'Zippy'))
+@section('meta_description', 'সীমিত সময়ের মেগা ফ্ল্যাশ ডিলস অফারে সেরা গ্যাজেট ও ইলেকট্রনিক্স পণ্য কিনুন সবচেয়ে সাশ্রয়ী মূল্যে ' . ($settings['store_name'] ?? 'Zippy') . ' থেকে।')
 
 @section('content')
 <div class="container-fluid px-3 px-md-4 px-xl-5 py-4">

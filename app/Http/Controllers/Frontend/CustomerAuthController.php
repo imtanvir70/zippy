@@ -94,7 +94,7 @@ class CustomerAuthController extends Controller
             Auth::loginUsingId($user->id, $remember);
             $request->session()->regenerate();
 
-            $isAdmin = ($user->role === 'admin' || $user->email === 'admin@zippybd.com');
+            $isAdmin = ($user->role === 'admin' || $user->email === 'admin@Zippy.com');
             if ($isAdmin) {
                 $request->session()->put('admin_logged_in', true);
                 $request->session()->put('admin_id', $user->id);

@@ -351,7 +351,7 @@ class AuthAndGuestTrackingTest extends TestCase
         if (!$admin) {
             $adminId = DB::table('users')->insertGetId([
                 'name' => 'Admin Boss',
-                'email' => 'admin_boss@zippybd.com',
+                'email' => 'admin_boss@Zippy.com',
                 'password' => Hash::make('secret123'),
                 'role' => 'admin',
                 'is_active' => 1,

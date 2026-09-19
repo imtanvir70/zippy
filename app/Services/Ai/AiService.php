@@ -656,8 +656,8 @@ class AiService
             ->withToken($resolvedKey)
             ->withHeaders([
                 'Content-Type' => 'application/json',
-                'HTTP-Referer' => config('app.url', 'https://zippybd.com'),
-                'X-Title' => 'ZippyBD AI Engine',
+                'HTTP-Referer' => config('app.url', 'https://Zippy.com'),
+                'X-Title' => 'Zippy AI Engine',
             ])
             ->post($endpoint, $payload);
 
@@ -672,8 +672,8 @@ class AiService
                         ->withToken($resolvedKey)
                         ->withHeaders([
                             'Content-Type' => 'application/json',
-                            'HTTP-Referer' => config('app.url', 'https://zippybd.com'),
-                            'X-Title' => 'ZippyBD AI Engine',
+                            'HTTP-Referer' => config('app.url', 'https://Zippy.com'),
+                            'X-Title' => 'Zippy AI Engine',
                         ])
                         ->post($endpoint, $payload);
                 }
@@ -1088,7 +1088,7 @@ You must return ONLY a raw valid JSON object without markdown code blocks, with 
 
     public function chatCustomerQa(string $message, array $history = []): array
     {
-        $systemPrompt = "You are Zippy AI, the intelligent, friendly customer support assistant for ZippyBD, an e-commerce platform in Bangladesh. Help customers with product questions, shopping advice, delivery timeframes (Dhaka: 24-48h, Nationwide: 48-72h), cash on delivery, and store policies. Respond courteously, accurately, and concisely in the customer's language (Bengali or English).";
+        $systemPrompt = "You are Zippy AI, the intelligent, friendly customer support assistant for Zippy, an e-commerce platform in Bangladesh. Help customers with product questions, shopping advice, delivery timeframes (Dhaka: 24-48h, Nationwide: 48-72h), cash on delivery, and store policies. Respond courteously, accurately, and concisely in the customer's language (Bengali or English).";
 
         $historyPrompt = '';
         if (!empty($history)) {
@@ -1139,7 +1139,7 @@ You must return ONLY a raw valid JSON object without markdown code blocks, with 
 
     public function generateSeoAndDescription(array $input): array
     {
-        $systemPrompt = "You are an Elite E-Commerce Copywriter & Technical SEO Expert for ZippyBD (zippybd.com) in Bangladesh.
+        $systemPrompt = "You are an Elite E-Commerce Copywriter & Technical SEO Expert for Zippy (Zippy.com) in Bangladesh.
 Your task is to write high-converting, realistic product descriptions and SEO metadata.
 
 STRICT RULES:
@@ -1150,9 +1150,9 @@ STRICT RULES:
    - Engaging Intro Paragraph.
    - <h4>প্রধান বৈশিষ্ট্যসমূহ</h4> (4-6 bullet points of key benefits).
    - <h4>স্পেসিফিকেশন</h4> (Technical details if any).
-   - ZippyBD Guarantee Note (১০০% অরিজিনাল প্রোডাক্ট, দ্রুত ক্যাশ অন ডেলিভারি, সহজ রিটার্ন).
+   - Zippy Guarantee Note (১০০% অরিজিনাল প্রোডাক্ট, দ্রুত ক্যাশ অন ডেলিভারি, সহজ রিটার্ন).
 5. SEO METADATA:
-   - meta_title: Catchy, exactly under 60 chars (e.g., '{Name} - Best Price in BD | ZippyBD').
+   - meta_title: Catchy, exactly under 60 chars (e.g., '{Name} - Best Price in BD | Zippy').
    - meta_description: Click-worthy SERP snippet under 155 chars in Bengali/English.
    - meta_keywords: 6-8 highly searched comma-separated LSI keywords.
    - url_slug: Clean, lowercase, English, hyphen-separated.

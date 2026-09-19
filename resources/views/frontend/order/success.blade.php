@@ -1,7 +1,7 @@
 @extends('frontend.layouts.app')
 
 @php
-    $successStoreName = $settings['store_name'] ?? 'ZippyBD';
+    $successStoreName = $settings['store_name'] ?? 'Zippy';
 @endphp
 
 @section('title', 'অর্ডার সফলভাবে সম্পন্ন হয়েছে | ' . $successStoreName)

@@ -80,8 +80,8 @@ class GlobalSettingsController extends Controller
         \App\Services\Mail\DynamicMailConfigService::apply();
 
         try {
-            \Illuminate\Support\Facades\Mail::raw('This is a live test email from ZippyBD Enterprise SMTP Configuration.', function ($m) use ($testEmail) {
-                $m->to($testEmail)->subject('ZippyBD SMTP Test Verification - Successful Delivery');
+            \Illuminate\Support\Facades\Mail::raw('This is a live test email from Zippy Enterprise SMTP Configuration.', function ($m) use ($testEmail) {
+                $m->to($testEmail)->subject('Zippy SMTP Test Verification - Successful Delivery');
             });
 
             return response()->json([

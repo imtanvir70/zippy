@@ -2,7 +2,7 @@
 
 ## 1. Project Identity & Rules
 
-- **Application Name**: Zippy (ZippyBD)
+- **Application Name**: Zippy (Zippy)
 - **Root Directory**: `c:\Users\imtan\Desktop\Zippy`
 - **Core Technology Stack**: Laravel 13, PHP 8.2+, MySQL / SQLite (Testing), Bootstrap 5 Native UI, Vanilla JS & Axios.
 - **Frontend Framework Mandate**: Strictly Bootstrap 5. Under NO circumstances use Tailwind CSS or any third-party CSS utility libraries. All components must employ native Bootstrap 5 classes (`d-flex`, `gap-*`, `card`, `badge`, `form-check form-switch`, `btn`, `offcanvas`, `modal`).

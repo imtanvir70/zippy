@@ -162,7 +162,7 @@ class FraudDetectionService
 
             if ($pastCancelled >= 2) {
                 $score += 20;
-                $reasons[] = "Store Return History: Customer has {$pastCancelled} previously cancelled/returned orders on ZippyBD.";
+                $reasons[] = "Store Return History: Customer has {$pastCancelled} previously cancelled/returned orders on Zippy.";
             }
         }
 

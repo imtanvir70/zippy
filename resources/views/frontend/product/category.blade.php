@@ -1,7 +1,7 @@
 @extends('frontend.layouts.app')
 
-@section('title', ($category->name_bn ?? ($category->name ?? 'ক্যাটাগরি')) . ' কিনুন সাশ্রয়ী মূল্যে | ' . ($settings['store_name'] ?? 'ZippyBD'))
-@section('meta_description', ($category->name_bn ?? ($category->name ?? 'ক্যাটাগরি')) . ' ক্যাটাগরির সেরা পণ্যসমূহ সেরা মূল্যে কিনুন ' . ($settings['store_name'] ?? 'ZippyBD') . ' থেকে। ১০০% অরিজিনাল ও দ্রুততম ডেলিভারি।')
+@section('title', ($category->name_bn ?? ($category->name ?? 'ক্যাটাগরি')) . ' কিনুন সাশ্রয়ী মূল্যে | ' . ($settings['store_name'] ?? 'Zippy'))
+@section('meta_description', ($category->name_bn ?? ($category->name ?? 'ক্যাটাগরি')) . ' ক্যাটাগরির সেরা পণ্যসমূহ সেরা মূল্যে কিনুন ' . ($settings['store_name'] ?? 'Zippy') . ' থেকে। ১০০% অরিজিনাল ও দ্রুততম ডেলিভারি।')
 @section('canonical', route('category.show', $category->slug))
 @section('og_type', 'website')
 
@@ -12,7 +12,7 @@
     '@type' => 'CollectionPage',
     'name' => $category->name_bn ?? ($category->name ?? 'ক্যাটাগরি'),
     'url' => route('category.show', $category->slug),
-    'description' => ($category->name_bn ?? ($category->name ?? 'ক্যাটাগরি')) . ' ক্যাটাগরির সেরা পণ্যসমূহ সেরা মূল্যে কিনুন ZippyBD থেকে।'
+    'description' => ($category->name_bn ?? ($category->name ?? 'ক্যাটাগরি')) . ' ক্যাটাগরির সেরা পণ্যসমূহ সেরা মূল্যে কিনুন Zippy থেকে।'
 ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}
 </script>
 <script type="application/ld+json">

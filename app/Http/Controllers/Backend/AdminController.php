@@ -2125,6 +2125,7 @@ class AdminController extends Controller
             'promo_card3_subtitle',
             'promo_card3_btn_text',
             'promo_card3_btn_url',
+            'fb_app_id',
         ];
 
         foreach ($keys as $key) {
@@ -2143,13 +2144,57 @@ class AdminController extends Controller
             }
         }
 
+        if ($request->hasFile('site_logo')) {
+            $file = $request->file('site_logo');
+            $ext = strtolower($file->getClientOriginalExtension());
+            if ($ext === 'svg' || $ext === 'ico') {
+                $filename = 'site_logo_' . time() . '_' . \Illuminate\Support\Str::random(6) . '.' . $ext;
+                $targetDir = public_path('storage/general');
+                if (!file_exists($targetDir)) {
+                    @mkdir($targetDir, 0755, true);
+                }
+                $file->move($targetDir, $filename);
+                $logoPath = '/storage/general/' . $filename;
+            } else {
+                $optimizer = app(\App\Services\Media\ImageOptimizerService::class);
+                $logoPath = $optimizer->convertToWebp($file, 'general', 800, 95);
+            }
+            DB::table('settings')->updateOrInsert(
+                ['key' => 'site_logo'],
+                ['value' => $logoPath, 'updated_at' => now()]
+            );
+            DB::table('settings')->updateOrInsert(
+                ['key' => 'store_logo'],
+                ['value' => $logoPath, 'updated_at' => now()]
+            );
+            DB::table('settings')->updateOrInsert(
+                ['key' => 'og_image'],
+                ['value' => $logoPath, 'updated_at' => now()]
+            );
+        } elseif ($request->input('remove_site_logo') == '1') {
+            DB::table('settings')->updateOrInsert(
+                ['key' => 'site_logo'],
+                ['value' => '', 'updated_at' => now()]
+            );
+            DB::table('settings')->updateOrInsert(
+                ['key' => 'store_logo'],
+                ['value' => '', 'updated_at' => now()]
+            );
+            DB::table('settings')->updateOrInsert(
+                ['key' => 'og_image'],
+                ['value' => '', 'updated_at' => now()]
+            );
+        }
+
         \Illuminate\Support\Facades\Cache::forget('site_settings');
         \App\Services\Frontend\FrontendCacheService::flush();
 
         if ($request->ajax() || $request->wantsJson()) {
+            $currentLogo = DB::table('settings')->where('key', 'site_logo')->value('value') ?: '';
             return response()->json([
                 'success' => true,
                 'message' => 'Store settings saved successfully.',
+                'site_logo' => $currentLogo ? asset($currentLogo) : '',
             ]);
         }
 
@@ -2182,6 +2227,7 @@ class AdminController extends Controller
                 'promo_card3_subtitle',
                 'promo_card3_btn_text',
                 'promo_card3_btn_url',
+                'fb_app_id',
             ];
 
             if (in_array($key, $keys, true)) {
@@ -2212,10 +2258,10 @@ class AdminController extends Controller
     private function getSettingsMap()
     {
         $defaults = [
-            'store_name' => 'ZippyBD',
+            'store_name' => 'Zippy',
             'store_phone' => '01700000000',
             'whatsapp_number' => '8801700000000',
-            'store_email' => 'support@zippybd.com',
+            'store_email' => 'support@Zippy.com',
             'store_address' => 'ঢাকা, বাংলাদেশ',
             'shipping_dhaka' => '60',
             'shipping_outside' => '120',
@@ -2225,6 +2271,8 @@ class AdminController extends Controller
             'announcement_bar_text' => '🔥 মেগা সেল! সারা দেশে ক্যাশ অন ডেলিভারি সুবিধা!',
             'announcement_bar_active' => '1',
             'currency_symbol' => '৳',
+            'site_logo' => '',
+            'store_logo' => '',
         ];
 
         $dbSettings = DB::table('settings')->pluck('value', 'key')->toArray();

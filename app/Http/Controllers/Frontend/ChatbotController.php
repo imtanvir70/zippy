@@ -971,7 +971,7 @@ class ChatbotController extends Controller
         $outsideDhakaFee = isset($settings['shipping_outside_dhaka']) && is_numeric($settings['shipping_outside_dhaka'])
             ? (float) $settings['shipping_outside_dhaka']
             : 120.00;
-        $storeName = $settings['site_name'] ?? 'ZippyBD';
+        $storeName = $settings['site_name'] ?? 'Zippy';
 
         $orderStatusData = null;
         $ordersListData = null;
@@ -1744,7 +1744,7 @@ class ChatbotController extends Controller
         }
 
         $userActivityContext = "LIVE CUSTOMER BROWSING ACTIVITY:\n"
-            . "- Current Page: " . ($activity['page_title'] ?: ($activity['current_url'] ?: 'Browsing ZippyBD')) . "\n"
+            . "- Current Page: " . ($activity['page_title'] ?: ($activity['current_url'] ?: 'Browsing Zippy')) . "\n"
             . "- Page Type: " . ($activity['page_type'] ?? 'general') . "\n";
 
         if (!empty($activity['current_product'])) {
@@ -2161,7 +2161,7 @@ class ChatbotController extends Controller
 
         $activity = $this->parseUserActivity($request);
         $settings = DB::table('settings')->pluck('value', 'key')->toArray();
-        $storeName = $settings['site_name'] ?? 'ZippyBD';
+        $storeName = $settings['site_name'] ?? 'Zippy';
 
         $dynamicData = $this->generateDynamicGreeting($activity, $storeName, $userLang);
 

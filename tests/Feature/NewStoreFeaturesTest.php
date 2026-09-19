@@ -25,7 +25,7 @@ class NewStoreFeaturesTest extends TestCase
             'admin_logged_in' => true,
             'admin_id' => 1,
             'admin_name' => 'Administrator',
-            'admin_email' => 'admin@zippybd.com'
+            'admin_email' => 'admin@Zippy.com'
         ]);
     }
 

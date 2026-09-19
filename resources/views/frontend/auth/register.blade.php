@@ -1,7 +1,7 @@
 @extends('frontend.layouts.app')
 
 @php
-    $authBrand = $settings['store_name'] ?? 'ZippyBD';
+    $authBrand = $settings['store_name'] ?? 'Zippy';
     $authInitial = strtoupper(substr($authBrand, 0, 1));
 @endphp
 

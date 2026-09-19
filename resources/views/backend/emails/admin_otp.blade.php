@@ -8,7 +8,7 @@
 <body style="margin: 0; padding: 0; background-color: #dbeafe; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: none;">
     @php
         $digits = str_split(str_pad((string)($otp ?? '000000'), 6, '0', STR_PAD_LEFT));
-        $recipientEmail = $email ?? ($user->email ?? 'security@zippybd.com');
+        $recipientEmail = $email ?? ($user->email ?? 'security@Zippy.com');
         $verifyUrl = route('admin.forgot_password', ['step' => 2, 'email' => $recipientEmail, 'otp' => $otp]);
     @endphp
     <table border="0" cellpadding="0" cellspacing="0" width="100%" bgcolor="#dbeafe" style="background: radial-gradient(circle at 50% 10%, #dbeafe 0%, #e0e7ff 50%, #eff6ff 100%); background-color: #dbeafe; padding: 48px 16px;">
@@ -129,7 +129,7 @@
                                             Automated security dispatch sent to <strong style="color: #0f172a;">{{ $recipientEmail }}</strong>.
                                         </p>
                                         <p style="margin: 0;">
-                                            &copy; {{ date('Y') }} Zippy Operations Suite &bull; Contact: <a href="mailto:security@zippybd.com" style="color: #2563eb; text-decoration: none; font-weight: 700;">security@zippybd.com</a>
+                                            &copy; {{ date('Y') }} Zippy Operations Suite &bull; Contact: <a href="mailto:security@Zippy.com" style="color: #2563eb; text-decoration: none; font-weight: 700;">security@Zippy.com</a>
                                         </p>
                                     </td>
                                 </tr>

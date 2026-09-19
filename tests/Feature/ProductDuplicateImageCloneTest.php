@@ -19,13 +19,13 @@ class ProductDuplicateImageCloneTest extends TestCase
         parent::setUp();
 
         DB::table('settings')->insertOrIgnore([
-            ['key' => 'store_name', 'value' => 'ZippyBD', 'created_at' => now(), 'updated_at' => now()],
+            ['key' => 'store_name', 'value' => 'Zippy', 'created_at' => now(), 'updated_at' => now()],
         ]);
 
         DB::table('users')->insertOrIgnore([
             'id' => 1,
             'name' => 'Administrator',
-            'email' => 'admin@zippybd.com',
+            'email' => 'admin@Zippy.com',
             'phone' => '01700000000',
             'role' => 'admin',
             'password' => Hash::make('admin123'),
@@ -50,7 +50,7 @@ class ProductDuplicateImageCloneTest extends TestCase
             'admin_logged_in' => true,
             'admin_id' => 1,
             'admin_name' => 'Administrator',
-            'admin_email' => 'admin@zippybd.com',
+            'admin_email' => 'admin@Zippy.com',
         ]);
     }
 

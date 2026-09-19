@@ -21,7 +21,7 @@ class EnterpriseModulesTest extends TestCase
         // 1. Seed Admin User
         $this->adminUserId = DB::table('users')->insertGetId([
             'name' => 'Administrator',
-            'email' => 'admin@zippybd.com',
+            'email' => 'admin@Zippy.com',
             'password' => Hash::make('admin123'),
             'created_at' => now(),
             'updated_at' => now(),
@@ -84,7 +84,7 @@ class EnterpriseModulesTest extends TestCase
 
         // 4. Seed Enterprise Settings
         DB::table('settings')->insert([
-            ['key' => 'store_name', 'value' => 'ZippyBD', 'created_at' => now(), 'updated_at' => now()],
+            ['key' => 'store_name', 'value' => 'Zippy', 'created_at' => now(), 'updated_at' => now()],
             ['key' => 'courier_default', 'value' => 'steadfast', 'created_at' => now(), 'updated_at' => now()],
             ['key' => 'gtm_enabled', 'value' => '1', 'created_at' => now(), 'updated_at' => now()],
             ['key' => 'gtm_container_id', 'value' => 'GTM-TEST123', 'created_at' => now(), 'updated_at' => now()],
@@ -119,7 +119,7 @@ class EnterpriseModulesTest extends TestCase
             'admin_logged_in' => true,
             'admin_id' => $this->adminUserId,
             'admin_name' => 'Administrator',
-            'admin_email' => 'admin@zippybd.com'
+            'admin_email' => 'admin@Zippy.com'
         ]);
     }
 

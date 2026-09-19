@@ -22,7 +22,7 @@
     </div>
 </div>
 
-<form id="settingsForm" data-autosave="true" onsubmit="handleSettingsSubmit(event)">
+<form id="settingsForm" data-autosave="true" enctype="multipart/form-data" onsubmit="handleSettingsSubmit(event)">
     @csrf
     <div class="row g-4 mb-4">
         <div class="col-lg-6">
@@ -31,9 +31,36 @@
                     <i class="fa-solid fa-store text-primary me-1"></i> Store Profile & Contact Info
                 </h5>
                 <div class="d-flex flex-column gap-3">
+                    <div class="p-3 bg-light rounded-3 border">
+                        <label class="form-label fw-bold d-flex align-items-center justify-content-between mb-2">
+                            <span><i class="fa-solid fa-image text-primary me-1"></i> Site Brand Logo (লোগো)</span>
+                            <span class="badge bg-secondary-subtle text-secondary small">PNG, WebP, SVG, JPG</span>
+                        </label>
+                        <div class="d-flex align-items-center gap-3 flex-wrap">
+                            <div class="rounded-3 border bg-white d-flex align-items-center justify-content-center p-2 position-relative" style="width: 140px; height: 60px; min-width: 140px; overflow: hidden; background: repeating-conic-gradient(#f1f5f9 0% 25%, #ffffff 0% 50%) 50% / 12px 12px;">
+                                @php
+                                    $currentLogo = $settings['site_logo'] ?? ($settings['store_logo'] ?? '');
+                                @endphp
+                                <img id="siteLogoPreview" src="{{ !empty($currentLogo) ? asset($currentLogo) : '' }}" alt="Logo" style="max-height: 100%; max-width: 100%; object-fit: contain; display: {{ !empty($currentLogo) ? 'block' : 'none' }};">
+                                <span id="siteLogoPlaceholder" class="text-muted small fw-medium" style="display: {{ empty($currentLogo) ? 'block' : 'none' }}; font-size: 11px;">
+                                    <i class="fa-solid fa-cloud-arrow-up me-1"></i> No Logo
+                                </span>
+                            </div>
+                            <div class="flex-grow-1">
+                                <input type="file" name="site_logo" id="siteLogoInput" class="form-control form-control-sm" accept="image/png,image/jpeg,image/webp,image/svg+xml,image/x-icon" onchange="previewSiteLogo(this)">
+                                <input type="hidden" name="remove_site_logo" id="removeSiteLogoInput" value="0">
+                                <div class="d-flex align-items-center justify-content-between mt-1">
+                                    <small class="text-muted" style="font-size: 11px;">Recommended: Transparent PNG or SVG (height 40-50px)</small>
+                                    <button type="button" id="removeLogoBtn" class="btn btn-link text-danger p-0 small text-decoration-none" style="font-size: 11px; display: {{ !empty($currentLogo) ? 'inline-block' : 'none' }};" onclick="handleRemoveSiteLogo()">
+                                        <i class="fa-solid fa-trash-can me-1"></i> Remove Logo
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div>
                         <label class="form-label">Store Brand Name <span class="text-danger">*</span></label>
-                        <input type="text" name="store_name" class="form-control" value="{{ $settings['store_name'] ?? 'ZippyBD' }}" required>
+                        <input type="text" name="store_name" class="form-control" value="{{ $settings['store_name'] ?? 'Zippy' }}" required>
                     </div>
                     <div>
                         <label class="form-label">Store Tagline</label>
@@ -51,7 +78,7 @@
                     </div>
                     <div>
                         <label class="form-label">Support Email Address</label>
-                        <input type="email" name="store_email" class="form-control" value="{{ $settings['store_email'] ?? 'support@zippybd.com' }}">
+                        <input type="email" name="store_email" class="form-control" value="{{ $settings['store_email'] ?? 'support@Zippy.com' }}">
                     </div>
                     <div>
                         <label class="form-label">Physical Showroom / Hub Address</label>
@@ -151,6 +178,42 @@
 @push('scripts')
 <script>
 (() => {
+    function previewSiteLogo(input) {
+        const preview = document.getElementById('siteLogoPreview');
+        const placeholder = document.getElementById('siteLogoPlaceholder');
+        const removeBtn = document.getElementById('removeLogoBtn');
+        const removeInput = document.getElementById('removeSiteLogoInput');
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                if (preview) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                }
+                if (placeholder) placeholder.style.display = 'none';
+                if (removeBtn) removeBtn.style.display = 'inline-block';
+                if (removeInput) removeInput.value = '0';
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    function handleRemoveSiteLogo() {
+        const preview = document.getElementById('siteLogoPreview');
+        const placeholder = document.getElementById('siteLogoPlaceholder');
+        const input = document.getElementById('siteLogoInput');
+        const removeBtn = document.getElementById('removeLogoBtn');
+        const removeInput = document.getElementById('removeSiteLogoInput');
+        if (input) input.value = '';
+        if (preview) {
+            preview.src = '';
+            preview.style.display = 'none';
+        }
+        if (placeholder) placeholder.style.display = 'block';
+        if (removeBtn) removeBtn.style.display = 'none';
+        if (removeInput) removeInput.value = '1';
+    }
+
     function handleSettingsSubmit(e) {
         e.preventDefault();
         const form = document.getElementById('settingsForm');
@@ -172,6 +235,17 @@
             }
 
             if (data.success) {
+                if (data.site_logo) {
+                    const preview = document.getElementById('siteLogoPreview');
+                    const placeholder = document.getElementById('siteLogoPlaceholder');
+                    const removeBtn = document.getElementById('removeLogoBtn');
+                    if (preview) {
+                        preview.src = data.site_logo;
+                        preview.style.display = 'block';
+                    }
+                    if (placeholder) placeholder.style.display = 'none';
+                    if (removeBtn) removeBtn.style.display = 'inline-block';
+                }
                 Swal.fire({
                     icon: 'success',
                     title: 'Saved!',
@@ -192,6 +266,8 @@
         });
     }
 
+    window.previewSiteLogo = previewSiteLogo;
+    window.handleRemoveSiteLogo = handleRemoveSiteLogo;
     window.handleSettingsSubmit = handleSettingsSubmit;
 })();
 </script>

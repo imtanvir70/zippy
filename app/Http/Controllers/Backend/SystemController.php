@@ -105,7 +105,7 @@ class SystemController extends Controller
                 'default_socket_timeout' => (ini_get('default_socket_timeout') ?: '60') . ' Seconds',
             ],
             'app' => [
-                'name' => config('app.name', 'ZippyBD'),
+                'name' => config('app.name', 'Zippy'),
                 'env' => app()->environment(),
                 'debug' => (bool) config('app.debug'),
                 'url' => config('app.url'),

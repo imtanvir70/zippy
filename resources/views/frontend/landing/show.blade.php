@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ $product->title }} | স্পেশাল অফার - {{ $settings['store_name'] ?? 'ZippyBD' }}</title>
+    <title>{{ $product->title }} | স্পেশাল অফার - {{ $settings['store_name'] ?? 'Zippy' }}</title>
     <meta name="description" content="{{ $product->short_desc ?: $product->title }}">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -131,7 +131,7 @@
     <header class="lp-header">
         <div class="container d-flex align-items-center justify-content-between">
             <div class="d-flex align-items-center gap-2">
-                <span class="fs-4 fw-bold font-heading text-dark">{{ $settings['store_name'] ?? 'ZippyBD' }}</span>
+                <span class="fs-4 fw-bold font-heading text-dark">{{ $settings['store_name'] ?? 'Zippy' }}</span>
                 <span class="badge bg-black text-white rounded-pill px-2 py-0.5" style="font-size: 0.68rem;">অফিসিয়াল স্টোর</span>
             </div>
             @php $supportPhone = $settings['store_phone'] ?? ($settings['phone'] ?? '01700000000'); @endphp
@@ -417,7 +417,7 @@
 
     <footer class="py-4 bg-white border-top text-center text-muted small">
         <div class="container">
-            <p class="mb-1 fw-semibold text-dark">{{ $settings['store_name'] ?? 'ZippyBD' }} - প্রিমিয়াম গ্যাজেট ও লাইফস্টাইল স্টোর বাংলাদেশ</p>
+            <p class="mb-1 fw-semibold text-dark">{{ $settings['store_name'] ?? 'Zippy' }} - প্রিমিয়াম গ্যাজেট ও লাইফস্টাইল স্টোর বাংলাদেশ</p>
             <p class="mb-0">সহায়তার জন্য কল করুন: {{ $supportPhone }} | কপিরাইট © {{ date('Y') }} সর্বস্বত্ব সংরক্ষিত</p>
         </div>
     </footer>

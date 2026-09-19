@@ -3,7 +3,7 @@
 @php
     $settings = \App\Services\Frontend\FrontendCacheService::settings();
     $whatsappPhone = $settings['whatsapp_number'] ?? '8801700000000';
-    $storeName = $settings['store_name'] ?? 'ZippyBD';
+    $storeName = $settings['store_name'] ?? 'Zippy';
 @endphp
 
 @section('title', 'লাইভ পার্সেল ও অর্ডার ট্র্যাকিং | ' . $storeName)

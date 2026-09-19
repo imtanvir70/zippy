@@ -1,7 +1,7 @@
 @extends('frontend.layouts.app')
 
 @php
-    $checkoutStoreName = $settings['store_name'] ?? 'ZippyBD';
+    $checkoutStoreName = $settings['store_name'] ?? 'Zippy';
     $calculatedTotal = $grandTotal ?? $total ?? max(0, ($subtotal ?? 0) + ($shippingCost ?? 60) - ($discount ?? 0));
     $fallbackProdImg = asset('images/product-placeholder.svg');
 

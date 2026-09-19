@@ -18,6 +18,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Admin Panel') - {{ config('app.name', 'Zippy') }}</title>
+    @php
+        $adminLogo = $settings['site_logo'] ?? ($settings['store_logo'] ?? '');
+        $adminFavicon = !empty($adminLogo) ? asset($adminLogo) : asset('favicon.ico');
+    @endphp
+    <link rel="icon" href="{{ $adminFavicon }}">
+    <link rel="shortcut icon" href="{{ $adminFavicon }}">
+    <link rel="apple-touch-icon" href="{{ $adminFavicon }}">
 
     <meta name="turbo-cache-control" content="no-preview">
     <meta name="turbo-visit-control" content="reload-on-error">

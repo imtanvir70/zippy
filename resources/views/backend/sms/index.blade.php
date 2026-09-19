@@ -33,7 +33,7 @@
                     </div>
                     <div class="col-md-6">
                         <label class="form-label small fw-bold">Sender ID / Masking</label>
-                        <input type="text" name="sender_id" class="form-control" value="{{ $setting->sender_id }}" placeholder="e.g. ZippyBD">
+                        <input type="text" name="sender_id" class="form-control" value="{{ $setting->sender_id }}" placeholder="e.g. Zippy">
                     </div>
                 </div>
 
@@ -93,7 +93,7 @@
             </div>
             <div class="mb-3">
                 <label class="form-label small fw-bold">Test Message</label>
-                <textarea id="testMessage" class="form-control" rows="3">This is a test notification from ZippyBD Store.</textarea>
+                <textarea id="testMessage" class="form-control" rows="3">This is a test notification from Zippy Store.</textarea>
             </div>
             <button type="button" class="btn btn-outline-primary w-100" onclick="sendTestSms()">
                 <i class="fa-solid fa-paper-plane me-1"></i> Send Test Message

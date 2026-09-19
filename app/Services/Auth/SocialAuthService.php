@@ -83,7 +83,7 @@ class SocialAuthService
         if (!$user) {
             $newUserId = DB::table('users')->insertGetId([
                 'name' => $name,
-                'email' => $email ?: ($provider . '_' . $socialId . '@zippybd.local'),
+                'email' => $email ?: ($provider . '_' . $socialId . '@Zippy.local'),
                 'password' => Hash::make(Str::random(32)),
                 'avatar' => $avatar,
                 $column => $socialId,

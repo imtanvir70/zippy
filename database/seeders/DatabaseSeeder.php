@@ -14,7 +14,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         DB::table('users')->updateOrInsert(
-            ['email' => 'admin@zippybd.com'],
+            ['email' => 'admin@Zippy.com'],
             [
                 'name' => 'Administrator',
                 'role' => 'admin',

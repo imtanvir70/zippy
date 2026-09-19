@@ -24,7 +24,7 @@ class EcommerceTest extends TestCase
     {
         $response = $this->get('/');
         $response->assertStatus(200);
-        $response->assertSee('ZippyBD');
+        $response->assertSee('Zippy');
         $response->assertSee('ফ্ল্যাশ সেল');
     }
 

@@ -31,7 +31,7 @@ class OrderTrackingController extends Controller
         $settings = FrontendCacheService::settings();
         $whatsappPhone = $settings['whatsapp_number'] ?? '8801700000000';
 
-        $waText = "হ্যালো ZippyBD! আমি নতুন অর্ডার করেছি।\n"
+        $waText = "হ্যালো Zippy! আমি নতুন অর্ডার করেছি।\n"
             . "অর্ডার নং: {$order->order_number}\n"
             . "নাম: {$order->customer_name}\n"
             . "ফোন: {$order->customer_phone}\n"

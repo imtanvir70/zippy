@@ -11,10 +11,13 @@
     @stack('preload')
     
     @php
-        $siteName = $settings['store_name'] ?? 'ZippyBD';
+        $siteName = $settings['store_name'] ?? 'Zippy';
         $siteTagline = $settings['store_tagline'] ?? 'প্রিমিয়াম গ্যাজেট, মেকানিক্যাল কিবোর্ড ও লাইফস্টাইল স্টোর বাংলাদেশ';
         $defaultTitle = $siteName . ' - ' . $siteTagline;
         $defaultDesc = $settings['meta_description'] ?? ($siteName . ' - বাংলাদেশের বিশ্বস্ত অনলাইন শপ। মেকানিক্যাল কিবোর্ড, ডেস্ক সেটআপ এক্সেসরিজ, অডিও ডিভাইস ও প্রিমিয়াম গ্যাজেট কিনুন সবচেয়ে সাশ্রয়ী মূল্যে।');
+        $siteLogo = $settings['site_logo'] ?? ($settings['store_logo'] ?? '');
+        $defaultOgImage = !empty($settings['og_image']) ? asset($settings['og_image']) : (!empty($siteLogo) ? asset($siteLogo) : asset('images/zippy-og-banner.png'));
+        $siteFavicon = !empty($siteLogo) ? asset($siteLogo) : asset('favicon.ico');
     @endphp
 
     <title>@yield('title', $defaultTitle)</title>
@@ -27,13 +30,21 @@
     <meta property="og:title" content="@yield('title', $defaultTitle)">
     <meta property="og:description" content="@yield('meta_description', $defaultDesc)">
     <meta property="og:url" content="{{ url()->current() }}">
-    <meta property="og:image" content="@yield('og_image', 'https://images.unsplash.com/photo-1518455027359-f3f8164ba6bd?auto=format&fit=crop&w=1200&q=85')">
+    <meta property="og:image" content="@yield('og_image', $defaultOgImage)">
+    <meta property="og:image:secure_url" content="@yield('og_image', $defaultOgImage)">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:alt" content="{{ $siteName }} - {{ $siteTagline }}">
     <meta property="og:site_name" content="{{ $siteName }}">
+    @if(!empty($settings['fb_app_id']))
+    <meta property="fb:app_id" content="{{ $settings['fb_app_id'] }}">
+    @endif
 
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="@yield('title', $defaultTitle)">
     <meta name="twitter:description" content="@yield('meta_description', $defaultDesc)">
-    <meta name="twitter:image" content="@yield('og_image', 'https://images.unsplash.com/photo-1518455027359-f3f8164ba6bd?auto=format&fit=crop&w=1200&q=85')">
+    <meta name="twitter:image" content="@yield('og_image', $defaultOgImage)">
 
     <script type="application/ld+json">
     {!! json_encode([
@@ -41,7 +52,7 @@
         '@type' => 'Organization',
         'name' => $siteName,
         'url' => url('/'),
-        'logo' => asset('favicon.ico'),
+        'logo' => !empty($settings['site_logo']) ? asset($settings['site_logo']) : asset('favicon.ico'),
         'contactPoint' => [
             '@type' => 'ContactPoint',
             'telephone' => $settings['phone_number'] ?? '+8801700000000',
@@ -69,9 +80,9 @@
     </script>
     @stack('extra_meta')
     @stack('schema')
-    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
-    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
-    <link rel="apple-touch-icon" href="{{ asset('favicon.ico') }}">
+    <link rel="icon" href="{{ $siteFavicon }}">
+    <link rel="shortcut icon" href="{{ $siteFavicon }}">
+    <link rel="apple-touch-icon" href="{{ $siteFavicon }}">
     <meta name="theme-color" content="#0f172a">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">

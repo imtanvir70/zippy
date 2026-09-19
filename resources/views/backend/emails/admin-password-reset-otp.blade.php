@@ -19,7 +19,7 @@
                                             {{ strtoupper(substr($storeName ?? 'Z', 0, 1)) }}
                                         </div>
                                         <span style="font-size:18px;font-weight:700;color:#ffffff;margin-left:12px;vertical-align:middle;letter-spacing:-0.02em;">
-                                            {{ $storeName ?? 'ZippyBD' }} Admin Desk
+                                            {{ $storeName ?? 'Zippy' }} Admin Desk
                                         </span>
                                     </td>
                                 </tr>
@@ -51,7 +51,7 @@
                     <tr>
                         <td style="padding:20px 36px;border-top:1px solid #334155;background-color:#162032;text-align:center;">
                             <p style="margin:0;font-size:11px;color:#64748b;letter-spacing:0.02em;">
-                                &copy; {{ date('Y') }} {{ $storeName ?? 'ZippyBD' }} Enterprise Operations. All rights reserved.
+                                &copy; {{ date('Y') }} {{ $storeName ?? 'Zippy' }} Enterprise Operations. All rights reserved.
                             </p>
                         </td>
                     </tr>

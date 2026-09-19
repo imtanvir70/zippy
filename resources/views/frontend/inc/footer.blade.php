@@ -1,14 +1,15 @@
 <footer id="footer">
     @php
-        $footerBrand = $settings['store_name'] ?? 'ZippyBD';
+        $footerBrand = $settings['store_name'] ?? 'Zippy';
         $footerInitial = strtoupper(substr($footerBrand, 0, 1));
         $footerTagline = $settings['store_tagline'] ?? 'বাংলাদেশের বিশ্বস্ত অনলাইন শপ। মেকানিক্যাল কিবোর্ড, ডেস্ক সেটআপ এক্সেসরিজ, অডিও ডিভাইস ও প্রিমিয়াম গ্যাজেট কিনুন সবচেয়ে সাশ্রয়ী মূল্যে।';
         $footerPhone = $settings['store_phone'] ?? '01700-000000';
-        $footerEmail = $settings['store_email'] ?? 'support@zippybd.com';
+        $footerEmail = $settings['store_email'] ?? 'support@Zippy.com';
         $footerWa = preg_replace('/[^0-9]/', '', $settings['store_whatsapp'] ?? '01700000000');
         if (strlen($footerWa) === 11 && str_starts_with($footerWa, '01')) {
             $footerWa = '88' . $footerWa;
         }
+        $siteLogo = $settings['site_logo'] ?? ($settings['store_logo'] ?? '');
     @endphp
     
     <!-- ==========================================
@@ -21,8 +22,12 @@
                 <!-- Col 1: Brand -->
                 <div class="col-lg-4 text-start">
                     <div class="d-flex align-items-center gap-3 footer-header-box">
-                        <div class="brand-logo-box">{{ $footerInitial }}</div>
-                        <h4 class="fw-bold text-white m-0 font-heading fs-4">{{ $footerBrand }}</h4>
+                        @if(!empty($siteLogo))
+                            <img src="{{ asset($siteLogo) }}" alt="{{ $footerBrand }}" style="max-height: 40px; max-width: 170px; object-fit: contain;">
+                        @else
+                            <div class="brand-logo-box">{{ $footerInitial }}</div>
+                            <h4 class="fw-bold text-white m-0 font-heading fs-4">{{ $footerBrand }}</h4>
+                        @endif
                     </div>
                     <p class="text-slate-400 mb-4 pe-lg-4" style="font-size: 14.5px; line-height: 1.8;">
                         {{ $footerTagline }}
@@ -172,8 +177,12 @@
 
         <!-- App Version / Watermark -->
         <div class="text-center pb-2">
-            <div class="brand-logo-box mx-auto mb-2 shadow-sm" style="width: 32px; height: 32px; font-size: 16px;">{{ $footerInitial }}</div>
-            <span class="d-block fw-bold text-dark font-heading" style="font-size: 15px;">{{ $footerBrand }}</span>
+            @if(!empty($siteLogo))
+                <img src="{{ asset($siteLogo) }}" alt="{{ $footerBrand }}" class="mx-auto mb-2" style="max-height: 32px; max-width: 140px; object-fit: contain; display: block;">
+            @else
+                <div class="brand-logo-box mx-auto mb-2 shadow-sm" style="width: 32px; height: 32px; font-size: 16px;">{{ $footerInitial }}</div>
+                <span class="d-block fw-bold text-dark font-heading" style="font-size: 15px;">{{ $footerBrand }}</span>
+            @endif
             <span class="d-block text-secondary mt-0.5" style="font-size: 11.5px;">A concern of <a href="https://www.solveitbd.com" target="_blank" rel="noopener noreferrer" class="text-primary fw-semibold text-decoration-none">Solve IT</a></span>
             <span class="d-block text-secondary mt-1" style="font-size: 10px;">&copy; {{ date('Y') }} All Rights Reserved</span>
         </div>

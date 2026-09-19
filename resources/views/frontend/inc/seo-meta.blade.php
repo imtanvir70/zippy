@@ -1,12 +1,12 @@
 @php
-    $siteName = $siteName ?? 'ZippyBD';
+    $siteName = $siteName ?? 'Zippy';
     $metaTitle = trim($title ?? ($siteName . ' - Online Shopping'));
     $rawDesc = $description ?? ($siteName . ' - Premium Gadgets & Accessories in Bangladesh');
     $metaDescription = Str::limit(trim(preg_replace('/\s+/', ' ', strip_tags($rawDesc))), 160, '');
     $metaUrl = $url ?? url()->current();
     $metaType = $type ?? 'website';
     
-    $fallbackImage = 'https://images.unsplash.com/photo-1518455027359-f3f8164ba6bd?auto=format&fit=crop&w=1200&h=630&q=85';
+    $fallbackImage = asset('images/zippy-og-banner.png');
     $rawImage = $image ?? null;
     if (!empty($rawImage)) {
         $metaImage = filter_var($rawImage, FILTER_VALIDATE_URL) ? $rawImage : asset($rawImage);

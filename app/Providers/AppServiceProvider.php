@@ -43,10 +43,10 @@ class AppServiceProvider extends ServiceProvider
             if (self::$storeSettings === null) {
                 if (Schema::hasTable('settings')) {
                     $raw = DB::table('settings')->pluck('value', 'key')->toArray();
-                    $storeName = $raw['store_name'] ?? $raw['site_name'] ?? 'ZippyBD';
+                    $storeName = $raw['store_name'] ?? $raw['site_name'] ?? 'Zippy';
                     $storePhone = $raw['store_phone'] ?? $raw['phone'] ?? '01700000000';
                     $storeWhatsapp = $raw['store_whatsapp'] ?? $raw['whatsapp_number'] ?? '01700000000';
-                    $storeEmail = $raw['store_email'] ?? $raw['email'] ?? 'support@zippybd.com';
+                    $storeEmail = $raw['store_email'] ?? $raw['email'] ?? 'support@Zippy.com';
                     $storeTagline = $raw['store_tagline'] ?? $raw['site_tagline'] ?? 'প্রিমিয়াম গ্যাজেট ও লাইফস্টাইল স্টোর বাংলাদেশ';
                     $storeAddress = $raw['store_address'] ?? 'ঢাকা, বাংলাদেশ';
                     $shippingDhaka = $raw['shipping_dhaka'] ?? $raw['shipping_inside_dhaka'] ?? '60';
@@ -75,14 +75,14 @@ class AppServiceProvider extends ServiceProvider
                     ]);
                 } else {
                     self::$storeSettings = [
-                        'store_name' => 'ZippyBD',
-                        'site_name' => 'ZippyBD',
+                        'store_name' => 'Zippy',
+                        'site_name' => 'Zippy',
                         'store_phone' => '01700000000',
                         'phone' => '01700000000',
                         'store_whatsapp' => '01700000000',
                         'whatsapp_number' => '01700000000',
-                        'store_email' => 'support@zippybd.com',
-                        'email' => 'support@zippybd.com',
+                        'store_email' => 'support@Zippy.com',
+                        'email' => 'support@Zippy.com',
                         'store_tagline' => 'প্রিমিয়াম গ্যাজেট ও লাইফস্টাইল স্টোর বাংলাদেশ',
                         'site_tagline' => 'প্রিমিয়াম গ্যাজেট ও লাইফস্টাইল স্টোর বাংলাদেশ',
                         'store_address' => 'ঢাকা, বাংলাদেশ',

@@ -1,6 +1,6 @@
 @extends('frontend.layouts.app')
 
-@section('title', 'আমার অর্ডার হিস্ট্রি ও বিবরণ | ' . ($settings['store_name'] ?? 'ZippyBD'))
+@section('title', 'আমার অর্ডার হিস্ট্রি ও বিবরণ | ' . ($settings['store_name'] ?? 'Zippy'))
 
 @section('content')
 <div class="container py-4 py-md-5" style="max-width: 800px;">

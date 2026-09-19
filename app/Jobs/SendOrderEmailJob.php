@@ -54,7 +54,7 @@ class SendOrderEmailJob implements ShouldQueue
         try {
             DynamicMailConfigService::apply();
 
-            $storeName = DB::table('settings')->where('key', 'store_name')->value('value') ?: 'ZippyBD';
+            $storeName = DB::table('settings')->where('key', 'store_name')->value('value') ?: 'Zippy';
             $subject = "[{$storeName}] Order Confirmation #{$order->order_number}";
 
             $itemsText = "";

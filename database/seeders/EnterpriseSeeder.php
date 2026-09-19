@@ -22,7 +22,7 @@ class EnterpriseSeeder extends Seeder
         }
 
         // Assign super_admin role to admin user
-        $adminUser = DB::table('users')->where('email', 'admin@zippybd.com')->first();
+        $adminUser = DB::table('users')->where('email', 'admin@Zippy.com')->first();
         $superRole = DB::table('roles')->where('name', 'super_admin')->first();
         if ($adminUser && $superRole) {
             DB::table('user_roles')->updateOrInsert(
@@ -114,13 +114,13 @@ class EnterpriseSeeder extends Seeder
             'steadfast_secret_key' => 'st_sec_test_secret_772183',
             'pathao_client_id' => 'pathao_test_client_id',
             'pathao_client_secret' => 'pathao_test_secret',
-            'pathao_username' => 'merchant@zippybd.com',
+            'pathao_username' => 'merchant@Zippy.com',
             'pathao_password' => 'merchant_pass',
             'redx_api_token' => 'redx_test_token_8819',
             'sms_provider' => 'bulksms',
             'sms_api_key' => 'sms_test_key_5512',
-            'sms_sender_id' => 'ZippyBD',
-            'sms_order_placed_template' => 'Dear {name}, your order #{order_number} has been received. Total: ৳{total}. Thanks for shopping with ZippyBD!',
+            'sms_sender_id' => 'Zippy',
+            'sms_order_placed_template' => 'Dear {name}, your order #{order_number} has been received. Total: ৳{total}. Thanks for shopping with Zippy!',
             'sms_order_shipped_template' => 'Dear {name}, your order #{order_number} has been handed over to {courier}. Tracking code: {tracking}.',
             'low_stock_threshold' => '5',
             'fraud_auto_flag_threshold' => '65',

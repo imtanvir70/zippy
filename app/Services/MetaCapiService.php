@@ -45,6 +45,7 @@ class MetaCapiService
             return DB::table('settings')
                 ->whereIn('key', [
                     'meta_pixel_id',
+                    'fb_app_id',
                     'meta_capi_access_token',
                     'meta_capi_test_event_code',
                     'meta_capi_status',

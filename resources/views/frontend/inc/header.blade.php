@@ -196,15 +196,20 @@
         
         <div class="d-flex align-items-center gap-3 flex-shrink-0">
             @php
-                $brandTitle = $settings['store_name'] ?? 'ZippyBD';
+                $brandTitle = $settings['store_name'] ?? 'Zippy';
                 $brandInitial = strtoupper(substr($brandTitle, 0, 1));
+                $siteLogo = $settings['site_logo'] ?? ($settings['store_logo'] ?? '');
             @endphp
             <a href="{{ route('home') }}" class="brand-logo d-inline-flex align-items-center gap-2 text-decoration-none select-none" id="mainBrandLogo" title="{{ $brandTitle }} - {{ $settings['store_tagline'] ?? '' }}">
-                <span class="z-icon">{{ $brandInitial }}</span>
-                <span class="brand-name-wrap d-inline-flex align-items-center gap-1">
-                    <span class="brand-name fw-bolder fs-4" id="brandTypingText">{{ $brandTitle }}</span>
-                    <span class="brand-pulse-dot" title="অনলাইন স্টোর"></span>
-                </span>
+                @if(!empty($siteLogo))
+                    <img src="{{ asset($siteLogo) }}" alt="{{ $brandTitle }}" class="brand-logo-img" style="max-height: 38px; max-width: 170px; object-fit: contain;">
+                @else
+                    <span class="z-icon">{{ $brandInitial }}</span>
+                    <span class="brand-name-wrap d-inline-flex align-items-center gap-1">
+                        <span class="brand-name fw-bolder fs-4" id="brandTypingText">{{ $brandTitle }}</span>
+                        <span class="brand-pulse-dot" title="অনলাইন স্টোর"></span>
+                    </span>
+                @endif
             </a>
 
             <div class="header-mega-wrapper d-none d-lg-block" id="headerMegaWrapper">

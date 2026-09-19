@@ -1,7 +1,7 @@
 @extends('frontend.layouts.app')
 
 @php
-    $homeStoreName = $settings['store_name'] ?? 'ZippyBD';
+    $homeStoreName = $settings['store_name'] ?? 'Zippy';
     $homeStoreTagline = $settings['store_tagline'] ?? 'প্রিমিয়াম গ্যাজেট, মেকানিক্যাল কিবোর্ড ও লাইফস্টাইল স্টোর বাংলাদেশ';
 @endphp
 

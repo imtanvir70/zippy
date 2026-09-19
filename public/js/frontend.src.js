@@ -782,7 +782,7 @@ function openQuickView(productId) {
                     ratingBadgeHtml = '<span class="qv-rating-badge qv-no-reviews"><i class="fa-regular fa-star text-muted"></i> <span class="text-muted">কোনো রিভিউ নেই</span></span>';
                 }
                 const pTitle = p.title || p.name_bn || p.name || 'প্রোডাক্ট';
-                const fallbackImg = window.ZIPPY_BRAND_FALLBACK_SVG || "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 500' width='100%' height='100%'><rect width='100%' height='100%' fill='%230f172a'/><text x='250' y='250' text-anchor='middle' fill='%23fff'>ZIPPYBD</text></svg>";
+                const fallbackImg = window.ZIPPY_BRAND_FALLBACK_SVG || "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 500' width='100%' height='100%'><rect width='100%' height='100%' fill='%230f172a'/><text x='250' y='250' text-anchor='middle' fill='%23fff'>Zippy</text></svg>";
                 const pImg = p.main_image || p.thumbnail || p.image || fallbackImg;
                 window.qvCurrentActiveImg = pImg;
 

@@ -15,7 +15,7 @@
                 {{ mb_substr(session('admin_name', 'A'), 0, 1) }}
             </div>
             <h5 class="fw-bold mb-1">{{ session('admin_name', 'Administrator') }}</h5>
-            <p class="text-muted small mb-2">{{ session('admin_email', 'admin@zippybd.com') }}</p>
+            <p class="text-muted small mb-2">{{ session('admin_email', 'admin@Zippy.com') }}</p>
             <div>
                 <span class="badge bg-success-subtle text-success border border-success-subtle px-2.5 py-1 rounded-pill small fw-bold">Super Admin</span>
             </div>

@@ -1,7 +1,7 @@
 @extends('frontend.layouts.app')
 
-@section('title', 'সকল প্রোডাক্টস - সেরা গ্যাজেট ও লাইফস্টাইল কালেকশন | ' . ($settings['store_name'] ?? 'ZippyBD'))
-@section('meta_description', ($settings['store_name'] ?? 'ZippyBD') . '-এর সকল প্রিমিয়াম গ্যাজেট, মেকানিক্যাল কিবোর্ড, ডেস্ক সেটআপ অ্যাক্সেসরিজ ও অরিজিনাল টেক প্রোডাক্ট ব্রাউজ করুন। সেরা দাম ও দ্রুত হোম ডেলিভারি।')
+@section('title', 'সকল প্রোডাক্টস - সেরা গ্যাজেট ও লাইফস্টাইল কালেকশন | ' . ($settings['store_name'] ?? 'Zippy'))
+@section('meta_description', ($settings['store_name'] ?? 'Zippy') . '-এর সকল প্রিমিয়াম গ্যাজেট, মেকানিক্যাল কিবোর্ড, ডেস্ক সেটআপ অ্যাক্সেসরিজ ও অরিজিনাল টেক প্রোডাক্ট ব্রাউজ করুন। সেরা দাম ও দ্রুত হোম ডেলিভারি।')
 
 @section('content')
 <div class="container-fluid px-3 px-md-4 px-xl-5 py-4">

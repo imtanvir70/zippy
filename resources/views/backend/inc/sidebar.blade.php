@@ -15,7 +15,7 @@
 @endphp
 <aside class="sidebar" id="sidebar">
     <div class="sidebar-brand">
-        <a href="{{ route('admin.dashboard') }}" class="brand-link d-flex align-items-center text-decoration-none overflow-hidden flex-grow-1" title="ZippyBD Dashboard">
+        <a href="{{ route('admin.dashboard') }}" class="brand-link d-flex align-items-center text-decoration-none overflow-hidden flex-grow-1" title="Zippy Dashboard">
             <div class="brand-badge">
                 <i class="fa-solid fa-bolt-lightning"></i>
             </div>

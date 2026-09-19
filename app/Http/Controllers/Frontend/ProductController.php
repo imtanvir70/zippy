@@ -125,9 +125,9 @@ class ProductController extends Controller
         $shippingInside = $isFreeShipping ? 0 : (float) ($settings['shipping_inside_dhaka'] ?? 60);
         $shippingOutside = $isFreeShipping ? 0 : (float) ($settings['shipping_outside_dhaka'] ?? 120);
         $whatsappNumber = $settings['whatsapp_number'] ?? '8801700000000';
-        $siteName = $settings['site_name'] ?? 'ZippyBD';
+        $siteName = $settings['site_name'] ?? 'Zippy';
         $supportPhone = $settings['phone'] ?? '01700-000000';
-        $supportEmail = $settings['email'] ?? 'support@zippybd.com';
+        $supportEmail = $settings['email'] ?? 'support@Zippy.com';
 
         $totalSoldUnits = (int) Cache::remember('fc.product.sold.' . $product->id, FrontendCacheService::TTL, function () use ($product) {
             return (int) DB::table('order_items')->where('product_id', $product->id)->sum('quantity');

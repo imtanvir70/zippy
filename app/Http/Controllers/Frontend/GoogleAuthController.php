@@ -93,7 +93,7 @@ class GoogleAuthController extends Controller
 
             if ($intent === 'admin') {
                 $userRole = $user->role ?? 'customer';
-                if (in_array($userRole, ['admin', 'super_admin', 'staff', 'manager']) || $user->email === 'admin@zippybd.com') {
+                if (in_array($userRole, ['admin', 'super_admin', 'staff', 'manager']) || $user->email === 'admin@Zippy.com') {
                     $request->session()->put('admin_logged_in', true);
                     $request->session()->put('admin_id', $user->id);
                     $request->session()->put('admin_name', $user->name);

@@ -24,18 +24,21 @@ class MetaSettingController extends Controller
         $request->validate([
             'meta_capi_status' => 'nullable',
             'meta_pixel_id' => 'nullable|string|max:100',
+            'fb_app_id' => 'nullable|string|max:100',
             'meta_capi_access_token' => 'nullable|string',
             'meta_capi_test_event_code' => 'nullable|string|max:100',
         ]);
 
         $status = $request->has('meta_capi_status') ? '1' : '0';
         $pixelId = trim($request->input('meta_pixel_id', ''));
+        $appId = trim($request->input('fb_app_id', ''));
         $accessToken = trim($request->input('meta_capi_access_token', ''));
         $testEventCode = trim($request->input('meta_capi_test_event_code', ''));
 
         $records = [
             'meta_capi_status' => $status,
             'meta_pixel_id' => $pixelId,
+            'fb_app_id' => $appId,
             'meta_capi_access_token' => $accessToken,
             'meta_capi_test_event_code' => $testEventCode,
         ];

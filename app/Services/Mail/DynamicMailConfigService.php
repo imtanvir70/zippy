@@ -39,7 +39,7 @@ class DynamicMailConfigService
                 'mail.mailers.smtp.username' => $mailSettings['mail_username'] ?? null,
                 'mail.mailers.smtp.password' => $mailSettings['mail_password'] ?? null,
                 'mail.from.address' => $mailSettings['mail_from_address'] ?? $mailSettings['mail_username'] ?? config('mail.from.address'),
-                'mail.from.name' => $mailSettings['mail_from_name'] ?? config('mail.from.name', 'ZippyBD'),
+                'mail.from.name' => $mailSettings['mail_from_name'] ?? config('mail.from.name', 'Zippy'),
             ]);
 
             Mail::purge('smtp');
