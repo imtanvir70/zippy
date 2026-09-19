@@ -1674,14 +1674,35 @@
                         @if(count($variantList) > 0)
                             <div class="mb-3 pb-3 pt-1 border-bottom" style="padding-top: 5px !important;">
                                 <label class="small fw-bold text-dark font-heading mb-2 d-flex align-items-center justify-content-between">
-                                    <span><i class="fa-solid fa-layer-group text-primary me-1"></i> কালার / ভ্যারিয়েন্ট সিলেক্ট করুন:</span>
+                                    <span><i class="fa-solid fa-layer-group text-primary me-1"></i> ভ্যারিয়েন্ট সিলেক্ট করুন:</span>
                                     <span class="badge bg-light text-secondary border" style="font-size: 0.68rem;">একসাথে একাধিক সিলেক্ট সম্ভব</span>
                                 </label>
                                 <div class="d-flex flex-column gap-2" id="bulkVariantsWrap">
                                     @foreach($variantList as $vIdx => $vItem)
                                         @php
                                             $vName = is_array($vItem) ? ($vItem['name'] ?? '') : (is_object($vItem) ? ($vItem->name ?? '') : $vItem);
-                                            $vPrice = is_array($vItem) ? ($vItem['price'] ?? $product->price) : (is_object($vItem) ? ($vItem->price ?? $product->price) : $product->price);
+                                            $vRawPrice = is_array($vItem) ? ($vItem['price'] ?? $product->price) : (is_object($vItem) ? ($vItem->price ?? $product->price) : $product->price);
+                                            $vRawPrice = (float) $vRawPrice;
+
+                                            $hasDiscount = !empty($product->old_price) && (float)$product->old_price > (float)$product->price;
+                                            $discountAmount = $hasDiscount ? ((float)$product->old_price - (float)$product->price) : 0;
+
+                                            if ($hasDiscount) {
+                                                if ($vRawPrice >= (float) $product->old_price) {
+                                                    $vPrice = max((float) $product->price, $vRawPrice - $discountAmount);
+                                                    $vOldPrice = $vRawPrice;
+                                                } elseif ($vRawPrice == (float) $product->price) {
+                                                    $vPrice = (float) $product->price;
+                                                    $vOldPrice = (float) $product->old_price;
+                                                } else {
+                                                    $vPrice = $vRawPrice;
+                                                    $vOldPrice = (float) $product->old_price;
+                                                }
+                                            } else {
+                                                $vPrice = $vRawPrice;
+                                                $vOldPrice = 0;
+                                            }
+
                                             $vImg = is_array($vItem) ? ($vItem['image'] ?? ($galleryList[0] ?? $product->main_image)) : ($galleryList[0] ?? $product->main_image);
                                             $vStock = is_array($vItem) ? ($vItem['stock'] ?? $product->stock_qty) : $product->stock_qty;
                                             $rowKey = md5($vName);
@@ -1691,6 +1712,7 @@
                                              id="bulkRow_{{ $rowKey }}"
                                              data-variant-name="{{ $vName }}"
                                              data-variant-price="{{ $vPrice }}"
+                                             data-variant-old-price="{{ $vOldPrice }}"
                                              data-variant-stock="{{ $vStock }}"
                                              data-variant-img="{{ $vImg }}">
                                              <div class="d-flex align-items-center gap-2.5">
@@ -1699,7 +1721,12 @@
                                                  </div>
                                                  <div>
                                                      <span class="fw-bold text-dark small d-block font-heading">{{ $vName }}</span>
-                                                     <span class="text-danger fw-bold font-mono" style="font-size: 0.82rem;">৳ {{ number_format($vPrice, 0) }}</span>
+                                                     <div class="d-flex align-items-baseline gap-1.5">
+                                                         <span class="text-danger fw-bold font-mono" style="font-size: 0.84rem;">৳ {{ number_format($vPrice, 0) }}</span>
+                                                         @if($vOldPrice > $vPrice)
+                                                             <span class="text-muted text-decoration-line-through small font-mono" style="font-size: 0.72rem;">৳ {{ number_format($vOldPrice, 0) }}</span>
+                                                         @endif
+                                                     </div>
                                                  </div>
                                              </div>
                                             <div class="d-flex align-items-center">

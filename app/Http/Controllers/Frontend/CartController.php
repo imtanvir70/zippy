@@ -12,6 +12,10 @@ class CartController extends Controller
     private function resolveProductPrice($product, ?string $selectedVariant, $fallbackPrice = null): float
     {
         $basePrice = (float) $product->price;
+        $oldPrice = !empty($product->old_price) ? (float) $product->old_price : 0;
+        $hasDiscount = $oldPrice > $basePrice;
+        $discountAmount = $hasDiscount ? ($oldPrice - $basePrice) : 0;
+
         if (!empty($selectedVariant) && !empty($product->variants)) {
             $variants = is_array($product->variants) ? $product->variants : (json_decode($product->variants, true) ?: []);
             if (is_string($variants)) {
@@ -24,14 +28,26 @@ class CartController extends Controller
                     if (trim($vName) === $cleanSelected) {
                         $vPrice = is_array($v) ? ($v['price'] ?? null) : (is_object($v) ? ($v->price ?? null) : null);
                         if ($vPrice !== null && is_numeric($vPrice) && (float) $vPrice > 0) {
-                            return (float) $vPrice;
+                            $vPriceVal = (float) $vPrice;
+                            if ($hasDiscount) {
+                                if ($vPriceVal >= $oldPrice) {
+                                    return max($basePrice, $vPriceVal - $discountAmount);
+                                } elseif ($vPriceVal == $basePrice) {
+                                    return $basePrice;
+                                }
+                            }
+                            return $vPriceVal;
                         }
                     }
                 }
             }
         }
         if ($fallbackPrice !== null && is_numeric($fallbackPrice) && (float) $fallbackPrice > 0) {
-            return (float) $fallbackPrice;
+            $fPrice = (float) $fallbackPrice;
+            if ($hasDiscount && $fPrice >= $oldPrice) {
+                return max($basePrice, $fPrice - $discountAmount);
+            }
+            return $fPrice;
         }
         return $basePrice;
     }

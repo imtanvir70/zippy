@@ -273,7 +273,12 @@
                         <thead>
                             <tr>
                                 <th style="width: 28%;">Color / Name</th>
-                                <th style="width: 18%;">Price (৳)</th>
+                                <th style="width: 18%;">
+                                    Price (৳)
+                                    <button type="button" class="btn btn-xs btn-outline-primary py-0 px-1 ms-1" style="font-size: 0.65rem;" onclick="syncVariantPricesToRetail()" title="Sync all with Selling Price">
+                                        <i class="fa-solid fa-arrows-rotate"></i>
+                                    </button>
+                                </th>
                                 <th style="width: 40%;">Variant Image</th>
                                 <th style="width: 12%;">Stock</th>
                                 <th style="width: 6%;"></th>
@@ -861,9 +866,10 @@
         const tbody = document.getElementById('variantTableBody');
         const tr = document.createElement('tr');
         const rowId = ++formVarCounter;
+        const currentRetail = document.getElementById('formPrice')?.value || '';
         tr.innerHTML = `
             <td><input type="text" name="var_name[]" class="form-control form-control-sm" placeholder="e.g. Matte Black"></td>
-            <td><input type="number" step="0.01" name="var_price[]" class="form-control form-control-sm" placeholder="850"></td>
+            <td><input type="number" step="0.01" name="var_price[]" class="form-control form-control-sm" placeholder="${currentRetail || '850'}" value="${currentRetail}"></td>
             <td>
                 <div class="d-flex align-items-center gap-2">
                     <div class="border rounded-2 bg-light d-flex align-items-center justify-content-center overflow-hidden flex-shrink-0" style="width: 42px; height: 42px;">
@@ -879,6 +885,14 @@
             <td class="text-center"><button type="button" class="btn btn-sm btn-link text-danger p-0" onclick="this.closest('tr').remove()"><i class="fa-solid fa-circle-minus"></i></button></td>
         `;
         tbody.appendChild(tr);
+    }
+
+    function syncVariantPricesToRetail() {
+        const retail = document.getElementById('formPrice')?.value;
+        if (!retail) return;
+        document.querySelectorAll('#variantTableBody input[name="var_price[]"]').forEach(inp => {
+            inp.value = retail;
+        });
     }
 
     function previewStandaloneVarFile(fileInput, rowId) {

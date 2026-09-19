@@ -51,7 +51,7 @@ class ProductController extends Controller
                 $galleryImages = [$product->main_image];
             }
 
-            $variants = $this->normalizeVariants($product->variants, $product->price, $galleryImages, $product->main_image, $product->stock_qty);
+            $variants = $this->normalizeVariants($product->variants, $product->price, $galleryImages, $product->main_image, $product->stock_qty, $product->old_price);
 
             $specifications = is_array($product->specifications) ? $product->specifications : (json_decode($product->specifications ?? '', true) ?: []);
             if (is_string($specifications)) {
@@ -763,7 +763,7 @@ class ProductController extends Controller
         ]);
     }
 
-    private function normalizeVariants($rawVariants, $basePrice, $galleryImages = [], $mainImage = '', $stockQty = 50)
+    private function normalizeVariants($rawVariants, $basePrice, $galleryImages = [], $mainImage = '', $stockQty = 50, $oldPrice = null)
     {
         $variants = is_array($rawVariants) ? $rawVariants : (json_decode($rawVariants ?? '', true) ?: []);
         if (is_string($variants)) {
@@ -772,6 +772,11 @@ class ProductController extends Controller
         if (!is_array($variants)) {
             return [];
         }
+
+        $basePriceVal = (float) $basePrice;
+        $oldPriceVal = !empty($oldPrice) ? (float) $oldPrice : 0;
+        $hasDiscount = $oldPriceVal > $basePriceVal;
+        $discountAmount = $hasDiscount ? ($oldPriceVal - $basePriceVal) : 0;
 
         $normalized = [];
         $idx = 0;
@@ -786,11 +791,24 @@ class ProductController extends Controller
                 $customStock = is_object($v) ? ($v->stock ?? null) : ($v['stock'] ?? null);
 
                 if (!empty($name)) {
-                    $priceVal = (float) $price;
+                    $rawPriceVal = (float) $price;
+                    if ($hasDiscount) {
+                        if ($rawPriceVal >= $oldPriceVal) {
+                            $priceVal = max($basePriceVal, $rawPriceVal - $discountAmount);
+                        } elseif ($rawPriceVal == $basePriceVal) {
+                            $priceVal = $basePriceVal;
+                        } else {
+                            $priceVal = $rawPriceVal;
+                        }
+                    } else {
+                        $priceVal = $rawPriceVal;
+                    }
+
                     $normalized[] = [
                         'name' => $name,
                         'price' => $priceVal,
-                        'price_diff' => $priceVal - (float) $basePrice,
+                        'old_price' => ($hasDiscount && $oldPriceVal > $priceVal) ? $oldPriceVal : 0,
+                        'price_diff' => $priceVal - $basePriceVal,
                         'image' => $customImg ?: $img,
                         'stock' => $customStock !== null ? (int) $customStock : $stock,
                     ];
@@ -799,7 +817,8 @@ class ProductController extends Controller
             } elseif (is_string($v) && trim($v) !== '') {
                 $normalized[] = [
                     'name' => trim($v),
-                    'price' => (float) $basePrice,
+                    'price' => $basePriceVal,
+                    'old_price' => $hasDiscount ? $oldPriceVal : 0,
                     'price_diff' => 0,
                     'image' => $img,
                     'stock' => $stock,

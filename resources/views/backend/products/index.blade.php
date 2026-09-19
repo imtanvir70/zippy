@@ -973,7 +973,6 @@
                         </button>
                     </div>
                     <div class="d-flex gap-2">
-                        <button type="button" class="btn btn-light px-3 rounded-pill text-muted" data-bs-dismiss="modal">Cancel</button>
                         <button type="button" class="btn btn-primary px-4 rounded-pill fw-semibold shadow-sm" id="wizardNextBtn" onclick="navigateWizard(1)">
                             Next <i class="fa-solid fa-arrow-right ms-1"></i>
                         </button>
