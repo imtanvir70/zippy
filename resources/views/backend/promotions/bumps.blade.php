@@ -61,7 +61,7 @@
                         <td>
                             <div class="d-flex align-items-center gap-2">
                                 @if(!empty($b->bump_image))
-                                    <img src="{{ asset(ltrim($b->bump_image, '/')) }}" alt="" class="rounded border object-fit-cover" style="width: 38px; height: 38px;">
+                                    <img src="{{ product_image_url($b->bump_image) }}" alt="" class="rounded border object-fit-cover" style="width: 38px; height: 38px;" onerror="this.onerror=null;this.src='{{ asset('images/product-placeholder.svg') }}';">
                                 @endif
                                 <div>
                                     <div class="fw-semibold text-dark">{{ $b->bump_product_title }}</div>

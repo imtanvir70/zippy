@@ -416,8 +416,12 @@
         const preview = document.getElementById('catImgPreview');
         const placeholder = document.getElementById('noCatImgPlaceholder');
         if (url && url.trim()) {
+            let src = url.trim();
+            if (!src.startsWith('http://') && !src.startsWith('https://') && !src.startsWith('/') && !src.startsWith('data:') && !src.startsWith('blob:')) {
+                src = '/storage/' + src;
+            }
             if (preview) {
-                preview.src = url.trim();
+                preview.src = src;
                 preview.style.display = 'block';
             }
             if (placeholder) {

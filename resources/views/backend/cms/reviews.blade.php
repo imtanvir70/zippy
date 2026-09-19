@@ -60,8 +60,8 @@
                         @if(!empty($revImages))
                             <div class="d-flex flex-wrap gap-1">
                                 @foreach($revImages as $img)
-                                    <a href="{{ asset($img) }}" target="_blank" class="d-inline-block">
-                                        <img src="{{ asset($img) }}" class="rounded border shadow-2xs" style="width: 44px; height: 44px; object-fit: cover;" alt="Review Photo">
+                                    <a href="{{ product_image_url($img) }}" target="_blank" class="d-inline-block">
+                                        <img src="{{ product_image_url($img) }}" class="rounded border shadow-2xs" style="width: 44px; height: 44px; object-fit: cover;" alt="Review Photo" onerror="this.onerror=null;this.src='{{ asset('images/product-placeholder.svg') }}';">
                                     </a>
                                 @endforeach
                             </div>

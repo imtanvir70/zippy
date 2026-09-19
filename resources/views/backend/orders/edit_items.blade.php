@@ -125,7 +125,7 @@
             tr.innerHTML = `
                 <td class="ps-4">
                     <div class="d-flex align-items-center gap-3">
-                        <img src="${item.product_image || placeholderImg}" class="rounded border" style="width: 40px; height: 40px; object-fit: cover;" onerror="this.src='${placeholderImg}'">
+                        <img src="${item.product_image || placeholderImg}" class="rounded border" style="width: 40px; height: 40px; object-fit: cover;" onerror="this.onerror=null;this.src='${placeholderImg}';">
                         <div>
                             <div class="fw-bold small text-truncate" style="max-width: 250px;">${item.product_title}</div>
                             <small class="text-muted">ID: #${item.product_id}</small>
@@ -213,7 +213,7 @@
                         itemEl.href = 'javascript:void(0)';
                         itemEl.className = 'dropdown-item p-2 d-flex align-items-center gap-2 rounded text-wrap';
                         itemEl.innerHTML = `
-                            <img src="${prod.image || placeholderImg}" style="width:32px; height:32px; object-fit:cover; border-radius:4px;" onerror="this.src='${placeholderImg}'">
+                            <img src="${prod.image || placeholderImg}" style="width:32px; height:32px; object-fit:cover; border-radius:4px;" onerror="this.onerror=null;this.src='${placeholderImg}';">
                             <div class="flex-grow-1">
                                 <div class="small fw-bold text-dark">${prod.text}</div>
                                 <div class="text-muted" style="font-size:11px;">৳${prod.price} ${prod.sku ? '| SKU: ' + prod.sku : ''}</div>

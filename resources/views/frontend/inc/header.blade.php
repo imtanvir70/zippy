@@ -1,6 +1,90 @@
 <style>
 .search-container { position: relative; }
-.mobile-search-box { position: relative; }
+.z-icon,
+.brand-logo .z-icon,
+.brand-logo:hover .z-icon {
+    box-shadow: none !important;
+}
+.mobile-search-wrapper {
+    margin-top: 8px;
+    margin-bottom: 3px;
+}
+.mobile-search-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 9999px;
+    height: 36px;
+    padding: 0 12px 0 13px;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
+}
+.mobile-search-box:focus-within {
+    background: #ffffff;
+    border-color: #0f172a;
+    box-shadow: 0 0 0 3px rgba(15, 23, 42, 0.08), 0 2px 6px rgba(15, 23, 42, 0.04);
+}
+.mobile-search-icon {
+    font-size: 13px;
+    color: #94a3b8;
+    margin-right: 8px;
+    flex-shrink: 0;
+    transition: color 0.2s ease;
+}
+.mobile-search-box:focus-within .mobile-search-icon {
+    color: #0f172a;
+}
+.mobile-search-input {
+    flex: 1;
+    min-width: 0;
+    border: none !important;
+    background: transparent !important;
+    font-size: 12.5px;
+    font-weight: 500;
+    color: #0f172a;
+    outline: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    height: 100%;
+    line-height: normal;
+}
+.mobile-search-input::placeholder {
+    color: #94a3b8;
+    font-weight: 400;
+    font-size: 12px;
+}
+.mobile-search-input::-webkit-search-decoration,
+.mobile-search-input::-webkit-search-cancel-button,
+.mobile-search-input::-webkit-search-results-button,
+.mobile-search-input::-webkit-search-results-decoration {
+    -webkit-appearance: none;
+    display: none;
+}
+.mobile-search-clear {
+    display: none;
+    background: none;
+    border: none;
+    padding: 0;
+    margin-left: 6px;
+    color: #94a3b8;
+    font-size: 13.5px;
+    cursor: pointer;
+    line-height: 1;
+    flex-shrink: 0;
+    transition: color 0.15s ease;
+}
+.mobile-search-clear:hover,
+.mobile-search-clear:focus {
+    color: #0f172a;
+    outline: none;
+}
+.mobile-search-clear.is-visible {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
 .search-suggestions-dropdown {
     position: absolute;
     top: calc(100% + 6px);
@@ -206,11 +290,51 @@
         </div>
     </div>
 
-    <div class="d-block d-lg-none container position-relative mt-2">
-        <form action="{{ route('search') }}" method="GET" class="mobile-search-box d-flex align-items-center bg-light border border-2 rounded-pill px-3 py-1.5 shadow-xs">
-            <i class="fa-solid fa-magnifying-glass text-secondary small me-2"></i>
-            <input type="text" name="q" id="mobileSearchInput" class="form-control form-control-sm border-0 bg-transparent shadow-none px-0 small fw-medium" value="{{ request('q', '') }}" placeholder="বাংলা বা ইংরেজিতে পণ্য সার্চ করুন..." autocomplete="off">
+    <div class="d-block d-lg-none container position-relative mobile-search-wrapper">
+        <form action="{{ route('search') }}" method="GET" class="mobile-search-box">
+            <i class="fa-solid fa-magnifying-glass mobile-search-icon"></i>
+            <input type="search" name="q" id="mobileSearchInput" class="mobile-search-input" value="{{ request('q', '') }}" placeholder="বাংলা বা ইংরেজিতে পণ্য সার্চ করুন..." autocomplete="off">
+            <button type="button" class="mobile-search-clear" id="mobileSearchClear" aria-label="Clear search">
+                <i class="fa-solid fa-circle-xmark"></i>
+            </button>
         </form>
         <div class="search-suggestions-dropdown" id="mobileSearchSuggestions"></div>
     </div>
 </header>
+
+<script>
+(function() {
+    function initMobileSearchClear() {
+        var input = document.getElementById('mobileSearchInput');
+        var clearBtn = document.getElementById('mobileSearchClear');
+        if (!input || !clearBtn) return;
+
+        function updateState() {
+            if (input.value && input.value.trim().length > 0) {
+                clearBtn.classList.add('is-visible');
+            } else {
+                clearBtn.classList.remove('is-visible');
+            }
+        }
+
+        input.addEventListener('input', updateState);
+        clearBtn.addEventListener('click', function() {
+            input.value = '';
+            updateState();
+            input.focus();
+            var dd = document.getElementById('mobileSearchSuggestions');
+            if (dd) {
+                dd.classList.remove('show');
+                dd.style.display = 'none';
+            }
+        });
+        updateState();
+    }
+
+    if (!window.__mobileSearchClearBound) {
+        window.__mobileSearchClearBound = true;
+        document.addEventListener('turbo:load', initMobileSearchClear);
+    }
+    initMobileSearchClear();
+})();
+</script>

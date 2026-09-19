@@ -2541,7 +2541,7 @@
                     itemsHtml += `
                         <div class="product-row-card">
                             <div class="d-flex align-items-center gap-3 overflow-hidden flex-grow-1" style="min-width: 0;">
-                                <img src="${it.product_image}" class="product-thumb-img" onerror="this.src='/images/product-placeholder.svg'">
+                                <img src="${it.product_image || '{{ asset('images/product-placeholder.svg') }}'}" class="product-thumb-img" onerror="this.onerror=null;this.src='{{ asset('images/product-placeholder.svg') }}';">
                                 <div class="overflow-hidden flex-grow-1" style="min-width: 0;">
                                     <div class="fw-bold text-body text-truncate mb-1" style="font-size: 0.88rem;" title="${it.product_title}">${it.product_title}</div>
                                     <div class="d-flex align-items-center gap-2">
@@ -2906,7 +2906,7 @@
             html += `
                 <div class="product-row-card">
                     <div class="d-flex align-items-center gap-3 overflow-hidden flex-grow-1" style="min-width: 0;">
-                        <img src="${it.product_image || '/images/product-placeholder.svg'}" class="product-thumb-img" onerror="this.src='/images/product-placeholder.svg'">
+                        <img src="${it.product_image || '{{ asset('images/product-placeholder.svg') }}'}" class="product-thumb-img" onerror="this.onerror=null;this.src='{{ asset('images/product-placeholder.svg') }}';">
                         <div class="overflow-hidden flex-grow-1" style="min-width: 0;">
                             <div class="fw-bold text-body text-truncate mb-1" style="font-size: 0.88rem;" title="${it.product_title}">${it.product_title}</div>
                             <div class="text-muted font-monospace small" style="font-size: 0.78rem;">৳ ${Math.round(it.unit_price).toLocaleString()} each</div>
@@ -2974,11 +2974,11 @@
 
                     let html = '';
                     prods.forEach(p => {
-                        const img = p.image || '/images/product-placeholder.svg';
+                        const img = p.image || '{{ asset('images/product-placeholder.svg') }}';
                         const safeTitle = (p.text || '').replace(/'/g, "\\'");
                         html += `
                             <div class="search-product-item" onclick="addProductToEditOrder(${p.id}, '${safeTitle}', '${img}', ${p.price || 0})">
-                                <img src="${img}" class="product-thumb-img" style="width: 38px; height: 38px;" onerror="this.src='/images/product-placeholder.svg'">
+                                <img src="${img}" class="product-thumb-img" style="width: 38px; height: 38px;" onerror="this.onerror=null;this.src='{{ asset('images/product-placeholder.svg') }}';">
                                 <div class="overflow-hidden flex-grow-1">
                                     <div class="text-body fw-bold small text-truncate">${p.text}</div>
                                     <span class="text-muted small font-monospace" style="font-size: 0.75rem;">৳ ${Math.round(p.price || 0)}</span>

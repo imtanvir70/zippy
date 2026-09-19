@@ -139,7 +139,7 @@
                 class="zb-quickview-btn"
                 onclick="event.preventDefault(); event.stopPropagation(); openQuickView({{ $pId }})"
                 aria-label="Quick View">
-            <i class="fa-solid fa-eye"></i>
+            <i class="fa-duotone fa-solid fa-eye fa-float"></i>
         </button>
     </a>
 
@@ -175,7 +175,7 @@
                 class="zb-btn-cart btn-cart-animated"
                 onclick="addToCart({{ $pId }}, 1, {{ $firstVariantName ? json_encode($firstVariantName) : 'null' }}, null, this, {{ $firstVariantName ? json_encode($firstVariantName) : 'null' }})">
             <span class="btn-cart-content d-flex align-items-center justify-content-center gap-2">
-                <span class="cart-anim-bag-wrap"><i class="fa-solid fa-bag-shopping cart-anim-bag"></i></span>
+                <span class="cart-anim-bag-wrap"><i class="fa-duotone fa-solid fa-bag-shopping fa-jello cart-anim-bag"></i></span>
                 <span class="cart-anim-text">কার্টে যোগ</span>
             </span>
             <span class="cart-anim-road" aria-hidden="true">

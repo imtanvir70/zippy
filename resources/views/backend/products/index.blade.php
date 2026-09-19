@@ -1310,8 +1310,12 @@
     function previewMainModalImg(url) {
         const preview = document.getElementById('formMainImgPreview');
         const clearBtn = document.getElementById('clearThumbBtn');
+        let resolved = url;
+        if (resolved && !resolved.startsWith('http://') && !resolved.startsWith('https://') && !resolved.startsWith('/') && !resolved.startsWith('data:') && !resolved.startsWith('blob:')) {
+            resolved = '/storage/' + resolved;
+        }
         if (preview) {
-            preview.src = url || '{{ asset('images/product-placeholder.svg') }}';
+            preview.src = resolved || '{{ asset('images/product-placeholder.svg') }}';
             preview.onerror = () => { preview.onerror = null; preview.src = '{{ asset('images/product-placeholder.svg') }}'; };
         }
         if (clearBtn) {
@@ -1735,7 +1739,7 @@
                     }
                 }
 
-                previewMainModalImg(p.main_image);
+                previewMainModalImg(p.main_image_url || p.main_image);
 
                 document.getElementById('formIsActive').checked = !!p.is_active;
                 document.getElementById('formIsFeatured').checked = !!p.is_featured;
@@ -1788,7 +1792,10 @@
         const tbody = document.getElementById('modalVariantTableBody');
         const tr = document.createElement('tr');
         const rowId = ++variantRowCounter;
-        const initialPreview = image ? image : '{{ asset('images/product-placeholder.svg') }}';
+        let initialPreview = image ? image : '{{ asset('images/product-placeholder.svg') }}';
+        if (initialPreview && !initialPreview.startsWith('http://') && !initialPreview.startsWith('https://') && !initialPreview.startsWith('/') && !initialPreview.startsWith('data:') && !initialPreview.startsWith('blob:')) {
+            initialPreview = '/storage/' + initialPreview;
+        }
 
         tr.innerHTML = `
             <td><input type="text" name="var_name[]" class="form-control form-control-sm" placeholder="e.g. Matte Black" value="${name}"></td>
@@ -1910,11 +1917,15 @@
         grid.innerHTML = '';
 
         existingGalleryImages.forEach((imgUrl, idx) => {
+            let previewSrc = imgUrl || '';
+            if (previewSrc && !previewSrc.startsWith('http://') && !previewSrc.startsWith('https://') && !previewSrc.startsWith('/') && !previewSrc.startsWith('data:') && !previewSrc.startsWith('blob:')) {
+                previewSrc = '/storage/' + previewSrc;
+            }
             const card = document.createElement('div');
             card.className = 'position-relative border rounded-3 overflow-hidden shadow-sm';
             card.style = 'width: 90px; height: 90px; flex-shrink: 0;';
             card.innerHTML = `
-                <img src="${imgUrl}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.onerror=null;this.src='{{ asset('images/product-placeholder.svg') }}';">
+                <img src="${previewSrc}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.onerror=null;this.src='{{ asset('images/product-placeholder.svg') }}';">
                 <span class="badge bg-secondary position-absolute bottom-0 start-0 w-100 text-center text-truncate" style="font-size: 0.6rem; border-radius: 0; padding: 2px;">Saved</span>
                 <button type="button" class="btn btn-danger btn-sm p-0 position-absolute top-0 end-0 m-1 rounded-circle d-flex align-items-center justify-content-center shadow" 
                         style="width: 22px; height: 22px; font-size: 0.65rem;" 

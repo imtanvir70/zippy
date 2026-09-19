@@ -521,18 +521,14 @@ class AdminController extends Controller
                     $title = e($order->first_item_title ?: 'Standard Order Item');
 
                     $rawImg = $order->first_item_image;
-                    if (!empty($rawImg)) {
-                        $img = filter_var($rawImg, FILTER_VALIDATE_URL) ? $rawImg : asset('storage/' . ltrim($rawImg, '/'));
-                    } else {
-                        $img = asset('images/product-placeholder.svg');
-                    }
+                    $img = product_image_url($rawImg);
 
                     $morePill = ($count > 1)
                         ? '<a href="javascript:void(0)" onclick="openQuickOrderModal(' . $order->id . ')" class="product-more-pill" data-bs-toggle="tooltip" data-bs-title="View all ' . $count . ' items in order"><i class="fa-solid fa-layer-group me-1"></i>+' . ($count - 1) . ' more</a>'
                         : '';
 
                     return '<div class="order-product-cell">' .
-                        '<img src="' . $img . '" class="order-product-thumb" alt="Product" onerror="this.src=\'' . asset('images/product-placeholder.svg') . '\'">' .
+                        '<img src="' . $img . '" class="order-product-thumb" alt="Product" onerror="this.onerror=null;this.src=\'' . asset('images/product-placeholder.svg') . '\';">' .
                         '<div class="order-product-info">' .
                         '<div class="order-product-title">' . $title . '</div>' .
                         '<div class="order-product-meta">' .
@@ -786,11 +782,7 @@ class AdminController extends Controller
             ],
             'items' => $items->map(function ($item) {
                 $rawImg = $item->product_image;
-                if (!empty($rawImg)) {
-                    $imgUrl = filter_var($rawImg, FILTER_VALIDATE_URL) ? $rawImg : asset('storage/' . ltrim($rawImg, '/'));
-                } else {
-                    $imgUrl = asset('images/product-placeholder.svg');
-                }
+                $imgUrl = product_image_url($rawImg);
 
                 return [
                     'id' => $item->id,
@@ -939,11 +931,7 @@ class AdminController extends Controller
             ->get();
 
         $products->transform(function ($prod) {
-            if ($prod->image) {
-                $prod->image = filter_var($prod->image, FILTER_VALIDATE_URL) ? $prod->image : asset('storage/' . ltrim($prod->image, '/'));
-            } else {
-                $prod->image = asset('images/product-placeholder.svg');
-            }
+            $prod->image = product_image_url($prod->image);
             return $prod;
         });
 
@@ -959,7 +947,7 @@ class AdminController extends Controller
 
         $items = DB::table('order_items')->where('order_id', $order->id)->get()->map(function ($item) {
             $rawImg = $item->product_image;
-            $imgUrl = !empty($rawImg) ? (filter_var($rawImg, FILTER_VALIDATE_URL) ? $rawImg : asset('storage/' . ltrim($rawImg, '/'))) : asset('images/product-placeholder.svg');
+            $imgUrl = product_image_url($rawImg);
 
             return [
                 'product_id' => $item->product_id,
@@ -1550,7 +1538,8 @@ class AdminController extends Controller
                 ->addIndexColumn()
                 ->addColumn('image_preview', function ($cat) {
                     if (!empty($cat->image)) {
-                        return '<img src="' . e($cat->image) . '" alt="" class="rounded-2 border object-fit-cover" style="width: 44px; height: 44px;" onerror="this.src=\'https://placehold.co/80x80?text=IMG\'">';
+                        $catImg = product_image_url($cat->image);
+                        return '<img src="' . e($catImg) . '" alt="" class="rounded-2 border object-fit-cover" style="width: 44px; height: 44px;" onerror="this.onerror=null;this.src=\'' . asset('images/product-placeholder.svg') . '\';">';
                     }
                     return '<div class="rounded-2 d-inline-flex align-items-center justify-content-center border bg-light text-muted" style="width: 44px; height: 44px;"><i class="fa-solid fa-image text-secondary"></i></div>';
                 })

@@ -294,7 +294,7 @@
     function initChatbotTrigger() {
         const c = document.getElementById('chatbot-container');
         if (c && !document.getElementById('zippyChatWindow') && !document.getElementById('zippyChatTrigger')) {
-            c.innerHTML = '<button type="button" class="zippy-chat-trigger" id="zippyChatTrigger" aria-label="Customer Support Chat" onclick="openChatbot()"><i class="fa-solid fa-comment-dots trigger-icon"></i><i class="fa-solid fa-xmark close-icon"></i><span class="zippy-chat-pulse"></span></button>';
+            c.innerHTML = '<button type="button" class="zippy-chat-trigger" id="zippyChatTrigger" aria-label="Customer Support Chat" onclick="openChatbot()"><i class="fa-solid fa-headset fa-bounce trigger-icon" style="--fa-animation-duration: 2.5s;"></i><i class="fa-solid fa-xmark close-icon"></i><span class="zippy-chat-pulse"></span></button>';
         }
     }
 
@@ -870,7 +870,7 @@ function openQuickView(productId) {
                                     <button type="button" class="qv-qty-btn" onclick="adjustQvQty(1)" aria-label="Increase">+</button>
                                 </div>
                                 <button type="button" class="qv-add-cart-btn" onclick="addToCart(${p.id}, window.qvCurrentQty, window.qvSelectedVariant, null, this)">
-                                    <i class="fa-solid fa-bag-shopping"></i>
+                                    <i class="fa-duotone fa-solid fa-bag-shopping fa-jello"></i>
                                     <span>কার্টে যোগ করুন</span>
                                 </button>
                             </div>
@@ -893,7 +893,7 @@ function openQuickView(productId) {
                                 <button type="button" class="qv-qty-btn" onclick="adjustQvQty(1)" aria-label="Increase">+</button>
                             </div>
                             <button type="button" class="qv-add-cart-btn flex-grow-1" onclick="addToCart(${p.id}, window.qvCurrentQty, window.qvSelectedVariant, null, this)">
-                                <i class="fa-solid fa-bag-shopping"></i>
+                                <i class="fa-duotone fa-solid fa-bag-shopping fa-jello"></i>
                                 <span>কার্টে যোগ করুন</span>
                             </button>
                         </div>
@@ -1168,7 +1168,7 @@ function playCartButtonAnimation(btnElement, apiPromise) {
     if (!contentSpan) {
         isDynamic = true;
         const rawText = btnElement.textContent.trim() || 'কার্টে যোগ';
-        btnElement.innerHTML = '<span class="btn-cart-content d-flex align-items-center justify-content-center gap-2"><span class="cart-anim-bag-wrap"><i class="fa-solid fa-bag-shopping cart-anim-bag"></i></span><span class="cart-anim-text">' + rawText + '</span></span><span class="cart-anim-road" aria-hidden="true"><span class="cart-anim-track-line"></span><span class="cart-anim-truck-track"><span class="cart-anim-truck-wrap"><span class="cart-anim-speed-line"></span><i class="fa-solid fa-truck-fast cart-anim-truck-icon"></i></span></span></span><span class="cart-anim-success" aria-hidden="true"><span class="cart-success-badge"><svg class="cart-success-check" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3.5 8.5L6.5 11.5L12.5 4.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="cart-success-text">কার্টে যুক্ত হয়েছে</span></span></span>';
+        btnElement.innerHTML = '<span class="btn-cart-content d-flex align-items-center justify-content-center gap-2"><span class="cart-anim-bag-wrap"><i class="fa-duotone fa-solid fa-bag-shopping fa-jello cart-anim-bag"></i></span><span class="cart-anim-text">' + rawText + '</span></span><span class="cart-anim-road" aria-hidden="true"><span class="cart-anim-track-line"></span><span class="cart-anim-truck-track"><span class="cart-anim-truck-wrap"><span class="cart-anim-speed-line"></span><i class="fa-solid fa-truck-fast cart-anim-truck-icon"></i></span></span></span><span class="cart-anim-success" aria-hidden="true"><span class="cart-success-badge"><svg class="cart-success-check" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3.5 8.5L6.5 11.5L12.5 4.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="cart-success-text">কার্টে যুক্ত হয়েছে</span></span></span>';
     }
 
     btnElement.classList.remove('anim-truck', 'anim-success');

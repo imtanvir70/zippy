@@ -572,7 +572,7 @@
                     <tr>
                         <td>
                             <div class="product-cell">
-                                <img src="{{ $item->product_image ?: asset('images/product-placeholder.svg') }}" alt="{{ $item->product_title }}" class="product-img">
+                                <img src="{{ product_image_url($item->product_image) }}" alt="{{ $item->product_title }}" class="product-img" onerror="this.onerror=null;this.src='{{ asset('images/product-placeholder.svg') }}';">
                                 <div class="product-details">
                                     <div class="product-name">{{ $item->product_title }}</div>
                                     <div class="product-sku">SKU: #{{ $item->sku ?? $item->product_id }}</div>

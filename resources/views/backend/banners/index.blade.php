@@ -23,7 +23,7 @@
             <div class="card h-100 p-0 overflow-hidden d-flex flex-column shadow-sm border">
                 <div class="position-relative bg-dark" style="aspect-ratio: 1920/830; overflow: hidden;">
                     @if(!empty($banner->image_url))
-                        <img src="{{ $banner->image_url }}" alt="{{ $banner->title ?? '' }}" class="w-100 h-100 object-fit-cover" onerror="this.onerror=null;this.src='{{ asset('images/banner-placeholder.svg') }}';">
+                        <img src="{{ product_image_url($banner->image_url) }}" alt="{{ $banner->title ?? '' }}" class="w-100 h-100 object-fit-cover" onerror="this.onerror=null;this.src='{{ asset('images/banner-placeholder.svg') }}';">
                     @else
                         <div class="w-100 h-100 d-flex align-items-center justify-content-center text-white" style="background: linear-gradient(135deg, #090d16 0%, #1e293b 100%);">
                             <i class="fa-solid fa-font fs-1 text-secondary"></i>
@@ -389,8 +389,12 @@
         const preview = document.getElementById('bannerImgPreview');
         const placeholder = document.getElementById('noBannerPlaceholder');
         if (url && url.trim()) {
+            let src = url.trim();
+            if (!src.startsWith('http://') && !src.startsWith('https://') && !src.startsWith('/') && !src.startsWith('data:') && !src.startsWith('blob:')) {
+                src = '/storage/' + src;
+            }
             if (preview) {
-                preview.src = url.trim();
+                preview.src = src;
                 preview.style.display = 'block';
             }
             if (placeholder) {

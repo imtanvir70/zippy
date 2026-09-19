@@ -36,36 +36,44 @@
     width: 60px;
     height: 60px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #2563eb 100%);
+    background: linear-gradient(135deg, #090d16 0%, #0f172a 60%, #1e293b 100%);
     color: #ffffff;
-    border: none;
-    box-shadow: 0 10px 25px -3px rgba(37, 99, 235, 0.45), 0 4px 12px rgba(0, 0, 0, 0.15);
+    border: 1.5px solid rgba(255, 255, 255, 0.18);
+    box-shadow: 0 10px 25px -3px rgba(15, 23, 42, 0.6), 0 0 20px rgba(59, 130, 246, 0.35);
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
     transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
+    animation: zippyThemeRadar 3.2s infinite cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .zippy-chat-trigger:hover {
-    transform: scale(1.06);
-    box-shadow: 0 14px 30px -4px rgba(37, 99, 235, 0.6), 0 6px 16px rgba(0, 0, 0, 0.2);
+    transform: scale(1.08) translateY(-2px);
+    box-shadow: 0 16px 35px -4px rgba(15, 23, 42, 0.75), 0 0 25px rgba(59, 130, 246, 0.55);
+    border-color: rgba(59, 130, 246, 0.6);
 }
 
 .zippy-chat-trigger:active {
-    transform: scale(0.96);
+    transform: scale(0.95);
 }
 
 .zippy-chat-trigger .trigger-icon {
-    font-size: 24px;
+    font-size: 25px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.4));
     transition: transform 0.3s ease, opacity 0.3s ease;
+    color: #ffffff !important;
 }
 
 .zippy-chat-trigger .close-icon {
     font-size: 22px;
     display: none;
     transition: transform 0.3s ease, opacity 0.3s ease;
+    color: #ffffff !important;
 }
 
 .zippy-chatbot-container.active .zippy-chat-trigger .trigger-icon {
@@ -82,9 +90,10 @@
     right: 2px;
     width: 14px;
     height: 14px;
-    background-color: #22c55e;
-    border: 2.5px solid #ffffff;
+    background-color: #10b981;
+    border: 2.5px solid #0f172a;
     border-radius: 50%;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 }
 
 .zippy-chat-pulse::after {
@@ -95,13 +104,25 @@
     width: 14px;
     height: 14px;
     border-radius: 50%;
-    background-color: rgba(34, 197, 94, 0.6);
+    background-color: rgba(16, 185, 129, 0.7);
     animation: zippyPulse 2s infinite ease-out;
 }
 
 @keyframes zippyPulse {
     0% { transform: scale(1); opacity: 0.8; }
     100% { transform: scale(2.2); opacity: 0; }
+}
+
+@keyframes zippyThemeRadar {
+    0% {
+        box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.5), 0 10px 25px -3px rgba(15, 23, 42, 0.6);
+    }
+    50% {
+        box-shadow: 0 0 0 12px rgba(59, 130, 246, 0), 0 12px 30px -3px rgba(15, 23, 42, 0.7);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(59, 130, 246, 0), 0 10px 25px -3px rgba(15, 23, 42, 0.6);
+    }
 }
 
 .zippy-chat-tooltip {
@@ -172,9 +193,35 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 14px;
+    font-size: 14.5px;
     flex-shrink: 0;
     margin-top: 2px;
+    position: relative;
+}
+.zippy-tooltip-avatar i {
+    animation: zippySupportBounce 2.4s ease-in-out infinite;
+    transform-origin: bottom center;
+}
+@keyframes zippySupportBounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0) scale(1);
+    }
+    40% {
+        transform: translateY(-4px) scale(1.1);
+    }
+    60% {
+        transform: translateY(-2px) scale(1.05);
+    }
+}
+.zippy-avatar-online {
+    position: absolute;
+    bottom: -1px;
+    right: -1px;
+    width: 8px;
+    height: 8px;
+    background-color: #10b981;
+    border: 1.5px solid #ffffff;
+    border-radius: 50%;
 }
 .zippy-tooltip-text {
     flex-grow: 1;
@@ -215,12 +262,13 @@
         position: relative !important;
         bottom: auto !important;
         right: auto !important;
-        width: 48px !important;
-        height: 48px !important;
-        box-shadow: 0 8px 20px -3px rgba(37, 99, 235, 0.45), 0 3px 10px rgba(0, 0, 0, 0.15) !important;
+        width: 52px !important;
+        height: 52px !important;
+        border: 2px solid rgba(255, 255, 255, 0.4) !important;
+        box-shadow: 0 8px 22px -2px rgba(37, 99, 235, 0.55), 0 3px 10px rgba(0, 0, 0, 0.15) !important;
     }
     .zippy-chat-trigger .trigger-icon {
-        font-size: 20px !important;
+        font-size: 24px !important;
     }
     .zippy-chat-tooltip {
         bottom: 56px !important;
@@ -247,12 +295,13 @@
     }
     body:has(.mobile-floating-action-sheet) .zippy-chat-trigger,
     .has-floating-action-sheet .zippy-chat-trigger {
-        width: 48px !important;
-        height: 48px !important;
+        width: 52px !important;
+        height: 52px !important;
+        border: 2px solid rgba(255, 255, 255, 0.4) !important;
     }
     body:has(.mobile-floating-action-sheet) .zippy-chat-trigger .trigger-icon,
     .has-floating-action-sheet .zippy-chat-trigger .trigger-icon {
-        font-size: 20px !important;
+        font-size: 24px !important;
     }
 
     body:has(.zk-mobile-bottom-bar) .zippy-chatbot-container,
@@ -262,12 +311,13 @@
     }
     body:has(.zk-mobile-bottom-bar) .zippy-chat-trigger,
     .zk-checkout-wrapper .zippy-chat-trigger {
-        width: 48px !important;
-        height: 48px !important;
+        width: 52px !important;
+        height: 52px !important;
+        border: 2px solid rgba(255, 255, 255, 0.4) !important;
     }
     body:has(.zk-mobile-bottom-bar) .zippy-chat-trigger .trigger-icon,
     .zk-checkout-wrapper .zippy-chat-trigger .trigger-icon {
-        font-size: 20px !important;
+        font-size: 24px !important;
     }
     .zippy-chatbot-container.active {
         position: fixed;
@@ -292,7 +342,7 @@
         height: 52px;
     }
     .zippy-chat-trigger .trigger-icon {
-        font-size: 20px;
+        font-size: 25px !important;
     }
     .zippy-chatbot-container.active .zippy-chat-trigger {
         display: none !important;
@@ -1652,7 +1702,8 @@
         </button>
         <div class="zippy-tooltip-content" id="zippyTooltipContent">
             <div class="zippy-tooltip-avatar">
-                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                <i class="fa-solid fa-headset fa-bounce"></i>
+                <span class="zippy-avatar-online"></span>
             </div>
             <div class="zippy-tooltip-text">
                 <strong class="zippy-tooltip-title">👋 কী খুঁজছেন?</strong>
@@ -1662,7 +1713,7 @@
     </div>
 
     <button type="button" class="zippy-chat-trigger" id="zippyChatTrigger" aria-label="Customer Support Chat">
-        <i class="fa-solid fa-comment-dots trigger-icon"></i>
+        <i class="fa-duotone fa-solid fa-headset fa-float trigger-icon"></i>
         <i class="fa-solid fa-xmark close-icon"></i>
         <span class="zippy-chat-pulse"></span>
     </button>

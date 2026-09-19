@@ -74,18 +74,12 @@
             <tbody>
                 @forelse($popups as $popup)
                     @php
-                        $imgUrl = null;
-                        if (!empty($popup->image)) {
-                            $cleanImgPath = ltrim($popup->image, '/');
-                            $imgUrl = Str::startsWith($cleanImgPath, ['http://', 'https://'])
-                                ? $popup->image
-                                : (Str::startsWith($cleanImgPath, 'storage/') ? asset($cleanImgPath) : asset('storage/' . $cleanImgPath));
-                        }
+                        $imgUrl = !empty($popup->image) ? product_image_url($popup->image) : null;
                     @endphp
                     <tr id="popupRow_{{ $popup->id }}">
                         <td>
                             @if(!empty($imgUrl))
-                                <img src="{{ $imgUrl }}" alt="{{ $popup->title }}" class="rounded object-fit-cover border" style="width: 60px; height: 45px;" onerror="this.onerror=null;this.src='{{ asset('images/placeholder.svg') }}';">
+                                <img src="{{ $imgUrl }}" alt="{{ $popup->title }}" class="rounded object-fit-cover border" style="width: 60px; height: 45px;" onerror="this.onerror=null;this.src='{{ asset('images/banner-placeholder.svg') }}';">
                             @else
                                 <div class="rounded bg-light border d-flex align-items-center justify-content-center text-muted" style="width: 60px; height: 45px;">
                                     <i class="fa-solid fa-font fs-6"></i>

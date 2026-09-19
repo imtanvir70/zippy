@@ -94,10 +94,10 @@
 
             <div class="footer-bottom">
                 <div class="row align-items-center">
-                    <div class="col-md-6 text-start">
-                        <p class="m-0 text-slate-400" style="font-size: 13.5px;">&copy; {{ date('Y') }} {{ $footerBrand }}. সর্বস্বত্ব সংরক্ষিত।</p>
+                    <div class="col-lg-7 text-center text-lg-start mb-2 mb-lg-0">
+                        <p class="m-0 text-slate-400" style="font-size: 13px;">&copy; {{ date('Y') }} {{ $footerBrand }} &bull; A concern of <a href="https://www.solveitbd.com" target="_blank" rel="noopener noreferrer" class="text-white text-decoration-none fw-semibold" style="transition: color 0.2s ease;">Solve IT</a>. All Rights Reserved.</p>
                     </div>
-                    <div class="col-md-6 d-flex align-items-center justify-content-end gap-3">
+                    <div class="col-lg-5 d-flex align-items-center justify-content-center justify-content-lg-end gap-3">
                         <div class="trust-badge">
                             <i class="fa-solid fa-shield-check text-success"></i>
                             <span>সিকিউর পেমেন্ট</span>
@@ -174,7 +174,7 @@
         <div class="text-center pb-2">
             <div class="brand-logo-box mx-auto mb-2 shadow-sm" style="width: 32px; height: 32px; font-size: 16px;">{{ $footerInitial }}</div>
             <span class="d-block fw-bold text-dark font-heading" style="font-size: 15px;">{{ $footerBrand }}</span>
-            <span class="d-block text-secondary mt-1" style="font-size: 11.5px;">App Version 1.0.0 &bull; Secure Checkout</span>
+            <span class="d-block text-secondary mt-0.5" style="font-size: 11.5px;">A concern of <a href="https://www.solveitbd.com" target="_blank" rel="noopener noreferrer" class="text-primary fw-semibold text-decoration-none">Solve IT</a></span>
             <span class="d-block text-secondary mt-1" style="font-size: 10px;">&copy; {{ date('Y') }} All Rights Reserved</span>
         </div>
 
@@ -267,16 +267,26 @@
     transition: all 0.25s ease;
 }
 
+@font-face {
+    font-family: 'Font Awesome 6 Free';
+    font-style: normal;
+    font-weight: 900;
+    font-display: block;
+    src: url("{{ asset('webfonts/fa-solid-900.woff2') }}") format("woff2");
+}
+
 .footer-links a::before {
     content: '\f105';
-    font-family: 'Font Awesome 6 Free';
+    font-family: 'Font Awesome 6 Free', 'Font Awesome 7 Pro', 'FontAwesome', sans-serif;
     font-weight: 900;
     font-size: 11px;
     margin-right: 8px;
     color: #3b82f6;
+    display: inline-block;
     opacity: 0;
     transform: translateX(-8px);
     transition: all 0.25s ease;
+    line-height: 1;
 }
 
 .footer-links a:hover {

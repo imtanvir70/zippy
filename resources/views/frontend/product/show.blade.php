@@ -1786,7 +1786,7 @@
                             </button>
                             <button type="button" class="btn btn-action-cart btn-cart-animated d-flex align-items-center justify-content-center gap-2" onclick="executeBulkAddToCart({{ $product->id }}, this)">
                                 <span class="btn-cart-content d-flex align-items-center justify-content-center gap-2">
-                                    <span class="cart-anim-bag-wrap"><i class="fa-solid fa-bag-shopping cart-anim-bag"></i></span>
+                                    <span class="cart-anim-bag-wrap"><i class="fa-duotone fa-solid fa-bag-shopping fa-jello cart-anim-bag"></i></span>
                                     <span class="cart-anim-text">কার্টে যোগ করুন</span>
                                 </span>
                                 <span class="cart-anim-road" aria-hidden="true">
@@ -2107,7 +2107,7 @@
         <div class="d-flex gap-2 flex-grow-1 justify-content-end align-items-center">
             <button type="button" class="btn btn-action-cart btn-cart-animated btn-sm rounded-pill px-3 py-2 fw-bold d-flex align-items-center gap-1.5" onclick="executeBulkAddToCart({{ $product->id }}, this)">
                 <span class="btn-cart-content d-flex align-items-center justify-content-center gap-1.5">
-                    <span class="cart-anim-bag-wrap"><i class="fa-solid fa-bag-shopping cart-anim-bag"></i></span>
+                    <span class="cart-anim-bag-wrap"><i class="fa-duotone fa-solid fa-bag-shopping fa-jello cart-anim-bag"></i></span>
                     <span class="cart-anim-text">কার্ট</span>
                 </span>
                 <span class="cart-anim-road" aria-hidden="true">

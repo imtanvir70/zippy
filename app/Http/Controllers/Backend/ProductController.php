@@ -56,13 +56,13 @@ class ProductController extends Controller
             return DataTables::of($query)
                 ->addIndexColumn()
                 ->addColumn('product_details', function ($prod) {
-                    $img = $prod->main_image ?: asset('images/product-placeholder.svg');
+                    $img = product_image_url($prod->main_image);
                     $title = e($prod->title);
                     $sku = e($prod->sku);
                     $tagHtml = !empty($prod->tag) ? '<span class="badge bg-danger text-white ms-1" style="font-size: 0.65rem;">' . e($prod->tag) . '</span>' : '';
                     $flashHtml = $prod->is_flash_deal ? '<span class="badge bg-warning text-dark ms-1" style="font-size: 0.65rem;"><i class="fa-solid fa-bolt"></i> Flash</span>' : '';
                     return '<div class="d-flex align-items-center gap-3">
-                        <img src="' . $img . '" class="rounded-2 border" style="width: 44px; height: 44px; object-fit: cover; flex-shrink: 0;" onerror="this.src=\'' . asset('images/product-placeholder.svg') . '\'">
+                        <img src="' . $img . '" class="rounded-2 border" style="width: 44px; height: 44px; object-fit: cover; flex-shrink: 0;" onerror="this.onerror=null;this.src=\'' . asset('images/product-placeholder.svg') . '\';">
                         <div class="overflow-hidden">
                             <div class="fw-semibold small d-block text-truncate" title="' . $title . '" style="max-width: 260px;">' . $title . '</div>
                             <div class="d-flex align-items-center gap-1 mt-1">
@@ -140,6 +140,8 @@ class ProductController extends Controller
         if (is_string($gallery)) {
             $gallery = json_decode($gallery, true) ?: [];
         }
+
+        $product->main_image_url = product_image_url($product->main_image);
 
         return response()->json([
             'success' => true,

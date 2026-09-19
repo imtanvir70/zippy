@@ -747,7 +747,7 @@
                 @forelse($lowStockList as $prod)
                     <div class="dash-stock-item d-flex align-items-center justify-content-between">
                         <div class="d-flex align-items-center gap-2.5 overflow-hidden">
-                            <img src="{{ ($prod->main_image && !str_contains($prod->main_image, 'example.com')) ? $prod->main_image : asset('images/product-placeholder.svg') }}" class="dash-product-thumb" alt="" onerror="this.onerror=null;this.src='{{ asset('images/product-placeholder.svg') }}';">
+                            <img src="{{ product_image_url($prod->main_image) }}" class="dash-product-thumb" alt="" onerror="this.onerror=null;this.src='{{ asset('images/product-placeholder.svg') }}';">
                             <div class="overflow-hidden">
                                 <span class="fw-semibold small d-block text-truncate" style="color: var(--text-main); max-width: 140px;">{{ $prod->title }}</span>
                                 <span class="text-muted" style="font-size: 0.72rem;">৳{{ number_format($prod->price, 0) }}</span>

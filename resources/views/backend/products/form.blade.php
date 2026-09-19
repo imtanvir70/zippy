@@ -294,7 +294,7 @@
                                         <td>
                                             <div class="d-flex align-items-center gap-2">
                                                 <div class="border rounded-2 bg-light d-flex align-items-center justify-content-center overflow-hidden flex-shrink-0" style="width: 42px; height: 42px;">
-                                                    <img id="formVarPreview_{{ $vIdx }}" src="{{ $vImg ?: asset('images/product-placeholder.svg') }}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.onerror=null;this.src='{{ asset('images/product-placeholder.svg') }}';">
+                                                    <img id="formVarPreview_{{ $vIdx }}" src="{{ !empty($vImg) ? product_image_url($vImg) : asset('images/product-placeholder.svg') }}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.onerror=null;this.src='{{ asset('images/product-placeholder.svg') }}';">
                                                 </div>
                                                 <div class="flex-grow-1">
                                                     <input type="file" name="var_image_file[]" class="form-control form-control-sm mb-1" accept="image/*" onchange="previewStandaloneVarFile(this, '{{ $vIdx }}')">
@@ -394,7 +394,7 @@
                         <div id="thumbDropZone" class="border border-dashed rounded-3 p-3 text-center bg-light position-relative cursor-pointer" style="min-height: 120px; display: flex; align-items: center; justify-content: center;">
                             <input type="file" name="main_image_file" id="thumbFileInput" class="position-absolute top-0 start-0 w-100 h-100 opacity-0 cursor-pointer" accept="image/*" onchange="previewFileAsThumbnail(this)">
                             <div id="thumbPreviewWrap" class="w-100 h-100 d-flex align-items-center justify-content-center">
-                                <img src="{{ old('main_image', $product->main_image ?? asset('images/product-placeholder.svg')) }}" id="mainImagePreview" alt="Preview" style="max-height: 110px; max-width: 100%; object-fit: contain;" onerror="this.onerror=null;this.src='{{ asset('images/product-placeholder.svg') }}';">
+                                <img src="{{ old('main_image', (isset($product->main_image) && $product->main_image) ? product_image_url($product->main_image) : asset('images/product-placeholder.svg')) }}" id="mainImagePreview" alt="Preview" style="max-height: 110px; max-width: 100%; object-fit: contain;" onerror="this.onerror=null;this.src='{{ asset('images/product-placeholder.svg') }}';">
                             </div>
                         </div>
                         <input type="hidden" name="main_image" value="{{ old('main_image', $product->main_image ?? '') }}">
@@ -660,11 +660,15 @@
         grid.innerHTML = '';
 
         standaloneExistingImages.forEach((imgUrl, idx) => {
+            let previewSrc = imgUrl || '';
+            if (previewSrc && !previewSrc.startsWith('http://') && !previewSrc.startsWith('https://') && !previewSrc.startsWith('/') && !previewSrc.startsWith('data:') && !previewSrc.startsWith('blob:')) {
+                previewSrc = '/storage/' + previewSrc;
+            }
             const card = document.createElement('div');
             card.className = 'position-relative border rounded-3 overflow-hidden bg-white shadow-sm';
             card.style = 'width: 75px; height: 75px; flex-shrink: 0;';
             card.innerHTML = `
-                <img src="${imgUrl}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.onerror=null;this.src='{{ asset('images/product-placeholder.svg') }}';">
+                <img src="${previewSrc}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.onerror=null;this.src='{{ asset('images/product-placeholder.svg') }}';">
                 <button type="button" class="btn btn-danger btn-sm p-0 position-absolute top-0 end-0 m-1 rounded-circle d-flex align-items-center justify-content-center shadow" style="width: 20px; height: 20px; font-size: 0.6rem;" onclick="removeStandaloneExistingImage(${idx})" title="Delete">
                     <i class="fa-solid fa-xmark"></i>
                 </button>

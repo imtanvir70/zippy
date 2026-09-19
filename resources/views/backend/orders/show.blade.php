@@ -160,7 +160,7 @@
                             <tr>
                                 <td>
                                     <div class="d-flex align-items-center gap-3">
-                                        <img src="{{ $item->product_image ?: asset('images/product-placeholder.svg') }}" alt="" class="rounded-2 border" style="width: 44px; height: 44px; object-fit: cover; flex-shrink: 0;" onerror="this.onerror=null;this.src='{{ asset('images/product-placeholder.svg') }}';">
+                                        <img src="{{ product_image_url($item->product_image) }}" alt="" class="rounded-2 border" style="width: 44px; height: 44px; object-fit: cover; flex-shrink: 0;" onerror="this.onerror=null;this.src='{{ asset('images/product-placeholder.svg') }}';">
                                         <div>
                                             <div class="fw-bold small">{{ $item->product_title }}</div>
                                             <small class="text-muted">Item ID: #{{ $item->product_id }}</small>
