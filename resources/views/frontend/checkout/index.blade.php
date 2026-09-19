@@ -554,7 +554,7 @@
                             </div>
                             <div id="couponFeedback" class="d-none"></div>
 
-                            @if(!empty($availableCoupons) && count($availableCoupons) > 0)
+                            @if(!empty($availableCoupons) && (is_array($availableCoupons) || $availableCoupons instanceof \Countable) && count($availableCoupons) > 0)
                                 <div class="mt-3 {{ !empty($coupon) ? 'd-none' : '' }}" id="suggestedCouponsWrap">
                                     <div class="fs-12 fw-semibold text-muted mb-2 d-flex align-items-center gap-2">
                                         <i class="fa-solid fa-tags fs-12"></i>
@@ -563,12 +563,14 @@
                                     <div class="d-flex flex-wrap gap-2">
                                         @foreach($availableCoupons as $ac)
                                             @php
-                                                $isPercent = $ac->type === 'percent';
-                                                $benefit = $isPercent ? ((float)$ac->value . '% ছাড়') : ('৳ ' . number_format((float)$ac->value, 0) . ' ছাড়');
-                                                $minAmt = (float)$ac->min_order_amount;
+                                                $acObj = (object) $ac;
+                                                $isPercent = ($acObj->type ?? '') === 'percent';
+                                                $benefit = $isPercent ? ((float)($acObj->value ?? 0) . '% ছাড়') : ('৳ ' . number_format((float)($acObj->value ?? 0), 0) . ' ছাড়');
+                                                $minAmt = (float)($acObj->min_order_amount ?? 0);
+                                                $couponCode = $acObj->code ?? '';
                                             @endphp
-                                            <button type="button" class="btn btn-sm zk-coupon-pill text-start shadow-xs" onclick="applyCheckoutCoupon('{{ $ac->code }}')">
-                                                <span class="badge bg-black text-white font-mono uppercase px-2 py-1 fs-11">{{ $ac->code }}</span>
+                                            <button type="button" class="btn btn-sm zk-coupon-pill text-start shadow-xs" onclick="applyCheckoutCoupon('{{ $couponCode }}')">
+                                                <span class="badge bg-black text-white font-mono uppercase px-2 py-1 fs-11">{{ $couponCode }}</span>
                                                 <span class="fw-bold text-dark fs-12 ms-2">{{ $benefit }}</span>
                                             </button>
                                         @endforeach

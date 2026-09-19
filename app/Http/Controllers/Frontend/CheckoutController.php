@@ -171,8 +171,14 @@ class CheckoutController extends Controller
                 })
                 ->select('id', 'code', 'type', 'value', 'min_order_amount', 'max_discount_amount')
                 ->orderBy('min_order_amount', 'asc')
-                ->get();
+                ->get()
+                ->toArray();
         });
+
+        if (!is_iterable($availableCoupons) || $availableCoupons instanceof \__PHP_Incomplete_Class) {
+            Cache::forget('fc.coupons.checkout_available');
+            $availableCoupons = [];
+        }
 
         $orderBump = DB::table('order_bumps')
             ->join('products', 'products.id', '=', 'order_bumps.bump_product_id')

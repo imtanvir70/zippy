@@ -430,14 +430,15 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 6px;
+    gap: 7px;
     width: 100%;
-    padding: 9px 12px;
+    padding: 10px 14px;
+    min-height: 40px;
     border-radius: 50rem !important;
     background: #0f172a;
     color: #fff;
     border: none;
-    font-size: 13px;
+    font-size: 13.5px;
     font-weight: 700;
     cursor: pointer;
     margin-top: auto;
@@ -445,6 +446,13 @@
     letter-spacing: 0.01em;
     white-space: nowrap;
     box-shadow: 0 4px 12px rgba(15, 23, 42, 0.12);
+}
+.cart-anim-bag {
+    font-size: 15px;
+}
+.cart-anim-text, .cart-success-text {
+    font-size: 13.5px;
+    font-weight: 700;
 }
 .zb-btn-cart:hover {
     background: #1e293b;
@@ -500,16 +508,19 @@
         height: 4px;
     }
     .zb-btn-cart {
-        padding: 5px 4px;
-        font-size: 10.5px;
+        padding: 7px 6px;
+        min-height: 36px;
+        font-size: 12px;
+        font-weight: 700;
         border-radius: 50rem !important;
-        gap: 3px;
+        gap: 5px;
     }
     .cart-anim-bag {
-        font-size: 10px;
+        font-size: 13px;
     }
     .cart-anim-text, .cart-success-text {
-        font-size: 10px;
+        font-size: 12px;
+        font-weight: 700;
     }
     .zb-product-badge {
         font-size: 8.5px;
@@ -565,16 +576,19 @@
         height: 5px;
     }
     .zb-btn-cart {
-        padding: 7px 8px;
-        font-size: 11.5px;
+        padding: 8.5px 12px;
+        min-height: 38px;
+        font-size: 13px;
+        font-weight: 700;
         border-radius: 50rem !important;
-        gap: 4px;
+        gap: 6px;
     }
     .cart-anim-bag {
-        font-size: 11px;
+        font-size: 15px;
     }
     .cart-anim-text, .cart-success-text {
-        font-size: 11px;
+        font-size: 13px;
+        font-weight: 700;
     }
     .zb-product-badge {
         font-size: 9px;
@@ -619,8 +633,11 @@
         max-width: 72px;
     }
     .zb-btn-cart {
-        padding: 7px 8px;
-        font-size: 11.5px;
+        padding: 9px 12px;
+        min-height: 39px;
+        font-size: 13px;
+        font-weight: 700;
+        gap: 6px;
     }
     .zb-product-badge {
         font-size: 9.5px;
@@ -661,8 +678,11 @@
         max-width: 80px;
     }
     .zb-btn-cart {
-        padding: 7.5px 10px;
-        font-size: 12px;
+        padding: 9.5px 14px;
+        min-height: 40px;
+        font-size: 13.5px;
+        font-weight: 700;
+        gap: 6px;
     }
     .zb-product-badge {
         font-size: 10px;
@@ -703,8 +723,11 @@
         max-width: 85px;
     }
     .zb-btn-cart {
-        padding: 8px 10px;
-        font-size: 12.5px;
+        padding: 10px 14px;
+        min-height: 40px;
+        font-size: 13.5px;
+        font-weight: 700;
+        gap: 6px;
     }
     .zb-product-badge {
         font-size: 10px;
