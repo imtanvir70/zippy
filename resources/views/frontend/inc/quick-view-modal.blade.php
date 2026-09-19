@@ -607,7 +607,7 @@
         gap: 12px;
     }
     .qv-slider-box {
-        height: clamp(165px, 26dvh, 215px) !important;
+        height: clamp(220px, 38dvh, 300px) !important;
         aspect-ratio: auto !important;
         border-radius: 20px !important;
         margin: 0 auto !important;
